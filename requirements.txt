@@ -1,0 +1,28 @@
+# Core dependencies for Vectara vector database
+numpy>=1.19.0
+scikit-learn>=0.24.0
+
+# Document parsing dependencies
+PyPDF2>=3.0.0
+python-docx>=0.8.11
+openpyxl>=3.1.0
+python-pptx>=0.6.21
+chardet>=5.0.0
+
+# Text processing
+nltk>=3.8
+beautifulsoup4>=4.11.0
+
+# Embedding models
+sentence-transformers>=2.2.0
+
+# Optional dependencies for better performance
+# Uncomment if you need these features:
+# faiss-cpu>=1.7.0  # For high-performance vector search
+# hnswlib>=0.6.0    # For HNSW indexing
+annoy>=1.17.0     # For approximate nearest neighbor search
+# docling>=1.0.0    # Microsoft's Docling for advanced parsing
+# llama-parse>=0.4.0  # LlamaIndex's LlamaParse for AI parsing
+
+# Path utilities for older Python versions
+pathlib2>=2.3.0; python_version<'3.4'

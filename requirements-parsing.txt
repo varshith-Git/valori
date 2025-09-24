@@ -1,0 +1,39 @@
+# Document parsing dependencies for Vectara vector database
+
+# Basic parsing libraries
+PyPDF2>=3.0.0
+python-docx>=0.8.11
+openpyxl>=3.1.0
+python-pptx>=0.6.21
+chardet>=5.0.0
+
+# Advanced parsing libraries (optional)
+# Uncomment if you need these features:
+# docling>=1.0.0  # Microsoft's Docling for advanced document parsing
+# llama-parse>=0.4.0  # LlamaIndex's LlamaParse for AI-powered parsing
+
+# Text processing
+nltk>=3.8
+beautifulsoup4>=4.11.0
+html5lib>=1.1
+
+# Image processing (for document images)
+Pillow>=9.0.0
+
+# Office document processing
+python-magic>=0.4.27
+python-magic-bin>=0.4.14; platform_system == "Windows"
+
+# PDF processing alternatives
+pymupdf>=1.23.0  # Alternative PDF library
+pdfplumber>=0.9.0  # Another PDF parsing option
+
+# OCR support (optional)
+# pytesseract>=0.3.10  # OCR for scanned documents
+# easyocr>=1.7.0  # Alternative OCR library
+
+# File type detection
+filetype>=1.2.0
+
+# Unicode normalization
+unidecode>=1.3.0
