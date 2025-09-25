@@ -10,12 +10,12 @@ import hashlib
 from typing import Any, Dict, List, Optional, Tuple, Union
 from collections import defaultdict
 
-from .base import VectorIndex
-from ..exceptions import IndexError
+from .base import Index
+from ..exceptions import ValoriIndexError
 from ..utils.validation import validate_vector
 
 
-class LSHIndex(VectorIndex):
+class LSHIndex(Index):
     """
     Locality Sensitive Hashing index implementation.
     
@@ -35,11 +35,11 @@ class LSHIndex(VectorIndex):
         
         # Validate configuration
         if self.num_hash_tables <= 0:
-            raise IndexError("Number of hash tables must be positive")
+            raise ValoriIndexError("Number of hash tables must be positive")
         if self.hash_size <= 0:
-            raise IndexError("Hash size must be positive")
+            raise ValoriIndexError("Hash size must be positive")
         if self.num_projections <= 0:
-            raise IndexError("Number of projections must be positive")
+            raise ValoriIndexError("Number of projections must be positive")
         
         # Initialize random state
         self.rng = np.random.RandomState(self.random_seed)
@@ -71,10 +71,10 @@ class LSHIndex(VectorIndex):
             List of assigned IDs
         """
         if not self._initialized:
-            raise IndexError("Index not initialized")
+            raise ValoriIndexError("Index not initialized")
         
         if len(vectors) != len(metadata):
-            raise IndexError("Number of vectors must match number of metadata items")
+            raise ValoriIndexError("Number of vectors must match number of metadata items")
         
         # Set dimension on first add
         if self.dimension is None:
@@ -82,7 +82,7 @@ class LSHIndex(VectorIndex):
             self._generate_projections()
         
         if vectors.shape[1] != self.dimension:
-            raise IndexError(f"Vector dimension mismatch: expected {self.dimension}, got {vectors.shape[1]}")
+            raise ValoriIndexError(f"Vector dimension mismatch: expected {self.dimension}, got {vectors.shape[1]}")
         
         # Validate vectors
         for vector in vectors:
@@ -123,7 +123,7 @@ class LSHIndex(VectorIndex):
             List of search results with 'id', 'distance', and 'metadata'
         """
         if not self._initialized:
-            raise IndexError("Index not initialized")
+            raise ValoriIndexError("Index not initialized")
         
         if self.dimension is None:
             return []
@@ -173,7 +173,7 @@ class LSHIndex(VectorIndex):
             ids: List of IDs to remove
         """
         if not self._initialized:
-            raise IndexError("Index not initialized")
+            raise ValoriIndexError("Index not initialized")
         
         for vector_id in ids:
             if vector_id < len(self.vectors):
@@ -312,7 +312,7 @@ class LSHIndex(VectorIndex):
             distance = np.sum(np.abs(vector1 - vector2))
             return 1.0 / (1.0 + distance)
         else:
-            raise IndexError(f"Unsupported metric: {self.metric}")
+            raise ValoriIndexError(f"Unsupported metric: {self.metric}")
     
     def close(self) -> None:
         """Close the index and clean up resources."""

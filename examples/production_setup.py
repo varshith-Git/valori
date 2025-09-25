@@ -9,12 +9,12 @@ import numpy as np
 import json
 import time
 from pathlib import Path
-from vectordb import VectorDBClient
-from vectordb.storage import HybridStorage
-from vectordb.indices import HNSWIndex
-from vectordb.quantization import ProductQuantizer
-from vectordb.persistence import TensorPersistence
-from vectordb.utils.logging import setup_logging, get_logger
+from valori import VectorDBClient
+from valori.storage import HybridStorage
+from valori.indices import HNSWIndex
+from valori.quantization import ProductQuantizer
+from valori.persistence import TensorPersistence
+from valori.utils.logging import setup_logging, get_logger
 
 
 class ProductionVectorDB:

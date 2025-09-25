@@ -1,5 +1,5 @@
 """
-Base classes and interfaces for the Vectara vector database.
+Base classes and interfaces for the Valori vector database.
 """
 
 from abc import ABC, abstractmethod

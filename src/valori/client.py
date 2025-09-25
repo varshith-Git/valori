@@ -10,7 +10,7 @@ from .storage.base import StorageBackend
 from .indices.base import Index
 from .quantization.base import Quantizer
 from .persistence.base import PersistenceManager
-from .exceptions import VectaraError
+from .exceptions import ValoriError
 
 
 class VectorDBClient:
@@ -60,40 +60,40 @@ class VectorDBClient:
                 
             self._initialized = True
         except Exception as e:
-            raise VectaraError(f"Failed to initialize client: {str(e)}")
+            raise ValoriError(f"Failed to initialize client: {str(e)}")
     
     def insert(self, vectors: np.ndarray, metadata: Optional[List[Dict]] = None) -> List[str]:
         """Insert vectors into the database."""
         if not self._initialized:
-            raise VectaraError("Client not initialized. Call initialize() first.")
+            raise ValoriError("Client not initialized. Call initialize() first.")
         
         return self.index.insert(vectors, metadata)
     
     def search(self, query_vector: np.ndarray, k: int = 10) -> List[Dict]:
         """Search for similar vectors."""
         if not self._initialized:
-            raise VectaraError("Client not initialized. Call initialize() first.")
+            raise ValoriError("Client not initialized. Call initialize() first.")
         
         return self.index.search(query_vector, k)
     
     def delete(self, ids: List[str]) -> bool:
         """Delete vectors by their IDs."""
         if not self._initialized:
-            raise VectaraError("Client not initialized. Call initialize() first.")
+            raise ValoriError("Client not initialized. Call initialize() first.")
         
         return self.index.delete(ids)
     
     def update(self, id: str, vector: np.ndarray, metadata: Optional[Dict] = None) -> bool:
         """Update a vector by its ID."""
         if not self._initialized:
-            raise VectaraError("Client not initialized. Call initialize() first.")
+            raise ValoriError("Client not initialized. Call initialize() first.")
         
         return self.index.update(id, vector, metadata)
     
     def get_stats(self) -> Dict[str, Any]:
         """Get database statistics."""
         if not self._initialized:
-            raise VectaraError("Client not initialized. Call initialize() first.")
+            raise ValoriError("Client not initialized. Call initialize() first.")
         
         stats = {
             "storage": self.storage_backend.get_stats(),

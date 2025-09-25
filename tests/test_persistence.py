@@ -4,8 +4,8 @@ Tests for persistence implementations.
 
 import pytest
 import numpy as np
-from vectordb.persistence import TensorPersistence, IncrementalPersistence
-from vectordb.exceptions import PersistenceError
+from valori.persistence import TensorPersistence, IncrementalPersistence
+from valori.exceptions import PersistenceError
 
 
 class TestTensorPersistence:

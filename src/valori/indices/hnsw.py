@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Optional
 import numpy as np
 
 from .base import Index
-from ..exceptions import IndexError
+from ..exceptions import ValoriIndexError
 
 
 class HNSWIndex(Index):
@@ -53,15 +53,15 @@ class HNSWIndex(Index):
                     vector, _ = result
                     self._insert_vector_internal(vector_id, vector)
         except Exception as e:
-            raise IndexError(f"Failed to initialize HNSW index: {str(e)}")
+            raise ValoriIndexError(f"Failed to initialize HNSW index: {str(e)}")
     
     def insert(self, vectors: np.ndarray, metadata: Optional[List[Dict]] = None) -> List[str]:
         """Insert vectors into the HNSW index."""
         if not self._initialized:
-            raise IndexError("Index not initialized")
+            raise ValoriIndexError("Index not initialized")
         
         if vectors.ndim != 2:
-            raise IndexError("Vectors must be 2D array")
+            raise ValoriIndexError("Vectors must be 2D array")
         
         try:
             inserted_ids = []
@@ -84,15 +84,15 @@ class HNSWIndex(Index):
             return inserted_ids
             
         except Exception as e:
-            raise IndexError(f"Failed to insert vectors: {str(e)}")
+            raise ValoriIndexError(f"Failed to insert vectors: {str(e)}")
     
     def search(self, query_vector: np.ndarray, k: int = 10) -> List[Dict]:
         """Search for similar vectors using HNSW graph traversal."""
         if not self._initialized:
-            raise IndexError("Index not initialized")
+            raise ValoriIndexError("Index not initialized")
         
         if query_vector.ndim != 1:
-            raise IndexError("Query vector must be 1D")
+            raise ValoriIndexError("Query vector must be 1D")
         
         try:
             if not self.vectors:
@@ -154,12 +154,12 @@ class HNSWIndex(Index):
             return results
             
         except Exception as e:
-            raise IndexError(f"Search failed: {str(e)}")
+            raise ValoriIndexError(f"Search failed: {str(e)}")
     
     def delete(self, ids: List[str]) -> bool:
         """Delete vectors by their IDs."""
         if not self._initialized:
-            raise IndexError("Index not initialized")
+            raise ValoriIndexError("Index not initialized")
         
         try:
             success = True
@@ -175,12 +175,12 @@ class HNSWIndex(Index):
             return success
             
         except Exception as e:
-            raise IndexError(f"Failed to delete vectors: {str(e)}")
+            raise ValoriIndexError(f"Failed to delete vectors: {str(e)}")
     
     def update(self, id: str, vector: np.ndarray, metadata: Optional[Dict] = None) -> bool:
         """Update a vector by its ID."""
         if not self._initialized:
-            raise IndexError("Index not initialized")
+            raise ValoriIndexError("Index not initialized")
         
         try:
             # Update in storage
@@ -194,7 +194,7 @@ class HNSWIndex(Index):
             return True
             
         except Exception as e:
-            raise IndexError(f"Failed to update vector {id}: {str(e)}")
+            raise ValoriIndexError(f"Failed to update vector {id}: {str(e)}")
     
     def get_stats(self) -> Dict[str, Any]:
         """Get HNSW index statistics."""
@@ -293,4 +293,4 @@ class HNSWIndex(Index):
         elif self.metric == "euclidean":
             return np.linalg.norm(vec1 - vec2)
         else:
-            raise IndexError(f"Unsupported metric: {self.metric}")
+            raise ValoriIndexError(f"Unsupported metric: {self.metric}")

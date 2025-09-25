@@ -4,8 +4,8 @@ Tests for index implementations.
 
 import pytest
 import numpy as np
-from vectordb.indices import FlatIndex, HNSWIndex, IVFIndex
-from vectordb.exceptions import IndexError
+from valori.indices import FlatIndex, HNSWIndex, IVFIndex
+from valori.exceptions import ValoriValoriIndexError
 
 
 class TestFlatIndex:
@@ -201,15 +201,15 @@ class TestIVFIndex:
         assert "trained" in stats
 
 
-class TestIndexErrorHandling:
+class TestValoriIndexErrorHandling:
     """Test index error handling."""
     
     def test_uninitialized_index_error(self, flat_index, small_vectors):
         """Test error when using uninitialized index."""
-        with pytest.raises(IndexError):
+        with pytest.raises(ValoriIndexError):
             flat_index.insert(small_vectors)
         
-        with pytest.raises(IndexError):
+        with pytest.raises(ValoriIndexError):
             flat_index.search(small_vectors[0])
     
     def test_invalid_vector_dimensions(self, flat_index, memory_storage, sample_vectors):
@@ -217,7 +217,7 @@ class TestIndexErrorHandling:
         flat_index.initialize(memory_storage)
         
         # Test with 1D vector (should be 2D)
-        with pytest.raises(IndexError):
+        with pytest.raises(ValoriIndexError):
             flat_index.insert(sample_vectors[0])
     
     def test_invalid_query_vector(self, flat_index, memory_storage, small_vectors, query_vector):
@@ -226,7 +226,7 @@ class TestIndexErrorHandling:
         flat_index.insert(small_vectors)
         
         # Test with 2D query vector (should be 1D)
-        with pytest.raises(IndexError):
+        with pytest.raises(ValoriIndexError):
             flat_index.search(small_vectors, k=5)
     
     def test_search_empty_index(self, flat_index, memory_storage, query_vector):

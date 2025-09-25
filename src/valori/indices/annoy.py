@@ -10,12 +10,12 @@ from typing import Any, Dict, List, Optional, Union
 import tempfile
 import os
 
-from .base import VectorIndex
-from ..exceptions import IndexError
+from .base import Index
+from ..exceptions import ValoriIndexError
 from ..utils.validation import validate_vector
 
 
-class AnnoyIndex(VectorIndex):
+class AnnoyIndex(Index):
     """
     Annoy (Approximate Nearest Neighbors Oh Yeah) index implementation.
     
@@ -35,10 +35,10 @@ class AnnoyIndex(VectorIndex):
         
         # Validate configuration
         if self.num_trees <= 0:
-            raise IndexError("Number of trees must be positive")
+            raise ValoriIndexError("Number of trees must be positive")
         
         if self.metric not in ["angular", "euclidean", "manhattan", "hamming", "dot"]:
-            raise IndexError(f"Unsupported metric: {self.metric}")
+            raise ValoriIndexError(f"Unsupported metric: {self.metric}")
         
         # Storage structures
         self.vectors: List[np.ndarray] = []
@@ -58,7 +58,7 @@ class AnnoyIndex(VectorIndex):
             import annoy
             self.annoy = annoy
         except ImportError:
-            raise IndexError("annoy library not installed. Install with: pip install annoy")
+            raise ValoriIndexError("annoy library not installed. Install with: pip install annoy")
     
     def initialize(self) -> None:
         """Initialize the Annoy index."""
@@ -81,10 +81,10 @@ class AnnoyIndex(VectorIndex):
             List of assigned IDs
         """
         if not self._initialized:
-            raise IndexError("Index not initialized")
+            raise ValoriIndexError("Index not initialized")
         
         if len(vectors) != len(metadata):
-            raise IndexError("Number of vectors must match number of metadata items")
+            raise ValoriIndexError("Number of vectors must match number of metadata items")
         
         # Set dimension on first add
         if self.dimension is None:
@@ -92,7 +92,7 @@ class AnnoyIndex(VectorIndex):
             self._create_annoy_index()
         
         if vectors.shape[1] != self.dimension:
-            raise IndexError(f"Vector dimension mismatch: expected {self.dimension}, got {vectors.shape[1]}")
+            raise ValoriIndexError(f"Vector dimension mismatch: expected {self.dimension}, got {vectors.shape[1]}")
         
         # Validate vectors
         for vector in vectors:
@@ -118,10 +118,10 @@ class AnnoyIndex(VectorIndex):
     def build(self) -> None:
         """Build the Annoy index."""
         if not self._initialized:
-            raise IndexError("Index not initialized")
+            raise ValoriIndexError("Index not initialized")
         
         if self._annoy_index is None:
-            raise IndexError("No vectors added to index")
+            raise ValoriIndexError("No vectors added to index")
         
         if self.build_on_disk:
             # Build on disk
@@ -149,10 +149,10 @@ class AnnoyIndex(VectorIndex):
             List of search results with 'id', 'distance', and 'metadata'
         """
         if not self._initialized:
-            raise IndexError("Index not initialized")
+            raise ValoriIndexError("Index not initialized")
         
         if not self._built:
-            raise IndexError("Index not built. Call build() after adding vectors.")
+            raise ValoriIndexError("Index not built. Call build() after adding vectors.")
         
         if self.dimension is None:
             return []
@@ -195,7 +195,7 @@ class AnnoyIndex(VectorIndex):
             ids: List of IDs to remove
         """
         if not self._initialized:
-            raise IndexError("Index not initialized")
+            raise ValoriIndexError("Index not initialized")
         
         for vector_id in ids:
             if vector_id < len(self.vectors):
@@ -272,7 +272,7 @@ class AnnoyIndex(VectorIndex):
     def save(self, filepath: str) -> None:
         """Save the index to disk."""
         if not self._built:
-            raise IndexError("Index not built. Call build() before saving.")
+            raise ValoriIndexError("Index not built. Call build() before saving.")
         
         if self._annoy_index is not None:
             self._annoy_index.save(filepath)
@@ -280,10 +280,10 @@ class AnnoyIndex(VectorIndex):
     def load(self, filepath: str) -> None:
         """Load the index from disk."""
         if not self._initialized:
-            raise IndexError("Index not initialized")
+            raise ValoriIndexError("Index not initialized")
         
         if not os.path.exists(filepath):
-            raise IndexError(f"Index file not found: {filepath}")
+            raise ValoriIndexError(f"Index file not found: {filepath}")
         
         self._create_annoy_index()
         self._annoy_index.load(filepath)

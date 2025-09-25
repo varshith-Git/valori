@@ -13,7 +13,7 @@ class StorageError(ValoriError):
     pass
 
 
-class IndexError(ValoriError):
+class ValoriIndexError(ValoriError):
     """Exception raised for index-related errors."""
     pass
 

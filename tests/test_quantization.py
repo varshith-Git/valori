@@ -4,8 +4,8 @@ Tests for quantization implementations.
 
 import pytest
 import numpy as np
-from vectordb.quantization import ScalarQuantizer, ProductQuantizer
-from vectordb.exceptions import QuantizationError
+from valori.quantization import ScalarQuantizer, ProductQuantizer
+from valori.exceptions import QuantizationError
 
 
 class TestScalarQuantizer:

@@ -4,11 +4,11 @@ Integration tests for the Vectara vector database.
 
 import pytest
 import numpy as np
-from vectordb import VectorDBClient
-from vectordb.storage import MemoryStorage, DiskStorage, HybridStorage
-from vectordb.indices import FlatIndex, HNSWIndex, IVFIndex
-from vectordb.quantization import ScalarQuantizer, ProductQuantizer
-from vectordb.persistence import TensorPersistence
+from valori import VectorDBClient
+from valori.storage import MemoryStorage, DiskStorage, HybridStorage
+from valori.indices import FlatIndex, HNSWIndex, IVFIndex
+from valori.quantization import ScalarQuantizer, ProductQuantizer
+from valori.persistence import TensorPersistence
 
 
 class TestVectorDBClientIntegration:

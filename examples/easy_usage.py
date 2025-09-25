@@ -369,7 +369,7 @@ def demo_timing_decorators():
     
     # Memory usage decorator (if psutil is available)
     try:
-        from vectordb.utils import memory_usage_decorator
+        from valori.utils import memory_usage_decorator
         
         @memory_usage_decorator
         def memory_intensive_operation():

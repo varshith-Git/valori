@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Setup script for Vectara vector database.
+Setup script for Valori vector database.
 
 This file is provided for compatibility with older build tools.
 For new projects, use pyproject.toml instead.
@@ -18,9 +18,9 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
 
 setup(
     name="valori",
-    version="0.1.0",
-    author="Valori Team",
-    author_email="team@valori.com",
+    version="0.1.1",
+    author="Varshith",
+    author_email="varshith.gudur17@gmail.com",
     description="A high-performance vector database library for Python",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -76,12 +76,12 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "vectara-benchmark=scripts.benchmark:main",
+            "valori-benchmark=scripts.benchmark:main",
         ],
     },
     include_package_data=True,
     package_data={
-        "vectordb": ["py.typed"],
+        "valori": ["py.typed"],
     },
     zip_safe=False,
 )

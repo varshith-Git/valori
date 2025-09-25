@@ -8,7 +8,7 @@ import numpy as np
 from sklearn.cluster import KMeans
 
 from .base import Index
-from ..exceptions import IndexError
+from ..exceptions import ValoriIndexError
 
 
 class IVFIndex(Index):
@@ -50,15 +50,15 @@ class IVFIndex(Index):
             if len(self.vector_ids) >= self.n_clusters:
                 self._train_index()
         except Exception as e:
-            raise IndexError(f"Failed to initialize IVF index: {str(e)}")
+            raise ValoriIndexError(f"Failed to initialize IVF index: {str(e)}")
     
     def insert(self, vectors: np.ndarray, metadata: Optional[List[Dict]] = None) -> List[str]:
         """Insert vectors into the IVF index."""
         if not self._initialized:
-            raise IndexError("Index not initialized")
+            raise ValoriIndexError("Index not initialized")
         
         if vectors.ndim != 2:
-            raise IndexError("Vectors must be 2D array")
+            raise ValoriIndexError("Vectors must be 2D array")
         
         try:
             inserted_ids = []
@@ -91,15 +91,15 @@ class IVFIndex(Index):
             return inserted_ids
             
         except Exception as e:
-            raise IndexError(f"Failed to insert vectors: {str(e)}")
+            raise ValoriIndexError(f"Failed to insert vectors: {str(e)}")
     
     def search(self, query_vector: np.ndarray, k: int = 10) -> List[Dict]:
         """Search for similar vectors using IVF index."""
         if not self._initialized:
-            raise IndexError("Index not initialized")
+            raise ValoriIndexError("Index not initialized")
         
         if query_vector.ndim != 1:
-            raise IndexError("Query vector must be 1D")
+            raise ValoriIndexError("Query vector must be 1D")
         
         try:
             if not self.vector_ids:
@@ -152,12 +152,12 @@ class IVFIndex(Index):
             return results
             
         except Exception as e:
-            raise IndexError(f"Search failed: {str(e)}")
+            raise ValoriIndexError(f"Search failed: {str(e)}")
     
     def delete(self, ids: List[str]) -> bool:
         """Delete vectors by their IDs."""
         if not self._initialized:
-            raise IndexError("Index not initialized")
+            raise ValoriIndexError("Index not initialized")
         
         try:
             success = True
@@ -183,12 +183,12 @@ class IVFIndex(Index):
             return success
             
         except Exception as e:
-            raise IndexError(f"Failed to delete vectors: {str(e)}")
+            raise ValoriIndexError(f"Failed to delete vectors: {str(e)}")
     
     def update(self, id: str, vector: np.ndarray, metadata: Optional[Dict] = None) -> bool:
         """Update a vector by its ID."""
         if not self._initialized:
-            raise IndexError("Index not initialized")
+            raise ValoriIndexError("Index not initialized")
         
         try:
             # Update in storage
@@ -205,7 +205,7 @@ class IVFIndex(Index):
             return True
             
         except Exception as e:
-            raise IndexError(f"Failed to update vector {id}: {str(e)}")
+            raise ValoriIndexError(f"Failed to update vector {id}: {str(e)}")
     
     def get_stats(self) -> Dict[str, Any]:
         """Get IVF index statistics."""
@@ -284,7 +284,7 @@ class IVFIndex(Index):
             self._trained = True
             
         except Exception as e:
-            raise IndexError(f"Failed to train IVF index: {str(e)}")
+            raise ValoriIndexError(f"Failed to train IVF index: {str(e)}")
     
     def _add_to_cluster(self, vector_id: str, vector: np.ndarray) -> None:
         """Add a vector to the appropriate cluster."""
@@ -366,4 +366,4 @@ class IVFIndex(Index):
         elif self.metric == "euclidean":
             return np.linalg.norm(vec1 - vec2)
         else:
-            raise IndexError(f"Unsupported metric: {self.metric}")
+            raise ValoriIndexError(f"Unsupported metric: {self.metric}")

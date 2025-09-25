@@ -9,10 +9,10 @@ description = "A high-performance vector database library for Python"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
-    {name = "Vectara Team", email = "team@vectara.com"},
+    {name = "Varshith", email = "varshith.gudur17@gmail.com"},
 ]
 maintainers = [
-    {name = "Vectara Team", email = "team@vectara.com"},
+    {name = "Varshith", email = "varshith.gudur17@gmail.com"},
 ]
 keywords = ["vector", "database", "similarity", "search", "machine-learning", "embeddings"]
 classifiers = [
@@ -96,10 +96,10 @@ package-dir = {"" = "src"}
 where = ["src"]
 
 [tool.setuptools.package-data]
-vectordb = ["py.typed"]
+valori = ["py.typed"]
 
 [tool.setuptools_scm]
-write_to = "src/vectordb/_version.py"
+write_to = "src/valori/_version.py"
 
 [tool.black]
 line-length = 88
@@ -153,7 +153,7 @@ markers = [
 ]
 
 [tool.coverage.run]
-source = ["src/vectordb"]
+source = ["src/valori"]
 omit = [
     "*/tests/*",
     "*/test_*",

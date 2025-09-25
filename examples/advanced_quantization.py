@@ -6,10 +6,10 @@ and improving search performance while maintaining accuracy.
 """
 
 import numpy as np
-from vectordb import VectorDBClient
-from vectordb.storage import MemoryStorage, DiskStorage
-from vectordb.indices import FlatIndex, HNSWIndex
-from vectordb.quantization import ScalarQuantizer, ProductQuantizer
+from valori import VectorDBClient
+from valori.storage import MemoryStorage, DiskStorage
+from valori.indices import FlatIndex, HNSWIndex
+from valori.quantization import ScalarQuantizer, ProductQuantizer
 
 
 def compare_quantization_methods(vectors, query_vector, metadata):

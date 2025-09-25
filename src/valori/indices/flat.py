@@ -8,7 +8,7 @@ import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity, euclidean_distances
 
 from .base import Index
-from ..exceptions import IndexError
+from ..exceptions import ValoriIndexError
 
 
 class FlatIndex(Index):
@@ -39,15 +39,15 @@ class FlatIndex(Index):
             self.vector_ids = existing_ids
             self._vector_count = len(self.vector_ids)
         except Exception as e:
-            raise IndexError(f"Failed to initialize flat index: {str(e)}")
+            raise ValoriIndexError(f"Failed to initialize flat index: {str(e)}")
     
     def insert(self, vectors: np.ndarray, metadata: Optional[List[Dict]] = None) -> List[str]:
         """Insert vectors into the flat index."""
         if not self._initialized:
-            raise IndexError("Index not initialized")
+            raise ValoriIndexError("Index not initialized")
         
         if vectors.ndim != 2:
-            raise IndexError("Vectors must be 2D array")
+            raise ValoriIndexError("Vectors must be 2D array")
         
         try:
             inserted_ids = []
@@ -72,15 +72,15 @@ class FlatIndex(Index):
             return inserted_ids
             
         except Exception as e:
-            raise IndexError(f"Failed to insert vectors: {str(e)}")
+            raise ValoriIndexError(f"Failed to insert vectors: {str(e)}")
     
     def search(self, query_vector: np.ndarray, k: int = 10) -> List[Dict]:
         """Search for similar vectors using brute force."""
         if not self._initialized:
-            raise IndexError("Index not initialized")
+            raise ValoriIndexError("Index not initialized")
         
         if query_vector.ndim != 1:
-            raise IndexError("Query vector must be 1D")
+            raise ValoriIndexError("Query vector must be 1D")
         
         try:
             if not self.vector_ids:
@@ -119,7 +119,7 @@ class FlatIndex(Index):
             elif self.metric == "euclidean":
                 distances = euclidean_distances([query_vector], vectors_array)[0]
             else:
-                raise IndexError(f"Unsupported metric: {self.metric}")
+                raise ValoriIndexError(f"Unsupported metric: {self.metric}")
             
             # Get top k results
             top_k_indices = np.argsort(distances)[:k]
@@ -140,12 +140,12 @@ class FlatIndex(Index):
             return results
             
         except Exception as e:
-            raise IndexError(f"Search failed: {str(e)}")
+            raise ValoriIndexError(f"Search failed: {str(e)}")
     
     def delete(self, ids: List[str]) -> bool:
         """Delete vectors by their IDs."""
         if not self._initialized:
-            raise IndexError("Index not initialized")
+            raise ValoriIndexError("Index not initialized")
         
         try:
             success = True
@@ -166,12 +166,12 @@ class FlatIndex(Index):
             return success
             
         except Exception as e:
-            raise IndexError(f"Failed to delete vectors: {str(e)}")
+            raise ValoriIndexError(f"Failed to delete vectors: {str(e)}")
     
     def update(self, id: str, vector: np.ndarray, metadata: Optional[Dict] = None) -> bool:
         """Update a vector by its ID."""
         if not self._initialized:
-            raise IndexError("Index not initialized")
+            raise ValoriIndexError("Index not initialized")
         
         try:
             # Update in storage
@@ -184,7 +184,7 @@ class FlatIndex(Index):
             return True
             
         except Exception as e:
-            raise IndexError(f"Failed to update vector {id}: {str(e)}")
+            raise ValoriIndexError(f"Failed to update vector {id}: {str(e)}")
     
     def get_stats(self) -> Dict[str, Any]:
         """Get flat index statistics."""

@@ -4,8 +4,8 @@ Tests for storage backends.
 
 import pytest
 import numpy as np
-from vectordb.storage import MemoryStorage, DiskStorage, HybridStorage
-from vectordb.exceptions import StorageError
+from valori.storage import MemoryStorage, DiskStorage, HybridStorage
+from valori.exceptions import StorageError
 
 
 class TestMemoryStorage:
