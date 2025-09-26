@@ -408,7 +408,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - 📚 [Documentation](https://github.com/varshith-Git/valori)
 - 🐛 [Issue Tracker](https://github.com/varshith-Git/valori/issues)
 - 💬 [Discussions](https://github.com/varshith-Git/valori/discussions)
-- 📧 [Email Support](mailto:team@valori.com)
+- 📧 [Email Support](mailto:varshith.gudur17@gmail.com)
 
 ## Roadmap
 
