@@ -1,5 +1,5 @@
 """
-Advanced indexing algorithms example for the Vectara vector database.
+Advanced indexing algorithms example for the valori vector database.
 
 This example demonstrates the use of different indexing algorithms including
 LSH (Locality Sensitive Hashing) and Annoy for various use cases and
@@ -365,7 +365,7 @@ def demonstrate_use_cases():
 
 def main():
     """Run the advanced indexing example."""
-    print("Vectara Advanced Indexing Algorithms Example")
+    print("valori Advanced Indexing Algorithms Example")
     print("=" * 60)
     
     try:

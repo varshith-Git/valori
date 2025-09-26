@@ -1,5 +1,5 @@
 """
-Document processors for the Vectara vector database.
+Document processors for the valori vector database.
 
 This module provides document processing pipeline components for text
 cleaning, chunking, embedding, and other preprocessing tasks.

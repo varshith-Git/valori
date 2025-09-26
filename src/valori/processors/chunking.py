@@ -1,5 +1,5 @@
 """
-Text chunking processor for the Vectara vector database.
+Text chunking processor for the valori vector database.
 """
 
 import re

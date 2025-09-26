@@ -1,5 +1,5 @@
 """
-Base storage backend interface for the Vectara vector database.
+Base storage backend interface for the valori vector database.
 """
 
 from abc import ABC, abstractmethod

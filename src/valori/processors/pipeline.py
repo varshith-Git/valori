@@ -1,5 +1,5 @@
 """
-Document processing pipeline for the Vectara vector database.
+Document processing pipeline for the valori vector database.
 """
 
 from typing import Any, Dict, List, Optional, Union

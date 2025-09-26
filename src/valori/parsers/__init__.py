@@ -1,5 +1,5 @@
 """
-Document parsers for the Vectara vector database.
+Document parsers for the valori vector database.
 
 This module provides various document parsing implementations for extracting
 text and structured data from different document formats.

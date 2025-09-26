@@ -16,7 +16,7 @@ Thank you for your interest in contributing to Vectara! This document provides g
 
 ## Code of Conduct
 
-This project adheres to a code of conduct. By participating, you are expected to uphold this code. Please report unacceptable behavior to team@vectara.com.
+This project adheres to a code of conduct. By participating, you are expected to uphold this code. Please report unacceptable behavior to varshith.gudur17@gmail.com.
 
 ## Getting Started
 
@@ -290,7 +290,7 @@ For feature requests, include:
 
 - **GitHub Issues**: For bug reports and feature requests
 - **GitHub Discussions**: For questions and general discussion
-- **Email**: team@vectara.com for private matters
+- **Email**: varshith.gudur17@gmail.com for private matters
 - **Documentation**: Check the docs first
 
 ## Recognition

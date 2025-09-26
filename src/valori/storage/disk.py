@@ -1,5 +1,5 @@
 """
-Disk-based storage backend for the Vectara vector database.
+Disk-based storage backend for the valori vector database.
 """
 
 import os
@@ -23,7 +23,7 @@ class DiskStorage(StorageBackend):
     def __init__(self, config: Dict[str, Any]):
         """Initialize disk storage backend."""
         super().__init__(config)
-        self.data_dir = Path(config.get("data_dir", "./vectara_data"))
+        self.data_dir = Path(config.get("data_dir", "./valori_data"))
         self.vectors_dir = self.data_dir / "vectors"
         self.metadata_dir = self.data_dir / "metadata"
         self._vector_count = 0

@@ -434,4 +434,4 @@ If you use Valori in your research, please cite:
 
 ---
 
-Made with ❤️ by the Vectara Team
+Made with ❤️ by the Valori Team

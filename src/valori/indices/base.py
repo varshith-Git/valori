@@ -1,5 +1,5 @@
 """
-Base index interface for the Vectara vector database.
+Base index interface for the valori vector database.
 """
 
 from abc import ABC, abstractmethod

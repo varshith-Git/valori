@@ -1,5 +1,5 @@
 """
-High-level client for the Vectara vector database.
+High-level client for the valori vector database.
 """
 
 from typing import Any, Dict, List, Optional, Union
@@ -15,7 +15,7 @@ from .exceptions import ValoriError
 
 class VectorDBClient:
     """
-    High-level client for interacting with the Vectara vector database.
+    High-level client for interacting with the valori vector database.
     
     This client provides a convenient interface for common vector database
     operations while abstracting away the complexity of underlying components.

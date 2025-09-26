@@ -1,5 +1,5 @@
 """
-Base quantization interface for the Vectara vector database.
+Base quantization interface for the valori vector database.
 """
 
 from abc import ABC, abstractmethod

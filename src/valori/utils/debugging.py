@@ -1,5 +1,5 @@
 """
-Debugging and monitoring utilities for the Vectara vector database.
+Debugging and monitoring utilities for the valori vector database.
 
 This module provides tools for debugging, monitoring, and analyzing
 vector database performance and behavior.

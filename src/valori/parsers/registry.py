@@ -1,5 +1,5 @@
 """
-Parser registry for the Vectara vector database.
+Parser registry for the valori vector database.
 
 Manages available document parsers and provides automatic parser selection.
 """

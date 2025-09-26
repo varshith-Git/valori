@@ -1,5 +1,5 @@
 """
-Logging utilities for the Vectara vector database.
+Logging utilities for the valori vector database.
 """
 
 import logging
@@ -60,7 +60,7 @@ def setup_logging(config: Optional[Dict[str, Any]] = None) -> None:
         "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         "date_format": "%Y-%m-%d %H:%M:%S",
         "log_to_file": False,
-        "log_file": "vectara.log",
+        "log_file": "valori.log",
         "max_file_size": 10 * 1024 * 1024,  # 10MB
         "backup_count": 5
     }
@@ -118,7 +118,7 @@ def log_performance(func_name: str, duration: float, **kwargs) -> None:
         duration: Execution duration in seconds
         **kwargs: Additional metrics to log
     """
-    logger = get_logger("vectara.performance")
+    logger = get_logger("valori.performance")
     
     metrics = {
         "function": func_name,
@@ -138,7 +138,7 @@ def log_memory_usage(operation: str, memory_before: int, memory_after: int) -> N
         memory_before: Memory usage before operation (bytes)
         memory_after: Memory usage after operation (bytes)
     """
-    logger = get_logger("vectara.memory")
+    logger = get_logger("valori.memory")
     
     memory_delta = memory_after - memory_before
     memory_delta_mb = memory_delta / (1024 * 1024)
@@ -156,7 +156,7 @@ def log_vector_operation(operation: str, vector_count: int, vector_dim: int, **k
         vector_dim: Dimension of vectors
         **kwargs: Additional operation-specific metrics
     """
-    logger = get_logger("vectara.operations")
+    logger = get_logger("valori.operations")
     
     metrics = {
         "operation": operation,
@@ -177,7 +177,7 @@ def log_index_stats(index_type: str, vector_count: int, **stats) -> None:
         vector_count: Number of vectors in index
         **stats: Additional index statistics
     """
-    logger = get_logger("vectara.index")
+    logger = get_logger("valori.index")
     
     metrics = {
         "index_type": index_type,
@@ -198,7 +198,7 @@ def log_search_query(query_vector_dim: int, k: int, results_count: int, duration
         results_count: Number of results returned
         duration: Search duration in seconds
     """
-    logger = get_logger("vectara.search")
+    logger = get_logger("valori.search")
     
     metrics = {
         "query_vector_dim": query_vector_dim,
@@ -218,7 +218,7 @@ def log_error(error: Exception, context: Optional[str] = None) -> None:
         error: Exception that occurred
         context: Additional context information
     """
-    logger = get_logger("vectara.error")
+    logger = get_logger("valori.error")
     
     error_info = {
         "error_type": type(error).__name__,
@@ -237,7 +237,7 @@ def log_warning(message: str, **kwargs) -> None:
         message: Warning message
         **kwargs: Additional context
     """
-    logger = get_logger("vectara.warning")
+    logger = get_logger("valori.warning")
     
     if kwargs:
         logger.warning(f"{message} - Context: {kwargs}")
@@ -253,7 +253,7 @@ def log_info(message: str, **kwargs) -> None:
         message: Info message
         **kwargs: Additional context
     """
-    logger = get_logger("vectara.info")
+    logger = get_logger("valori.info")
     
     if kwargs:
         logger.info(f"{message} - Context: {kwargs}")
@@ -269,7 +269,7 @@ def log_debug(message: str, **kwargs) -> None:
         message: Debug message
         **kwargs: Additional context
     """
-    logger = get_logger("vectara.debug")
+    logger = get_logger("valori.debug")
     
     if kwargs:
         logger.debug(f"{message} - Context: {kwargs}")

@@ -1,5 +1,5 @@
 """
-Base persistence interface for the Vectara vector database.
+Base persistence interface for the valori vector database.
 """
 
 from abc import ABC, abstractmethod

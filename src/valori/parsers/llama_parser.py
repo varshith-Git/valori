@@ -1,5 +1,5 @@
 """
-LlamaParse parser for the Vectara vector database.
+LlamaParse parser for the valori vector database.
 
 Uses LlamaIndex's LlamaParse for advanced document parsing with AI.
 """

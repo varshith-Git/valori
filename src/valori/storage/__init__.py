@@ -1,5 +1,5 @@
 """
-Storage backends for the Vectara vector database.
+Storage backends for the valori vector database.
 
 This module provides various storage implementations for vector data,
 including in-memory, disk-based, and hybrid storage options.

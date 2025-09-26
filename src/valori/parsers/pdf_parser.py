@@ -1,5 +1,5 @@
 """
-PDF parser for the Vectara vector database.
+PDF parser for the valori vector database.
 """
 
 from typing import Any, Dict, List, Union

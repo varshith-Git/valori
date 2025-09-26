@@ -1,7 +1,7 @@
-Welcome to Vectara's documentation!
+Welcome to valori's documentation!
 ====================================
 
-Vectara is a high-performance vector database library for Python that provides
+valori is a high-performance vector database library for Python that provides
 efficient storage, indexing, and search capabilities for high-dimensional vectors.
 
 Features
@@ -47,7 +47,7 @@ Installation
 
 .. code-block:: bash
 
-    pip install vectara
+    pip install valori
 
 Contents
 --------

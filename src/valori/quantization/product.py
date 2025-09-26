@@ -1,5 +1,5 @@
 """
-Product quantization implementation for the Vectara vector database.
+Product quantization implementation for the valori vector database.
 """
 
 from typing import Any, Dict

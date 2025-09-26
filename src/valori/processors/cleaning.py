@@ -1,5 +1,5 @@
 """
-Text cleaning processor for the Vectara vector database.
+Text cleaning processor for the valori vector database.
 """
 
 import re

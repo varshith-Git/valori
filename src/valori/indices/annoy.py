@@ -1,5 +1,5 @@
 """
-Annoy index for the Vectara vector database.
+Annoy index for the valori vector database.
 
 Implements Annoy (Approximate Nearest Neighbors Oh Yeah) for fast
 approximate nearest neighbor search using random projection trees.

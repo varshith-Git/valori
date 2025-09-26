@@ -1,7 +1,7 @@
 API Reference
 =============
 
-This page provides detailed API documentation for Vectara.
+This page provides detailed API documentation for valori.
 
 Core Classes
 ------------

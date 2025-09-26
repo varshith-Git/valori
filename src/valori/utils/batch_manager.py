@@ -1,5 +1,5 @@
 """
-Batch operations manager for the Vectara vector database.
+Batch operations manager for the valori vector database.
 
 This module provides utilities for efficient batch operations,
 progress tracking, and resource management.

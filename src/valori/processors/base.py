@@ -1,5 +1,5 @@
 """
-Base document processor interface for the Vectara vector database.
+Base document processor interface for the valori vector database.
 """
 
 from abc import ABC, abstractmethod

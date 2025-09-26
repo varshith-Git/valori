@@ -1,5 +1,5 @@
 """
-Office document parser for the Vectara vector database.
+Office document parser for the valori vector database.
 
 Supports Microsoft Office formats (Word, Excel, PowerPoint).
 """

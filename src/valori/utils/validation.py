@@ -1,5 +1,5 @@
 """
-Validation utilities for the Vectara vector database.
+Validation utilities for the valori vector database.
 """
 
 import numpy as np

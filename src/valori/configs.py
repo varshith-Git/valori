@@ -1,5 +1,5 @@
 """
-Pre-configured templates and configurations for the Vectara vector database.
+Pre-configured templates and configurations for the valori vector database.
 
 This module provides ready-to-use configurations for common use cases,
 making it easy to get started with the vector database.
@@ -113,7 +113,7 @@ STORAGE_CONFIGS = {
     "disk_only": {
         "type": "disk",
         "config": {
-            "data_dir": "./vectara_data",
+            "data_dir": "./valori_data",
             "compression": True
         },
         "description": "Disk storage for persistence"
@@ -122,7 +122,7 @@ STORAGE_CONFIGS = {
         "type": "hybrid",
         "config": {
             "memory_limit_mb": 1000,
-            "disk_path": "./vectara_data",
+            "disk_path": "./valori_data",
             "cache_size": 10000
         },
         "description": "Hybrid memory/disk storage"

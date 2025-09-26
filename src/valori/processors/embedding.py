@@ -1,5 +1,5 @@
 """
-Embedding processor for the Vectara vector database.
+Embedding processor for the valori vector database.
 """
 
 import numpy as np

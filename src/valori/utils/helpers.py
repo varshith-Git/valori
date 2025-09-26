@@ -1,5 +1,5 @@
 """
-Helper functions and utilities for the Vectara vector database.
+Helper functions and utilities for the valori vector database.
 
 This module provides convenient helper functions for common operations,
 making the vector database easier to use.

@@ -1,5 +1,5 @@
 """
-Similarity computation utilities for the Vectara vector database.
+Similarity computation utilities for the valori vector database.
 """
 
 import numpy as np

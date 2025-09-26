@@ -1,5 +1,5 @@
 """
-Docling parser for the Vectara vector database.
+Docling parser for the valori vector database.
 
 Uses Microsoft's Docling library for advanced document parsing.
 """

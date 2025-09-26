@@ -1,5 +1,5 @@
 """
-In-memory storage backend for the Vectara vector database.
+In-memory storage backend for the valori vector database.
 """
 
 from typing import Any, Dict, List, Optional

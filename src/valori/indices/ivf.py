@@ -1,5 +1,5 @@
 """
-IVF (Inverted File) index implementation for the Vectara vector database.
+IVF (Inverted File) index implementation for the valori vector database.
 """
 
 import uuid

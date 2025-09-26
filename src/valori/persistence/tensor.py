@@ -1,5 +1,5 @@
 """
-Tensor-based persistence implementation for the Vectara vector database.
+Tensor-based persistence implementation for the valori vector database.
 """
 
 import pickle
@@ -22,7 +22,7 @@ class TensorPersistence(PersistenceManager):
     def __init__(self, config: Dict[str, Any]):
         """Initialize tensor persistence manager."""
         super().__init__(config)
-        self.data_dir = Path(config.get("data_dir", "./vectara_persistence"))
+        self.data_dir = Path(config.get("data_dir", "./valori_persistence"))
         self.compression = config.get("compression", False)
         self._save_count = 0
         self._load_count = 0

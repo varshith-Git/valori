@@ -1,5 +1,5 @@
 """
-Scalar quantization implementation for the Vectara vector database.
+Scalar quantization implementation for the valori vector database.
 """
 
 from typing import Any, Dict

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Benchmark script for Vectara vector database.
+Benchmark script for valori vector database.
 
 This script performs comprehensive benchmarks to evaluate the performance
 of different configurations and components.
@@ -21,7 +21,7 @@ from valori.persistence import TensorPersistence
 
 
 class BenchmarkSuite:
-    """Comprehensive benchmark suite for Vectara."""
+    """Comprehensive benchmark suite for valori."""
     
     def __init__(self, output_dir: str = "benchmark_results"):
         """Initialize benchmark suite."""
@@ -279,7 +279,7 @@ class BenchmarkSuite:
     
     def run_benchmarks(self, config: Dict[str, Any]):
         """Run all benchmarks."""
-        print("Starting Vectara benchmarks...")
+        print("Starting valori benchmarks...")
         print("=" * 50)
         
         # Generate test data
@@ -342,7 +342,7 @@ class BenchmarkSuite:
 
 def main():
     """Main benchmark function."""
-    parser = argparse.ArgumentParser(description="Benchmark Vectara vector database")
+    parser = argparse.ArgumentParser(description="Benchmark valori vector database")
     parser.add_argument("--vectors", type=int, default=1000, 
                        help="Number of vectors to test with")
     parser.add_argument("--dimension", type=int, default=128,

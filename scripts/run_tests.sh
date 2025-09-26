@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Test runner script for Vectara
+# Test runner script for valori
 # This script runs all tests with various configurations
 
 set -e  # Exit on any error
 
-echo "Running Vectara tests..."
+echo "Running valori tests..."
 echo "======================="
 
 # Check if virtual environment exists

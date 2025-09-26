@@ -1,5 +1,5 @@
 """
-Index implementations for the Vectara vector database.
+Index implementations for the valori vector database.
 
 This module provides various indexing algorithms for efficient similarity search,
 including flat search, HNSW, IVF, LSH, and Annoy indices.

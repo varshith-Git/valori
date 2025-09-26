@@ -1,5 +1,5 @@
 """
-Incremental persistence implementation for the Vectara vector database.
+Incremental persistence implementation for the valori vector database.
 """
 
 import json
@@ -25,7 +25,7 @@ class IncrementalPersistence(PersistenceManager):
     def __init__(self, config: Dict[str, Any]):
         """Initialize incremental persistence manager."""
         super().__init__(config)
-        self.data_dir = Path(config.get("data_dir", "./vectara_incremental"))
+        self.data_dir = Path(config.get("data_dir", "./valori_incremental"))
         self.checkpoint_interval = config.get("checkpoint_interval", 100)  # Operations per checkpoint
         self.log_file = self.data_dir / "operations.log"
         self.checkpoint_file = self.data_dir / "checkpoint.json"

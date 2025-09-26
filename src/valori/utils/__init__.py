@@ -1,5 +1,5 @@
 """
-Utility modules for the Vectara vector database.
+Utility modules for the valori vector database.
 
 This module provides various utility functions for similarity computation,
 validation, logging, and other common operations.

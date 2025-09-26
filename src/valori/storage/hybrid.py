@@ -1,5 +1,5 @@
 """
-Hybrid storage backend for the Vectara vector database.
+Hybrid storage backend for the valori vector database.
 
 Combines memory and disk storage for optimal performance and persistence.
 """

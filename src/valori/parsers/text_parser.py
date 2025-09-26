@@ -1,5 +1,5 @@
 """
-Text file parser for the Vectara vector database.
+Text file parser for the valori vector database.
 """
 
 import chardet
