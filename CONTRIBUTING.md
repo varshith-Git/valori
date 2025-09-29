@@ -303,10 +303,11 @@ Contributors will be recognized in:
 
 ## License
 
-By contributing to Vectara, you agree that your contributions will be licensed under the MIT License.
+By contributing to Valori, you agree that your contributions will be licensed under the MIT License.
 
 ---
 
-Thank you for contributing to Vectara! 🚀
+Thank you for contributing to Valori! 🚀
+
 
 
