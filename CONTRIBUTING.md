@@ -1,6 +1,6 @@
-# Contributing to Vectara
+# Contributing to Valori
 
-Thank you for your interest in contributing to Vectara! This document provides guidelines and information for contributors.
+Thank you for your interest in contributing to Valori! This document provides guidelines and information for contributors.
 
 ## Table of Contents
 
@@ -308,3 +308,4 @@ By contributing to Vectara, you agree that your contributions will be licensed u
 ---
 
 Thank you for contributing to Vectara! 🚀
+
