@@ -246,7 +246,7 @@ When submitting a PR, include:
 
 When reporting bugs, include:
 
-- **Vectara version**: `python -c "import vectordb; print(vectordb.__version__)"`
+- **Valori version**: `python -c "import vectordb; print(vectordb.__version__)"`
 - **Python version**: `python --version`
 - **Operating system**: OS and version
 - **Steps to reproduce**: Minimal code example
@@ -308,4 +308,5 @@ By contributing to Vectara, you agree that your contributions will be licensed u
 ---
 
 Thank you for contributing to Vectara! 🚀
+
 
