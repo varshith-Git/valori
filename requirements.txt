@@ -1,4 +1,4 @@
-# Core dependencies for Vectara vector database
+# Core dependencies for Valori vector database
 numpy>=1.19.0
 scikit-learn>=0.24.0
 

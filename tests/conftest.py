@@ -1,5 +1,5 @@
 """
-Pytest configuration and fixtures for Vectara tests.
+Pytest configuration and fixtures for Valori tests.
 """
 
 import pytest

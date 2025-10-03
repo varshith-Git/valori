@@ -1,5 +1,5 @@
 """
-Integration tests for the Vectara vector database.
+Integration tests for the Valori vector database.
 """
 
 import pytest

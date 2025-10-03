@@ -294,7 +294,7 @@ from valori.utils.logging import setup_logging
 setup_logging({
     "level": "INFO",
     "log_to_file": True,
-    "log_file": "vectara.log"
+    "log_file": "Valori.log"
 })
 
 # Load configuration
@@ -388,7 +388,7 @@ python scripts/benchmark.py --quick
 
 ## Performance
 
-Vectara is designed for high performance:
+Valori is designed for high performance:
 
 - **Memory Efficiency**: Up to 75% memory reduction with quantization
 - **Search Speed**: Sub-millisecond search times for small datasets
@@ -440,4 +440,4 @@ If you use Valori in your research, please cite:
 
 ---
 
-Made with ❤️ by the Vectara Team
+Made with ❤️ by the Valori Team

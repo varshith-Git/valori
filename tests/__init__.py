@@ -1,3 +1,3 @@
 """
-Test suite for the Vectara vector database.
+Test suite for the Valori vector database.
 """

@@ -1,3 +1,3 @@
 """
-Examples for the Vectara vector database.
+Examples for the Valori vector database.
 """

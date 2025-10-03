@@ -1,5 +1,5 @@
 """
-Production setup example for the Vectara vector database.
+Production setup example for the Valori vector database.
 
 This example demonstrates how to set up the vector database for production use
 with proper configuration, persistence, monitoring, and error handling.
@@ -233,7 +233,7 @@ def create_production_config(config_path: str, data_dir: str):
         "logging": {
             "level": "INFO",
             "log_to_file": True,
-            "log_file": f"{data_dir}/vectara.log"
+            "log_file": f"{data_dir}/Valori.log"
         }
     }
     
@@ -245,7 +245,7 @@ def create_production_config(config_path: str, data_dir: str):
 
 def main():
     """Run production setup example."""
-    print("Vectara Vector Database - Production Setup Example")
+    print("Valori Vector Database - Production Setup Example")
     print("=" * 55)
     
     # Setup paths
@@ -354,7 +354,7 @@ def main():
     print("\n" + "=" * 55)
     print("Production setup example completed!")
     print(f"Data directory: {data_dir}")
-    print(f"Log file: {data_dir}/vectara.log")
+    print(f"Log file: {data_dir}/Valori.log")
 
 
 if __name__ == "__main__":

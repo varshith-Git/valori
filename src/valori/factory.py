@@ -1,5 +1,5 @@
 """
-Factory functions for easy Vectara vector database setup.
+Factory functions for easy Valori vector database setup.
 
 This module provides convenient factory functions to create pre-configured
 vector database instances for common use cases.

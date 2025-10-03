@@ -1,5 +1,5 @@
 """
-Document processing example for the Vectara vector database.
+Document processing example for the Valori vector database.
 
 This example demonstrates how to use the document parsing and processing
 pipeline to extract, clean, chunk, and embed documents for vector database storage.

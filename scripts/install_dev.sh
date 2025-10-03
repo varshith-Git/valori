@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Development environment setup script for Vectara
+# Development environment setup script for Valori
 # This script sets up a development environment with all necessary dependencies
 
 set -e  # Exit on any error
 
-echo "Setting up Vectara development environment..."
+echo "Setting up Valori development environment..."
 echo "============================================="
 
 # Check if Python is installed
@@ -44,7 +44,7 @@ echo "Installing development dependencies..."
 pip install -r requirements-dev.txt
 
 # Install the package in development mode
-echo "Installing Vectara in development mode..."
+echo "Installing Valori in development mode..."
 pip install -e .
 
 # Install pre-commit hooks

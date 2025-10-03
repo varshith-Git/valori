@@ -1,5 +1,5 @@
 """
-Advanced quantization example for the Vectara vector database.
+Advanced quantization example for the Valori vector database.
 
 This example demonstrates the use of quantization for compressing vectors
 and improving search performance while maintaining accuracy.
@@ -181,7 +181,7 @@ def demonstrate_quantization_accuracy(vectors, query_vector):
 
 def main():
     """Run advanced quantization example."""
-    print("Vectara Vector Database - Advanced Quantization Example")
+    print("Valori Vector Database - Advanced Quantization Example")
     print("=" * 60)
     
     # Generate sample data

@@ -1,7 +1,7 @@
-<<<<<<< HEAD
-# Contributing to Vectara
 
-Thank you for your interest in contributing to Vectara! This document provides guidelines and information for contributors.
+# Contributing to Valori
+
+Thank you for your interest in contributing to Valori! This document provides guidelines and information for contributors.
 
 ## Table of Contents
 
@@ -17,7 +17,7 @@ Thank you for your interest in contributing to Vectara! This document provides g
 
 ## Code of Conduct
 
-This project adheres to a code of conduct. By participating, you are expected to uphold this code. Please report unacceptable behavior to team@vectara.com.
+This project adheres to a code of conduct. By participating, you are expected to uphold this code. Please report unacceptable behavior to team@Valori.com.
 
 ## Getting Started
 
@@ -247,7 +247,7 @@ When submitting a PR, include:
 
 When reporting bugs, include:
 
-- **Vectara version**: `python -c "import vectordb; print(vectordb.__version__)"`
+- **Valori version**: `python -c "import vectordb; print(vectordb.__version__)"`
 - **Python version**: `python --version`
 - **Operating system**: OS and version
 - **Steps to reproduce**: Minimal code example
@@ -291,7 +291,7 @@ For feature requests, include:
 
 - **GitHub Issues**: For bug reports and feature requests
 - **GitHub Discussions**: For questions and general discussion
-- **Email**: team@vectara.com for private matters
+- **Email**: team@Valori.com for private matters
 - **Documentation**: Check the docs first
 
 ## Recognition
@@ -304,11 +304,11 @@ Contributors will be recognized in:
 
 ## License
 
-By contributing to Vectara, you agree that your contributions will be licensed under the MIT License.
+By contributing to Valori, you agree that your contributions will be licensed under the MIT License.
 
 ---
 
-Thank you for contributing to Vectara! 🚀
+Thank you for contributing to Valori! 🚀
 =======
 # Contributing to Valori
 

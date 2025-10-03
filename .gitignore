@@ -173,8 +173,8 @@ cython_debug/
 *.log
 *.sqlite
 *.db
-vectara_data/
-vectara_persistence/
+Valori_data/
+Valori_persistence/
 benchmark_results/
 benchmark_disk/
 benchmark_hybrid/
