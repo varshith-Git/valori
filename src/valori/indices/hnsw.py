@@ -1,5 +1,5 @@
 """
-HNSW (Hierarchical Navigable Small World) index implementation for the valori vector database.
+HNSW (Hierarchical Navigable Small World) index implementation for the Vectara vector database.
 """
 
 import uuid

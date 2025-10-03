@@ -36,7 +36,7 @@ This Code of Conduct applies within all community spaces, and also applies when 
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible for enforcement at varshith.gudur17@gmail.com. All complaints will be reviewed and investigated promptly and fairly.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible for enforcement at team@vectara.com. All complaints will be reviewed and investigated promptly and fairly.
 
 All community leaders are obligated to respect the privacy and security of the reporter of any incident.
 
@@ -70,7 +70,7 @@ Community leaders will follow these Community Impact Guidelines in determining t
 
 ## Reporting
 
-If you experience or witness unacceptable behavior—or have any other concerns—please report it by contacting the project team at varshith.gudur17@gmail.com. All reports will be handled with discretion. In your report please include:
+If you experience or witness unacceptable behavior—or have any other concerns—please report it by contacting the project team at team@vectara.com. All reports will be handled with discretion. In your report please include:
 
 - Your contact information for follow-up.
 - Names (real, nicknames, or pseudonyms) of any individuals involved. If there were other witnesses besides you, please try to include them as well.
@@ -82,7 +82,7 @@ If you experience or witness unacceptable behavior—or have any other concerns�
 
 ## What happens after you file a report
 
-You will receive an email from the varshith.gudur17@gmail.com address acknowledging receipt within 24 hours (and will aim for much quicker than that). The project team will immediately meet to review the incident and determine:
+You will receive an email from the team@vectara.com address acknowledging receipt within 24 hours (and will aim for much quicker than that). The project team will immediately meet to review the incident and determine:
 
 - What happened.
 - Whether this event constitutes a code of conduct violation.
@@ -107,11 +107,11 @@ Once we've determined our final action, we'll contact the original reporter to l
 
 ## Addressing Grievances
 
-If you feel you have been falsely or unfairly accused of violating this Code of Conduct, you should notify the project team at varshith.gudur17@gmail.com with a concise description of your grievance. Your grievance will be handled in accordance with our existing governing policies.
+If you feel you have been falsely or unfairly accused of violating this Code of Conduct, you should notify the project team at team@vectara.com with a concise description of your grievance. Your grievance will be handled in accordance with our existing governing policies.
 
 ## Project Team Contact
 
-The project team can be contacted at varshith.gudur17@gmail.com.
+The project team can be contacted at team@vectara.com.
 
 ## Attribution
 

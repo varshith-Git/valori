@@ -1,5 +1,5 @@
 """
-Basic usage example for the valori vector database.
+Basic usage example for the Vectara vector database.
 
 This example demonstrates the fundamental operations of the vector database:
 - Creating a client with storage and index
@@ -16,7 +16,7 @@ from valori.indices import FlatIndex
 
 def main():
     """Run basic usage example."""
-    print("valori Vector Database - Basic Usage Example")
+    print("Vectara Vector Database - Basic Usage Example")
     print("=" * 50)
     
     # 1. Create components

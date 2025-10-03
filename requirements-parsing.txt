@@ -1,4 +1,4 @@
-# Document parsing dependencies for valori vector database
+# Document parsing dependencies for Vectara vector database
 
 # Basic parsing libraries
 PyPDF2>=3.0.0

@@ -1,5 +1,5 @@
 """
-Flat (brute force) index implementation for the valori vector database.
+Flat (brute force) index implementation for the Vectara vector database.
 """
 
 import uuid

@@ -1,5 +1,5 @@
 """
-LSH (Locality Sensitive Hashing) index for the valori vector database.
+LSH (Locality Sensitive Hashing) index for the Vectara vector database.
 
 Implements Locality Sensitive Hashing for approximate nearest neighbor search
 with configurable hash functions and parameters.

@@ -16,9 +16,9 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'Vectara'
-copyright = '2024, Vectara Team'
-author = 'Vectara Team'
+project = 'Valori'
+copyright = '2024, Valori Team'
+author = 'Varshith'
 release = '0.1.0'
 
 # -- General configuration ---------------------------------------------------

@@ -1,13 +1,13 @@
 Quick Start Guide
 =================
 
-This guide will help you get started with valori quickly. We'll cover the basic
+This guide will help you get started with Vectara quickly. We'll cover the basic
 concepts and show you how to build your first vector database.
 
 Basic Concepts
 --------------
 
-valori is built around several key components:
+Vectara is built around several key components:
 
 * **Storage Backend**: Handles persistence of vectors and metadata
 * **Index**: Provides efficient similarity search algorithms
@@ -18,11 +18,11 @@ valori is built around several key components:
 Installation
 ------------
 
-Install valori using pip:
+Install Vectara using pip:
 
 .. code-block:: bash
 
-    pip install valori
+    pip install vectara
 
 Or install from source:
 
@@ -74,7 +74,7 @@ Let's start with a simple example:
 Storage Backends
 ----------------
 
-valori provides three storage backends:
+Vectara provides three storage backends:
 
 Memory Storage
 ~~~~~~~~~~~~~~
@@ -116,7 +116,7 @@ Combines memory and disk for optimal performance:
 Index Types
 -----------
 
-valori supports three index types:
+Vectara supports three index types:
 
 Flat Index
 ~~~~~~~~~~

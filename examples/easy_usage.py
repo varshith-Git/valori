@@ -1,5 +1,5 @@
 """
-Easy usage examples for the valori vector database.
+Easy usage examples for the Vectara vector database.
 
 This example demonstrates the various supporting functions and utilities
 that make the vector database easy to use for common tasks.

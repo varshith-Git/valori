@@ -42,7 +42,6 @@ dependencies = [
     "chardet>=5.0.0",
     "nltk>=3.8",
     "beautifulsoup4>=4.11.0",
-    "annoy>=1.17.0",
     "pathlib2>=2.3.0; python_version<'3.4'",
 ]
 
@@ -77,6 +76,9 @@ parsing = [
     "torch>=1.12.0",
     "pytesseract>=0.3.10",
     "easyocr>=1.7.0",
+]
+indexing = [
+    "annoy>=1.17.0",
 ]
 
 [project.urls]

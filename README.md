@@ -1,5 +1,11 @@
 # Valori
 
+Author: Varshith  
+Team: Valori  
+Contact: varshith.gudur17@gmail.com
+
+[PyPI page for Valori](https://pypi.org/project/valori/)
+
 [![PyPI version](https://badge.fury.io/py/valori.svg)](https://badge.fury.io/py/valori)
 [![Python versions](https://img.shields.io/pypi/pyversions/valori.svg)](https://pypi.org/project/valori/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -434,4 +440,4 @@ If you use Valori in your research, please cite:
 
 ---
 
-Made with ❤️ by the Valori Team
+Made with ❤️ by the Vectara Team
