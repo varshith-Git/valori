@@ -20,7 +20,7 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
 
 setup(
     name="valori",
-    version="0.1.1",
+    version="0.1.2",
     author="Varshith",
     author_email="varshith.gudur17@gmail.com",
     description="A high-performance vector database library for Python",
@@ -29,7 +29,7 @@ setup(
     url="https://github.com/varshith-Git/valori",
     project_urls={
         "Bug Tracker": "https://github.com/varshith-Git/valori/issues",
-        "Documentation": "https://github.com/varshith-Git/valori",
+        "Documentation": "https://github.com/varshith-Git/valori/docs",
         "Source Code": "https://github.com/varshith-Git/valori",
     },
     packages=find_packages(where="src"),
