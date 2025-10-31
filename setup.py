@@ -20,7 +20,7 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
 
 setup(
     name="valori",
-    version="0.1.2",
+    version="0.1.3",
     author="Varshith",
     author_email="varshith.gudur17@gmail.com",
     description="A high-performance vector database library for Python",

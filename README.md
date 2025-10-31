@@ -318,7 +318,21 @@ Check out the `examples/` directory for comprehensive examples:
 
 ## Documentation
 
-Full documentation is available at [https://github.com/varshith-Git/valori](https://github.com/varshith-Git/valori).
+Full documentation is included in the `docs/` folder of this repository. Key entry points:
+
+- Getting started (tutorial): `docs/getting_started.rst`
+- Quickstart guide: `docs/quickstart.rst`
+- API reference: `docs/api.rst`
+
+If a documentation site is published for this project, it will be linked from the project landing page. To build the docs locally:
+
+```bash
+cd docs
+make html
+# Output will be in docs/_build/html
+```
+
+You can also open the source rst files directly in the repo if you prefer to read them without building HTML.
 
 ## Development
 
@@ -427,9 +441,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 If you use Valori in your research, please cite:
 
 ```bibtex
-@software{valori2024,
+@software{valori2025,
   title={Valori: A High-Performance Vector Database for Python},
-  author={Valori Team},
+  author={Varshith},
   year={2024},
   url={https://github.com/varshith-Git/valori}
 }
