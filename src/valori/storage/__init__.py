@@ -12,7 +12,7 @@ from .hybrid import HybridStorage
 
 __all__ = [
     "StorageBackend",
-    "MemoryStorage", 
+    "MemoryStorage",
     "DiskStorage",
     "HybridStorage",
 ]

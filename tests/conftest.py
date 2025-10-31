@@ -54,7 +54,7 @@ def hybrid_storage(temp_dir):
     config = {
         "memory": {},
         "disk": {"data_dir": str(temp_dir / "hybrid_data")},
-        "memory_limit": 50
+        "memory_limit": 50,
     }
     return HybridStorage(config)
 
@@ -68,22 +68,15 @@ def flat_index():
 @pytest.fixture
 def hnsw_index():
     """Create an HNSW index."""
-    return HNSWIndex({
-        "metric": "cosine",
-        "m": 16,
-        "ef_construction": 200,
-        "ef_search": 50
-    })
+    return HNSWIndex(
+        {"metric": "cosine", "m": 16, "ef_construction": 200, "ef_search": 50}
+    )
 
 
 @pytest.fixture
 def ivf_index():
     """Create an IVF index."""
-    return IVFIndex({
-        "metric": "cosine",
-        "n_clusters": 10,
-        "n_probes": 5
-    })
+    return IVFIndex({"metric": "cosine", "n_clusters": 10, "n_probes": 5})
 
 
 @pytest.fixture
@@ -110,7 +103,7 @@ def incremental_persistence(temp_dir):
     """Create an incremental persistence manager."""
     config = {
         "data_dir": str(temp_dir / "incremental_persistence"),
-        "checkpoint_interval": 10
+        "checkpoint_interval": 10,
     }
     return IncrementalPersistence(config)
 

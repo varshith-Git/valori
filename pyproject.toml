@@ -71,7 +71,7 @@ benchmark = [
 ]
 parsing = [
     "docling>=1.0.0",
-    "llama-parse>=0.4.0",
+    # Llama-parse removed; advanced parsing is provided via Docling in this distribution
     "transformers>=4.21.0",
     "torch>=1.12.0",
     "pytesseract>=0.3.10",

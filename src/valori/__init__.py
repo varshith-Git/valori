@@ -13,9 +13,16 @@ __email__ = "varshith.gudur17@gmail.com"
 from .base import VectorDB
 from .client import VectorDBClient
 from .exceptions import (
-    ValoriError, StorageError, ValoriIndexError, QuantizationError, 
-    PersistenceError, ValidationError, ConfigurationError, ResourceError,
-    ParsingError, ProcessingError
+    ValoriError,
+    StorageError,
+    ValoriIndexError,
+    QuantizationError,
+    PersistenceError,
+    ValidationError,
+    ConfigurationError,
+    ResourceError,
+    ParsingError,
+    ProcessingError,
 )
 
 # Import factory functions for easy usage
@@ -25,12 +32,12 @@ from .factory import (
     create_semantic_search_db,
     create_image_search_db,
     create_hybrid_search_db,
-    create_from_template
+    create_from_template,
 )
 
 __all__ = [
     "VectorDB",
-    "VectorDBClient", 
+    "VectorDBClient",
     "ValoriError",
     "StorageError",
     "ValoriIndexError",

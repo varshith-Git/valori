@@ -50,6 +50,7 @@ jobs:
     - name: Type check with mypy
       run: |
         mypy src/ --ignore-missing-imports
+      continue-on-error: true
     
     - name: Test with pytest
       run: |

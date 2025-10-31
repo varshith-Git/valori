@@ -16,7 +16,7 @@ A high-performance vector database library for Python that provides efficient st
 ## Features
 
 - **🚀 High Performance**: Optimized for speed with multiple indexing algorithms
-- **📄 Document Parsing**: Support for PDF, Office, text, and advanced parsing with Docling/LlamaParse
+- **📄 Document Parsing**: Support for PDF, Office, text, and advanced parsing with Docling
 - **🔄 Processing Pipeline**: Complete document processing with cleaning, chunking, and embedding
 - **💾 Multiple Storage Backends**: Memory, disk, and hybrid storage options
 - **🔍 Advanced Indexing**: Flat, HNSW, and IVF indices for different use cases
@@ -191,15 +191,12 @@ pdf_parser = PDFParser({"extract_tables": True, "chunk_size": 1000})
 result = pdf_parser.parse("document.pdf")
 ```
 
-**Advanced Parsing with Docling/LlamaParse**:
+**Advanced Parsing with Docling**:
 ```python
-from valori.parsers import DoclingParser, LlamaParser
+from valori.parsers import DoclingParser
 
 # Microsoft Docling for advanced parsing
 docling_parser = DoclingParser({"extract_tables": True, "preserve_layout": True})
-
-# LlamaParse for AI-powered parsing
-llama_parser = LlamaParser({"api_key": "your_api_key", "result_type": "text"})
 ```
 
 ### Document Processing Pipeline

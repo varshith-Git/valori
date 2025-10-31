@@ -20,7 +20,7 @@ from .helpers import (
     timing_decorator,
     memory_usage_decorator,
     get_recommended_index_config,
-    validate_index_performance
+    validate_index_performance,
 )
 from .batch_manager import BatchManager, ProgressTracker, ResourceMonitor
 from .debugging import (
@@ -28,22 +28,20 @@ from .debugging import (
     VectorAnalyzer,
     QueryAnalyzer,
     debug_function,
-    IndexInspector
+    IndexInspector,
 )
 
 __all__ = [
     # Similarity and validation
     "cosine_similarity",
-    "euclidean_distance", 
+    "euclidean_distance",
     "dot_product",
     "validate_vector",
     "validate_vectors",
     "validate_config",
-    
     # Logging
     "get_logger",
     "setup_logging",
-    
     # Helper functions
     "create_vectors_from_text",
     "create_vectors_from_files",
@@ -57,12 +55,10 @@ __all__ = [
     "memory_usage_decorator",
     "get_recommended_index_config",
     "validate_index_performance",
-    
     # Batch management
     "BatchManager",
-    "ProgressTracker", 
+    "ProgressTracker",
     "ResourceMonitor",
-    
     # Debugging and analysis
     "PerformanceProfiler",
     "VectorAnalyzer",

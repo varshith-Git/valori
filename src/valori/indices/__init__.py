@@ -15,7 +15,7 @@ from .annoy import AnnoyIndex
 __all__ = [
     "Index",
     "FlatIndex",
-    "HNSWIndex", 
+    "HNSWIndex",
     "IVFIndex",
     "LSHIndex",
     "AnnoyIndex",

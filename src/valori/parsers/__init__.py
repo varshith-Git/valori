@@ -10,15 +10,13 @@ from .text_parser import TextParser
 from .pdf_parser import PDFParser
 from .office_parser import OfficeParser
 from .docling_parser import DoclingParser
-from .llama_parser import LlamaParser
 from .registry import ParserRegistry
 
 __all__ = [
     "DocumentParser",
     "TextParser",
-    "PDFParser", 
+    "PDFParser",
     "OfficeParser",
     "DoclingParser",
-    "LlamaParser",
     "ParserRegistry",
 ]
