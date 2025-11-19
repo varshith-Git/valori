@@ -4,7 +4,7 @@ Tests for quantization implementations.
 
 import pytest
 import numpy as np
-from valori.quantization import ScalarQuantizer, ProductQuantizer
+from valori.quantization import ScalarQuantizer, ProductQuantizer, SAQQuantizer
 from valori.exceptions import QuantizationError
 
 
@@ -193,6 +193,188 @@ class TestProductQuantizer:
                 assert dequantized.shape == high_dim_vectors.shape
 
 
+class TestSAQQuantizer:
+    """Test SAQ quantization implementation."""
+
+    def test_initialize(self, saq_quantizer):
+        """Test quantizer initialization."""
+        saq_quantizer.initialize()
+        assert saq_quantizer._initialized
+        assert saq_quantizer.pca is not None
+        assert saq_quantizer.scaler is not None
+
+    def test_train(self, saq_quantizer, high_dim_vectors):
+        """Test SAQ quantizer training."""
+        saq_quantizer.initialize()
+        saq_quantizer.train(high_dim_vectors)
+        
+        assert saq_quantizer._trained
+        assert saq_quantizer.segment_boundaries is not None
+        assert saq_quantizer.segment_bits is not None
+        assert len(saq_quantizer.segment_quantizers) > 0
+        assert saq_quantizer.full_precision_vectors is not None
+
+    def test_train_with_different_configs(self, high_dim_vectors):
+        """Test SAQ with different configurations."""
+        configs = [
+            {"total_bits": 64, "n_segments": 4},
+            {"total_bits": 128, "n_segments": 8},
+            {"total_bits": 256, "n_segments": 16, "adjustment_iters": 5}
+        ]
+        
+        for config in configs:
+            quantizer = SAQQuantizer(config)
+            quantizer.initialize()
+            quantizer.train(high_dim_vectors)
+            
+            assert quantizer._trained
+            stats = quantizer.get_stats()
+            assert stats["total_bits"] == config["total_bits"]
+            assert stats["n_segments"] == config["n_segments"]
+
+    def test_quantize_dequantize(self, saq_quantizer, high_dim_vectors):
+        """Test SAQ quantization and dequantization."""
+        saq_quantizer.initialize()
+        saq_quantizer.train(high_dim_vectors)
+
+        # Quantize vectors
+        quantized = saq_quantizer.quantize(high_dim_vectors)
+        expected_shape = (high_dim_vectors.shape[0], saq_quantizer.n_segments)
+        assert quantized.shape == expected_shape
+        assert quantized.dtype in [np.int32, np.int64]
+
+        # Dequantize vectors
+        dequantized = saq_quantizer.dequantize(quantized)
+        assert dequantized.shape == high_dim_vectors.shape
+        assert dequantized.dtype == high_dim_vectors.dtype
+
+        # Check reconstruction quality
+        mse = np.mean((dequantized - high_dim_vectors) ** 2)
+        assert mse < 0.5  # SAQ should have good reconstruction
+
+    def test_compute_distance(self, saq_quantizer, high_dim_vectors, query_vector):
+        """Test distance computation with SAQ quantized vectors."""
+        saq_quantizer.initialize()
+        saq_quantizer.train(high_dim_vectors)
+
+        # Quantize a vector
+        quantized_vector = saq_quantizer.quantize(high_dim_vectors[:1])[0]
+
+        # Compute distance
+        distance = saq_quantizer.compute_distance(query_vector, quantized_vector)
+        assert isinstance(distance, float)
+        assert distance >= 0
+        assert distance <= 2.0  # Cosine distance should be in [0, 2]
+
+    def test_search_with_rescoring(self, saq_quantizer, high_dim_vectors, query_vector):
+        """Test search with rescoring functionality."""
+        saq_quantizer.initialize()
+        saq_quantizer.train(high_dim_vectors)
+
+        # Quantize all vectors
+        quantized_vectors = saq_quantizer.quantize(high_dim_vectors)
+
+        # Perform search with rescoring
+        indices, distances = saq_quantizer.search_with_rescoring(
+            query_vector, quantized_vectors, top_k=5
+        )
+
+        assert len(indices) == 5
+        assert len(distances) == 5
+        assert all(i < len(high_dim_vectors) for i in indices)
+        assert all(d >= 0 for d in distances)
+
+        # Results should be sorted by distance
+        assert all(distances[i] <= distances[i+1] for i in range(len(distances)-1))
+
+    def test_get_stats(self, saq_quantizer, high_dim_vectors):
+        """Test getting SAQ quantizer statistics."""
+        saq_quantizer.initialize()
+
+        # Before training
+        stats = saq_quantizer.get_stats()
+        assert stats["quantizer_type"] == "saq"
+        assert stats["total_bits"] == 128
+        assert stats["n_segments"] == 8
+        assert not stats["trained"]
+
+        # After training
+        saq_quantizer.train(high_dim_vectors)
+        stats = saq_quantizer.get_stats()
+        assert stats["trained"]
+        assert stats["dimensions"] == high_dim_vectors.shape[1]
+        assert stats["compression_ratio"] > 1.0  # Should achieve compression
+        assert "segment_boundaries" in stats
+        assert "segment_bits" in stats
+        assert "adjustment_improvements" in stats
+
+    def test_close(self, saq_quantizer, high_dim_vectors):
+        """Test closing SAQ quantizer."""
+        saq_quantizer.initialize()
+        saq_quantizer.train(high_dim_vectors)
+
+        saq_quantizer.close()
+        assert not saq_quantizer._initialized
+        assert not saq_quantizer._trained
+        assert saq_quantizer.pca is None
+        assert saq_quantizer.segment_quantizers == []
+
+    def test_large_scale_vectors(self, saq_quantizer):
+        """Test SAQ with large-scale vectors."""
+        # Generate larger dataset
+        np.random.seed(999)
+        large_vectors = np.random.randn(1000, 256).astype(np.float32)
+        
+        saq_quantizer.initialize()
+        saq_quantizer.train(large_vectors)
+        
+        # Test quantization on subset
+        quantized = saq_quantizer.quantize(large_vectors[:100])
+        dequantized = saq_quantizer.dequantize(quantized)
+        
+        assert dequantized.shape == (100, 256)
+        
+        # Should maintain reasonable quality even at scale
+        mse = np.mean((dequantized - large_vectors[:100]) ** 2)
+        assert mse < 1.0
+
+    def test_adjustment_improvement(self, saq_quantizer, high_dim_vectors):
+        """Test that code adjustment actually improves quality."""
+        saq_quantizer.initialize()
+        saq_quantizer.train(high_dim_vectors)
+
+        # Get adjustment improvements from stats
+        stats = saq_quantizer.get_stats()
+        improvements = stats["adjustment_improvements"]
+        
+        # Adjustment should provide some improvement (may be small)
+        assert len(improvements) > 0
+        # First iteration should show the most improvement
+        assert improvements[0] >= 0
+
+    def test_segmentation_consistency(self, saq_quantizer, high_dim_vectors):
+        """Test that segmentation is consistent across runs."""
+        saq_quantizer.initialize()
+        saq_quantizer.train(high_dim_vectors)
+        
+        segment_boundaries = saq_quantizer.segment_boundaries
+        segment_bits = saq_quantizer.segment_bits
+        
+        # Should have correct number of segments
+        assert len(segment_boundaries) == saq_quantizer.n_segments
+        assert len(segment_bits) == saq_quantizer.n_segments
+        
+        # Segment boundaries should cover entire dimension range
+        first_start, first_end = segment_boundaries[0]
+        last_start, last_end = segment_boundaries[-1]
+        assert first_start == 0
+        assert last_end == high_dim_vectors.shape[1]
+        
+        # Bits allocation should sum to total bits (approximately)
+        total_allocated_bits = sum(segment_bits)
+        assert abs(total_allocated_bits - saq_quantizer.total_bits) <= saq_quantizer.n_segments
+
+
 class TestQuantizationErrorHandling:
     """Test quantization error handling."""
 
@@ -231,12 +413,57 @@ class TestQuantizationErrorHandling:
         with pytest.raises(QuantizationError):
             quantizer.train(high_dim_vectors)
 
+    def test_saq_uninitialized_error(self, saq_quantizer, high_dim_vectors):
+        """Test SAQ quantizer errors when uninitialized."""
+        with pytest.raises(QuantizationError):
+            saq_quantizer.train(high_dim_vectors)
+
+        with pytest.raises(QuantizationError):
+            saq_quantizer.quantize(high_dim_vectors)
+
+    def test_saq_untrained_error(self, saq_quantizer, high_dim_vectors):
+        """Test SAQ quantizer errors when untrained."""
+        saq_quantizer.initialize()
+
+        with pytest.raises(QuantizationError):
+            saq_quantizer.quantize(high_dim_vectors)
+
+        with pytest.raises(QuantizationError):
+            saq_quantizer.compute_distance(high_dim_vectors[0], np.array([1, 2, 3]))
+
+    def test_saq_rescoring_without_storage(self):
+        """Test SAQ rescoring error when full-precision vectors not stored."""
+        quantizer = SAQQuantizer({"total_bits": 128, "n_segments": 8})
+        quantizer.initialize()
+        
+        # Create some dummy data
+        vectors = np.random.randn(10, 64).astype(np.float32)
+        quantizer.train(vectors)
+        
+        # Remove stored vectors to simulate the error condition
+        quantizer.full_precision_vectors = None
+        
+        with pytest.raises(QuantizationError):
+            quantizer.search_with_rescoring(
+                vectors[0], 
+                np.zeros((10, 8), dtype=np.int32), 
+                top_k=5
+            )
+
+    def test_saq_invalid_config(self):
+        """Test SAQ with invalid configuration."""
+        with pytest.raises(Exception):  # Could be various exceptions
+            SAQQuantizer({"total_bits": 0})  # Invalid bits
+        
+        with pytest.raises(Exception):
+            SAQQuantizer({"n_segments": 0})  # Invalid segments
+
 
 class TestQuantizationPerformance:
     """Test quantization performance characteristics."""
 
     def test_compression_ratio(
-        self, scalar_quantizer, product_quantizer, high_dim_vectors
+        self, scalar_quantizer, product_quantizer, saq_quantizer, high_dim_vectors
     ):
         """Test compression ratios of different quantizers."""
         # Test scalar quantizer
@@ -249,11 +476,22 @@ class TestQuantizationPerformance:
         product_quantizer.train(high_dim_vectors)
         product_stats = product_quantizer.get_stats()
 
-        # Product quantization should have better compression
-        assert product_stats["compression_ratio"] < scalar_stats["compression_ratio"]
+        # Test SAQ quantizer
+        saq_quantizer.initialize()
+        saq_quantizer.train(high_dim_vectors)
+        saq_stats = saq_quantizer.get_stats()
+
+        # All should provide compression
+        assert scalar_stats["compression_ratio"] > 1.0
+        assert product_stats["compression_ratio"] > 1.0
+        assert saq_stats["compression_ratio"] > 1.0
+
+        # Product and SAQ should have better compression than scalar
+        assert product_stats["compression_ratio"] > scalar_stats["compression_ratio"]
+        assert saq_stats["compression_ratio"] > scalar_stats["compression_ratio"]
 
     def test_quantization_speed(
-        self, scalar_quantizer, product_quantizer, high_dim_vectors
+        self, scalar_quantizer, product_quantizer, saq_quantizer, high_dim_vectors
     ):
         """Test quantization speed."""
         import time
@@ -265,6 +503,9 @@ class TestQuantizationPerformance:
         product_quantizer.initialize()
         product_quantizer.train(high_dim_vectors)
 
+        saq_quantizer.initialize()
+        saq_quantizer.train(high_dim_vectors)
+
         # Time scalar quantization
         start_time = time.time()
         scalar_quantizer.quantize(high_dim_vectors)
@@ -275,6 +516,61 @@ class TestQuantizationPerformance:
         product_quantizer.quantize(high_dim_vectors)
         product_time = time.time() - start_time
 
-        # Both should be reasonably fast
+        # Time SAQ quantization
+        start_time = time.time()
+        saq_quantizer.quantize(high_dim_vectors)
+        saq_time = time.time() - start_time
+
+        # All should be reasonably fast
         assert scalar_time < 1.0
         assert product_time < 1.0
+        assert saq_time < 2.0  # SAQ can be slower due to adjustment
+
+    def test_saq_memory_efficiency(self, saq_quantizer, high_dim_vectors):
+        """Test SAQ memory usage characteristics."""
+        import psutil
+        import os
+        
+        process = psutil.Process(os.getpid())
+        initial_memory = process.memory_info().rss
+        
+        saq_quantizer.initialize()
+        saq_quantizer.train(high_dim_vectors)
+        
+        # Quantize large batch
+        large_batch = np.random.randn(1000, high_dim_vectors.shape[1]).astype(np.float32)
+        quantized = saq_quantizer.quantize(large_batch)
+        
+        final_memory = process.memory_info().rss
+        memory_increase = final_memory - initial_memory
+        
+        # Memory increase should be reasonable (less than 500MB)
+        assert memory_increase < 500 * 1024 * 1024  # 500MB in bytes
+        
+        # Quantized output should be much smaller than original
+        original_size = large_batch.nbytes
+        quantized_size = quantized.nbytes
+        assert quantized_size < original_size / 2  # At least 2x compression
+
+    def test_saq_quality_retention(self, saq_quantizer, high_dim_vectors):
+        """Test that SAQ maintains good vector quality."""
+        saq_quantizer.initialize()
+        saq_quantizer.train(high_dim_vectors)
+        
+        # Test on a subset
+        test_vectors = high_dim_vectors[:50]
+        quantized = saq_quantizer.quantize(test_vectors)
+        dequantized = saq_quantizer.dequantize(quantized)
+        
+        # Compute similarity between original and reconstructed
+        from sklearn.metrics.pairwise import cosine_similarity
+        similarities = []
+        for i in range(len(test_vectors)):
+            orig = test_vectors[i].reshape(1, -1)
+            recon = dequantized[i].reshape(1, -1)
+            similarity = cosine_similarity(orig, recon)[0, 0]
+            similarities.append(similarity)
+        
+        avg_similarity = np.mean(similarities)
+        # Should maintain high similarity (at least 0.8 on average)
+        assert avg_similarity > 0.8

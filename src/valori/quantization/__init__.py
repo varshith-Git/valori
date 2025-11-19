@@ -8,9 +8,11 @@ and reducing memory usage while maintaining search quality.
 from .base import Quantizer
 from .scalar import ScalarQuantizer
 from .product import ProductQuantizer
+from .saq import SAQQuantizer
 
 __all__ = [
     "Quantizer",
     "ScalarQuantizer",
     "ProductQuantizer",
+    "SAQQuantizer",
 ]
