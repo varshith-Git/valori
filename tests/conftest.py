@@ -90,15 +90,13 @@ def product_quantizer():
     """Create a product quantizer."""
     return ProductQuantizer({"m": 8, "k": 256})
 
+
 @pytest.fixture
 def saq_quantizer():
     """Create an SAQ quantizer."""
-    return SAQQuantizer({
-        "total_bits": 128,
-        "n_segments": 8,
-        "adjustment_iters": 3,
-        "rescore_top_k": 50
-    })
+    return SAQQuantizer(
+        {"total_bits": 128, "n_segments": 8, "adjustment_iters": 3, "rescore_top_k": 50}
+    )
 
 
 @pytest.fixture

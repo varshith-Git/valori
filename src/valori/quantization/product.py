@@ -99,7 +99,10 @@ class ProductQuantizer(Quantizer):
 
                 # Find closest centroids
                 centroids_i = self.centroids[i]
-                distances = np.sum((subvectors[:, np.newaxis, :] - centroids_i[np.newaxis, :, :]) ** 2, axis=2)
+                distances = np.sum(
+                    (subvectors[:, np.newaxis, :] - centroids_i[np.newaxis, :, :]) ** 2,
+                    axis=2,
+                )
                 closest_centroids = np.argmin(distances, axis=1)
 
                 quantized[:, i] = closest_centroids
@@ -152,7 +155,11 @@ class ProductQuantizer(Quantizer):
             # Compute distance using lookup table for efficiency
             distance = 0.0
 
-            assert self.subvector_dim is not None and self.centroids is not None and self.dim is not None
+            assert (
+                self.subvector_dim is not None
+                and self.centroids is not None
+                and self.dim is not None
+            )
             for i in range(int(self.m)):
                 start_idx = i * self.subvector_dim
                 end_idx = (i + 1) * self.subvector_dim
@@ -162,7 +169,9 @@ class ProductQuantizer(Quantizer):
                 centroid = self.centroids[i, centroid_idx]
 
                 # Compute squared Euclidean distance for this subvector
-                subvector_distance: float = float(np.sum((query_subvector - centroid) ** 2))
+                subvector_distance: float = float(
+                    np.sum((query_subvector - centroid) ** 2)
+                )
                 distance += subvector_distance
 
             # Return Euclidean distance
@@ -191,11 +200,21 @@ class ProductQuantizer(Quantizer):
             stats.update(
                 {
                     "dimensions": int(self.dim) if self.dim is not None else None,
-                    "subvector_dimensions": int(self.subvector_dim) if self.subvector_dim is not None else None,
+                    "subvector_dimensions": (
+                        int(self.subvector_dim)
+                        if self.subvector_dim is not None
+                        else None
+                    ),
                     "bits_per_subvector": bits_per_subvector,
                     "total_bits": total_bits,
-                    "compression_ratio": (total_bits / (32 * float(self.dim))) if self.dim is not None else None,
-                    "centroids_shape": (self.centroids.shape if self.centroids is not None else None),
+                    "compression_ratio": (
+                        (total_bits / (32 * float(self.dim)))
+                        if self.dim is not None
+                        else None
+                    ),
+                    "centroids_shape": (
+                        self.centroids.shape if self.centroids is not None else None
+                    ),
                 }
             )
 

@@ -140,7 +140,9 @@ class IVFIndex(Index):
                         else:
                             sb = self.storage_backend
                             if sb is None:
-                                raise ValoriIndexError("Index storage backend not configured")
+                                raise ValoriIndexError(
+                                    "Index storage backend not configured"
+                                )
                             result = sb.retrieve_vector(vector_id)
                             if result is None:
                                 continue

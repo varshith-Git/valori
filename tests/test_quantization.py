@@ -207,7 +207,7 @@ class TestSAQQuantizer:
         """Test SAQ quantizer training."""
         saq_quantizer.initialize()
         saq_quantizer.train(high_dim_vectors)
-        
+
         assert saq_quantizer._trained
         assert saq_quantizer.segment_boundaries is not None
         assert saq_quantizer.segment_bits is not None
@@ -219,14 +219,14 @@ class TestSAQQuantizer:
         configs = [
             {"total_bits": 64, "n_segments": 4},
             {"total_bits": 128, "n_segments": 8},
-            {"total_bits": 256, "n_segments": 16, "adjustment_iters": 5}
+            {"total_bits": 256, "n_segments": 16, "adjustment_iters": 5},
         ]
-        
+
         for config in configs:
             quantizer = SAQQuantizer(config)
             quantizer.initialize()
             quantizer.train(high_dim_vectors)
-            
+
             assert quantizer._trained
             stats = quantizer.get_stats()
             assert stats["total_bits"] == config["total_bits"]
@@ -285,7 +285,7 @@ class TestSAQQuantizer:
         assert all(d >= 0 for d in distances)
 
         # Results should be sorted by distance
-        assert all(distances[i] <= distances[i+1] for i in range(len(distances)-1))
+        assert all(distances[i] <= distances[i + 1] for i in range(len(distances) - 1))
 
     def test_get_stats(self, saq_quantizer, high_dim_vectors):
         """Test getting SAQ quantizer statistics."""
@@ -324,16 +324,16 @@ class TestSAQQuantizer:
         # Generate larger dataset
         np.random.seed(999)
         large_vectors = np.random.randn(1000, 256).astype(np.float32)
-        
+
         saq_quantizer.initialize()
         saq_quantizer.train(large_vectors)
-        
+
         # Test quantization on subset
         quantized = saq_quantizer.quantize(large_vectors[:100])
         dequantized = saq_quantizer.dequantize(quantized)
-        
+
         assert dequantized.shape == (100, 256)
-        
+
         # Should maintain reasonable quality even at scale
         mse = np.mean((dequantized - large_vectors[:100]) ** 2)
         assert mse < 1.0
@@ -346,7 +346,7 @@ class TestSAQQuantizer:
         # Get adjustment improvements from stats
         stats = saq_quantizer.get_stats()
         improvements = stats["adjustment_improvements"]
-        
+
         # Adjustment should provide some improvement (may be small)
         assert len(improvements) > 0
         # First iteration should show the most improvement
@@ -356,23 +356,26 @@ class TestSAQQuantizer:
         """Test that segmentation is consistent across runs."""
         saq_quantizer.initialize()
         saq_quantizer.train(high_dim_vectors)
-        
+
         segment_boundaries = saq_quantizer.segment_boundaries
         segment_bits = saq_quantizer.segment_bits
-        
+
         # Should have correct number of segments
         assert len(segment_boundaries) == saq_quantizer.n_segments
         assert len(segment_bits) == saq_quantizer.n_segments
-        
+
         # Segment boundaries should cover entire dimension range
         first_start, first_end = segment_boundaries[0]
         last_start, last_end = segment_boundaries[-1]
         assert first_start == 0
         assert last_end == high_dim_vectors.shape[1]
-        
+
         # Bits allocation should sum to total bits (approximately)
         total_allocated_bits = sum(segment_bits)
-        assert abs(total_allocated_bits - saq_quantizer.total_bits) <= saq_quantizer.n_segments
+        assert (
+            abs(total_allocated_bits - saq_quantizer.total_bits)
+            <= saq_quantizer.n_segments
+        )
 
 
 class TestQuantizationErrorHandling:
@@ -435,26 +438,24 @@ class TestQuantizationErrorHandling:
         """Test SAQ rescoring error when full-precision vectors not stored."""
         quantizer = SAQQuantizer({"total_bits": 128, "n_segments": 8})
         quantizer.initialize()
-        
+
         # Create some dummy data
         vectors = np.random.randn(10, 64).astype(np.float32)
         quantizer.train(vectors)
-        
+
         # Remove stored vectors to simulate the error condition
         quantizer.full_precision_vectors = None
-        
+
         with pytest.raises(QuantizationError):
             quantizer.search_with_rescoring(
-                vectors[0], 
-                np.zeros((10, 8), dtype=np.int32), 
-                top_k=5
+                vectors[0], np.zeros((10, 8), dtype=np.int32), top_k=5
             )
 
     def test_saq_invalid_config(self):
         """Test SAQ with invalid configuration."""
         with pytest.raises(Exception):  # Could be various exceptions
             SAQQuantizer({"total_bits": 0})  # Invalid bits
-        
+
         with pytest.raises(Exception):
             SAQQuantizer({"n_segments": 0})  # Invalid segments
 
@@ -530,23 +531,25 @@ class TestQuantizationPerformance:
         """Test SAQ memory usage characteristics."""
         import psutil
         import os
-        
+
         process = psutil.Process(os.getpid())
         initial_memory = process.memory_info().rss
-        
+
         saq_quantizer.initialize()
         saq_quantizer.train(high_dim_vectors)
-        
+
         # Quantize large batch
-        large_batch = np.random.randn(1000, high_dim_vectors.shape[1]).astype(np.float32)
+        large_batch = np.random.randn(1000, high_dim_vectors.shape[1]).astype(
+            np.float32
+        )
         quantized = saq_quantizer.quantize(large_batch)
-        
+
         final_memory = process.memory_info().rss
         memory_increase = final_memory - initial_memory
-        
+
         # Memory increase should be reasonable (less than 500MB)
         assert memory_increase < 500 * 1024 * 1024  # 500MB in bytes
-        
+
         # Quantized output should be much smaller than original
         original_size = large_batch.nbytes
         quantized_size = quantized.nbytes
@@ -556,21 +559,22 @@ class TestQuantizationPerformance:
         """Test that SAQ maintains good vector quality."""
         saq_quantizer.initialize()
         saq_quantizer.train(high_dim_vectors)
-        
+
         # Test on a subset
         test_vectors = high_dim_vectors[:50]
         quantized = saq_quantizer.quantize(test_vectors)
         dequantized = saq_quantizer.dequantize(quantized)
-        
+
         # Compute similarity between original and reconstructed
         from sklearn.metrics.pairwise import cosine_similarity
+
         similarities = []
         for i in range(len(test_vectors)):
             orig = test_vectors[i].reshape(1, -1)
             recon = dequantized[i].reshape(1, -1)
             similarity = cosine_similarity(orig, recon)[0, 0]
             similarities.append(similarity)
-        
+
         avg_similarity = np.mean(similarities)
         # Should maintain high similarity (at least 0.8 on average)
         assert avg_similarity > 0.8

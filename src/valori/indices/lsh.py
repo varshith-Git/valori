@@ -243,7 +243,9 @@ class LSHIndex(Index):
         """Generate random projection vectors for hashing."""
         # Generate random projection vectors
         assert self.dimension is not None
-        self.projections = self.rng.normal(0, 1, (self.num_projections, int(self.dimension)))
+        self.projections = self.rng.normal(
+            0, 1, (self.num_projections, int(self.dimension))
+        )
 
         # Generate random offsets for each projection
         self.offsets = self.rng.uniform(0, 1, int(self.num_projections))

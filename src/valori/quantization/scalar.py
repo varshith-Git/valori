@@ -84,12 +84,20 @@ class ScalarQuantizer(Quantizer):
 
         try:
             # Apply quantization formula: q = round((x - min) / scale + zero_point)
-            assert self.dim is not None and self.min_values is not None and self.scale is not None and self.zero_point is not None
+            assert (
+                self.dim is not None
+                and self.min_values is not None
+                and self.scale is not None
+                and self.zero_point is not None
+            )
             n_vectors = int(vectors.shape[0])
             quantized = np.zeros((n_vectors, int(self.dim)), dtype=np.int32)
 
             for i in range(int(self.dim)):
-                val = np.round((vectors[:, i] - self.min_values[i]) / self.scale[i] + self.zero_point[i])
+                val = np.round(
+                    (vectors[:, i] - self.min_values[i]) / self.scale[i]
+                    + self.zero_point[i]
+                )
                 clipped = np.clip(val, 0, int(self.max_val))
                 quantized[:, i] = clipped.astype(np.int32)
 
@@ -108,12 +116,19 @@ class ScalarQuantizer(Quantizer):
 
         try:
             # Apply dequantization formula: x = (q - zero_point) * scale + min
-            assert self.dim is not None and self.scale is not None and self.min_values is not None and self.zero_point is not None
+            assert (
+                self.dim is not None
+                and self.scale is not None
+                and self.min_values is not None
+                and self.zero_point is not None
+            )
             n_vectors = int(quantized_vectors.shape[0])
             dequantized = np.zeros((n_vectors, int(self.dim)), dtype=float)
 
             for i in range(int(self.dim)):
-                dequantized[:, i] = (quantized_vectors[:, i].astype(np.float32) - self.zero_point[i]) * self.scale[i] + self.min_values[i]
+                dequantized[:, i] = (
+                    quantized_vectors[:, i].astype(np.float32) - self.zero_point[i]
+                ) * self.scale[i] + self.min_values[i]
 
             return dequantized
 
@@ -166,12 +181,17 @@ class ScalarQuantizer(Quantizer):
                 {
                     "dimensions": int(self.dim) if self.dim is not None else 0,
                     "min_values_range": (
-                        (self.min_values.min(), self.min_values.max()) if self.min_values is not None else None
+                        (self.min_values.min(), self.min_values.max())
+                        if self.min_values is not None
+                        else None
                     ),
                     "max_values_range": (
-                        (self.max_values.min(), self.max_values.max()) if self.max_values is not None else None
+                        (self.max_values.min(), self.max_values.max())
+                        if self.max_values is not None
+                        else None
                     ),
-                    "compression_ratio": float(self.bits) / 32.0,  # Assuming original vectors are 32-bit floats
+                    "compression_ratio": float(self.bits)
+                    / 32.0,  # Assuming original vectors are 32-bit floats
                 }
             )
 

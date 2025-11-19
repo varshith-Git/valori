@@ -87,7 +87,9 @@ class BatchManager:
                     batch_ids = client.insert(batch_vectors, batch_metadata)
                     all_ids.extend(batch_ids)
 
-                    self._stats["processed_items"] = int(self._stats.get("processed_items", 0) or 0) + len(batch_vectors)
+                    self._stats["processed_items"] = int(
+                        self._stats.get("processed_items", 0) or 0
+                    ) + len(batch_vectors)
 
                     if show_progress:
                         self._print_progress()
@@ -98,7 +100,9 @@ class BatchManager:
                         )
 
                 except Exception as e:
-                    self._stats["failed_items"] = int(self._stats.get("failed_items", 0) or 0) + len(batch_vectors)
+                    self._stats["failed_items"] = int(
+                        self._stats.get("failed_items", 0) or 0
+                    ) + len(batch_vectors)
 
                     if self.error_callback:
                         self.error_callback(e, batch_vectors)
@@ -142,13 +146,17 @@ class BatchManager:
 
                     except Exception as e:
                         batch_results.append([])
-                        self._stats["failed_items"] = int(self._stats.get("failed_items", 0) or 0) + 1
+                        self._stats["failed_items"] = (
+                            int(self._stats.get("failed_items", 0) or 0) + 1
+                        )
 
                         if self.error_callback:
                             self.error_callback(e, query)
 
                 all_results.extend(batch_results)
-                self._stats["processed_items"] = int(self._stats.get("processed_items", 0) or 0) + len(batch_queries)
+                self._stats["processed_items"] = int(
+                    self._stats.get("processed_items", 0) or 0
+                ) + len(batch_queries)
 
                 if show_progress:
                     self._print_progress()
@@ -218,12 +226,16 @@ class BatchManager:
                     batch_id, batch_ids, error = future.result()
 
                     if error:
-                        self._stats["failed_items"] = int(self._stats.get("failed_items", 0) or 0) + len(batches[batch_id]["vectors"])
+                        self._stats["failed_items"] = int(
+                            self._stats.get("failed_items", 0) or 0
+                        ) + len(batches[batch_id]["vectors"])
                         if self.error_callback:
                             self.error_callback(error, batches[batch_id])
                     else:
                         all_ids.extend(batch_ids)
-                        self._stats["processed_items"] = int(self._stats.get("processed_items", 0) or 0) + len(batch_ids)
+                        self._stats["processed_items"] = int(
+                            self._stats.get("processed_items", 0) or 0
+                        ) + len(batch_ids)
 
                     if show_progress:
                         self._print_progress()
