@@ -237,6 +237,17 @@ from valori.quantization import ProductQuantizer
 quantizer = ProductQuantizer({"m": 8, "k": 256})
 ```
 
+**SAQ Quantization**:
+```python
+from valori.quantization import SAQQuantizer
+quantizer = SAQQuantizer({
+    "total_bits": 128,
+    "n_segments": 8,
+    "adjustment_iters": 3,
+    "rescore_top_k": 50
+})
+```
+
 ## Advanced Usage
 
 ### Complete Setup with All Components
@@ -266,6 +277,13 @@ index = HNSWIndex({
 quantizer = ProductQuantizer({
     "m": 16,
     "k": 256
+})
+
+quantizer = SAQQuantizer({
+    "total_bits": 128,
+    "n_segments": 8,
+    "adjustment_iters": 3,
+    "rescore_top_k": 50
 })
 
 persistence = TensorPersistence({
