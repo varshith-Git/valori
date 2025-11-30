@@ -5,7 +5,7 @@ Tests for LSH (Locality Sensitive Hashing) index implementation.
 import pytest
 import numpy as np
 from valori.indices import LSHIndex
-from valori.exceptions import IndexError
+from valori.exceptions import ValoriIndexError
 
 
 class TestLSHIndex:
@@ -47,15 +47,15 @@ class TestLSHIndex:
     def test_lsh_invalid_config(self):
         """Test LSH index with invalid configuration."""
         # Invalid num_hash_tables
-        with pytest.raises(IndexError):
+        with pytest.raises(ValoriIndexError):
             LSHIndex({"num_hash_tables": 0})
 
         # Invalid hash_size
-        with pytest.raises(IndexError):
+        with pytest.raises(ValoriIndexError):
             LSHIndex({"hash_size": -1})
 
         # Invalid num_projections
-        with pytest.raises(IndexError):
+        with pytest.raises(ValoriIndexError):
             LSHIndex({"num_projections": 0})
 
     def test_lsh_add_vectors(self):
@@ -120,7 +120,7 @@ class TestLSHIndex:
         wrong_vectors = np.random.randn(10, 64).astype(np.float32)
         wrong_metadata = [{"id": i} for i in range(10)]
 
-        with pytest.raises(IndexError):
+        with pytest.raises(ValoriIndexError):
             index.add(wrong_vectors, wrong_metadata)
 
     def test_lsh_remove_vectors(self):

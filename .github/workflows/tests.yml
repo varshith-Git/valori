@@ -26,26 +26,28 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py', '**/pyproject.toml') }}
         restore-keys: |
           ${{ runner.os }}-pip-
     
-    - name: Install dependencies
+    - name: Install package and dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install -r requirements-dev.txt
+        pip install -e .[dev]  # This installs the package in editable mode
+    
+    - name: Verify package installation
+      run: |
+        python -c "import valori; print('✓ Valori package imported successfully')"
+        python -c "from valori.quantization import SAQQuantizer; print('✓ SAQQuantizer imported successfully')"
     
     - name: Lint with flake8
       run: |
-        # Stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # Exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        flake8 src/ tests/ --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 src/ tests/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     
     - name: Format check with black
       run: |
-        black --check --diff .
+        black --check src/ tests/
     
     - name: Type check with mypy
       run: |
@@ -54,7 +56,7 @@ jobs:
     
     - name: Test with pytest
       run: |
-        pytest tests/ --cov=src/valori --cov-report=xml --cov-report=term-missing
+        pytest tests/ --cov=valori --cov-report=xml --cov-report=term-missing
     
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v4
@@ -76,11 +78,10 @@ jobs:
       with:
         python-version: 3.9
     
-    - name: Install dependencies
+    - name: Install package and dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install -r requirements-dev.txt
+        pip install -e .[dev]
     
     - name: Run integration tests
       run: |
@@ -101,9 +102,10 @@ jobs:
       with:
         python-version: 3.9
     
-    - name: Install dependencies
+    - name: Install package and security tools
       run: |
         python -m pip install --upgrade pip
+        pip install -e .[dev]
         pip install safety bandit
     
     - name: Security check with safety

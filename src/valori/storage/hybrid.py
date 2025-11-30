@@ -50,6 +50,9 @@ class HybridStorage(StorageBackend):
         self, id: str, vector: np.ndarray, metadata: Optional[Dict] = None
     ) -> bool:
         """Store a vector in both memory and disk."""
+        if not id:
+            return False
+
         if not self._initialized:
             raise StorageError("Storage backend not initialized")
 

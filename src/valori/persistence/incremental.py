@@ -74,7 +74,6 @@ class IncrementalPersistence(PersistenceManager):
             )
 
             return True
-
         except Exception as e:
             raise PersistenceError(f"Failed to save state to {path}: {str(e)}")
 
@@ -140,7 +139,7 @@ class IncrementalPersistence(PersistenceManager):
             file_path = self.data_dir / path
 
             if not file_path.exists():
-                return None
+                return None, None
 
             data = np.load(file_path)
             vectors = data["vectors"]

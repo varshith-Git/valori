@@ -43,19 +43,17 @@ class TensorPersistence(PersistenceManager):
 
         try:
             file_path = self.data_dir / path
-
-            # Ensure directory exists
             file_path.parent.mkdir(parents=True, exist_ok=True)
 
-            # Save state using pickle
             with open(file_path, "wb") as f:
                 pickle.dump(state, f, protocol=pickle.HIGHEST_PROTOCOL)
 
             self._save_count += 1
             return True
-
+        except (pickle.PicklingError, TypeError) as e:
+            raise PersistenceError(f"Failed to serialize state for {path}: {e}")
         except Exception as e:
-            raise PersistenceError(f"Failed to save state to {path}: {str(e)}")
+            raise PersistenceError(f"Failed to save state to {path}: {e}")
 
     def load_state(self, path: str) -> Optional[Dict[str, Any]]:
         """Load database state using pickle."""
@@ -66,7 +64,7 @@ class TensorPersistence(PersistenceManager):
             file_path = self.data_dir / path
 
             if not file_path.exists():
-                return None
+                    return None
 
             with open(file_path, "rb") as f:
                 state = pickle.load(f)
@@ -110,7 +108,7 @@ class TensorPersistence(PersistenceManager):
             file_path = self.data_dir / path
 
             if not file_path.exists():
-                return None
+                return None, None
 
             # Load vectors and IDs
             data = np.load(file_path)

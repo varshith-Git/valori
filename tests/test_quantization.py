@@ -72,7 +72,8 @@ class TestScalarQuantizer:
         stats = scalar_quantizer.get_stats()
         assert stats["trained"]
         assert stats["dimensions"] == small_vectors.shape[1]
-        assert stats["compression_ratio"] == 8 / 32  # 8 bits vs 32-bit floats
+        # compression_ratio = original_bits_per_value / quantized_bits_per_value
+        assert stats["compression_ratio"] == 32.0 / stats["bits"]
 
     def test_close(self, scalar_quantizer, small_vectors):
         """Test closing quantizer."""

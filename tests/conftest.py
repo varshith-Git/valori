@@ -38,6 +38,14 @@ def sample_metadata():
 @pytest.fixture
 def memory_storage():
     """Create a memory storage backend."""
+    storage = MemoryStorage({})
+    storage.initialize()
+    return storage
+
+
+@pytest.fixture
+def uninitialized_memory_storage():
+    """Create an uninitialized memory storage backend."""
     return MemoryStorage({})
 
 
@@ -45,7 +53,9 @@ def memory_storage():
 def disk_storage(temp_dir):
     """Create a disk storage backend."""
     config = {"data_dir": str(temp_dir / "disk_data")}
-    return DiskStorage(config)
+    storage = DiskStorage(config)
+    storage.initialize()
+    return storage
 
 
 @pytest.fixture
@@ -56,7 +66,9 @@ def hybrid_storage(temp_dir):
         "disk": {"data_dir": str(temp_dir / "hybrid_data")},
         "memory_limit": 50,
     }
-    return HybridStorage(config)
+    storage = HybridStorage(config)
+    storage.initialize()
+    return storage
 
 
 @pytest.fixture
@@ -88,7 +100,7 @@ def scalar_quantizer():
 @pytest.fixture
 def product_quantizer():
     """Create a product quantizer."""
-    return ProductQuantizer({"m": 8, "k": 256})
+    return ProductQuantizer({"m": 8, "k":256})
 
 
 @pytest.fixture
@@ -124,6 +136,13 @@ def query_vector():
 
 
 @pytest.fixture
+def small_query_vector():
+    """Generate a small query vector for testing with small_vectors."""
+    np.random.seed(123)
+    return np.random.randn(32).astype(np.float32)
+
+
+@pytest.fixture
 def small_vectors():
     """Generate small sample vectors for testing."""
     np.random.seed(456)
@@ -134,4 +153,4 @@ def small_vectors():
 def high_dim_vectors():
     """Generate high-dimensional vectors for testing."""
     np.random.seed(789)
-    return np.random.randn(50, 512).astype(np.float32)
+    return np.random.randn(200, 512).astype(np.float32)

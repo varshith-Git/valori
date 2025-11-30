@@ -5,7 +5,7 @@ Tests for Annoy index implementation.
 import pytest
 import numpy as np
 from valori.indices import AnnoyIndex
-from valori.exceptions import IndexError
+from valori.exceptions import ValoriIndexError
 
 
 class TestAnnoyIndex:
@@ -42,11 +42,11 @@ class TestAnnoyIndex:
     def test_annoy_invalid_config(self):
         """Test Annoy index with invalid configuration."""
         # Invalid num_trees
-        with pytest.raises(IndexError):
+        with pytest.raises(ValoriIndexError):
             AnnoyIndex({"num_trees": 0})
 
         # Invalid metric
-        with pytest.raises(IndexError):
+        with pytest.raises(ValoriIndexError):
             AnnoyIndex({"metric": "invalid"})
 
     def test_annoy_add_vectors(self):
@@ -106,7 +106,7 @@ class TestAnnoyIndex:
         index.add(self.vectors, self.metadata)
 
         # Try to search without building
-        with pytest.raises(IndexError):
+        with pytest.raises(ValoriIndexError):
             index.search(self.query_vector, k=self.k)
 
     def test_annoy_empty_search(self):
@@ -135,7 +135,7 @@ class TestAnnoyIndex:
         wrong_vectors = np.random.randn(10, 64).astype(np.float32)
         wrong_metadata = [{"id": i} for i in range(10)]
 
-        with pytest.raises(IndexError):
+        with pytest.raises(ValoriIndexError):
             index.add(wrong_vectors, wrong_metadata)
 
     def test_annoy_different_metrics(self):

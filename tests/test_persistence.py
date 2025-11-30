@@ -263,7 +263,7 @@ class TestPersistenceErrorHandling:
         tensor_persistence.initialize()
 
         # Try to save invalid data (should still work with pickle)
-        invalid_data = {"invalid": object()}  # Non-serializable object
+        invalid_data = {"invalid": lambda: None}  # Non-serializable object
         with pytest.raises(PersistenceError):
             tensor_persistence.save_state(invalid_data, "invalid.pkl")
 

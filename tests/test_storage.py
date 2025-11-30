@@ -260,23 +260,23 @@ class TestHybridStorage:
 class TestStorageErrorHandling:
     """Test storage error handling."""
 
-    def test_uninitialized_storage_error(self, memory_storage, sample_vectors):
+    def test_uninitialized_storage_error(self, uninitialized_memory_storage, sample_vectors):
         """Test error when using uninitialized storage."""
         vector = sample_vectors[0]
 
         with pytest.raises(StorageError):
-            memory_storage.store_vector("test", vector)
+            uninitialized_memory_storage.store_vector("test", vector)
 
         with pytest.raises(StorageError):
-            memory_storage.retrieve_vector("test")
+            uninitialized_memory_storage.retrieve_vector("test")
 
     def test_invalid_id_handling(self, memory_storage, sample_vectors):
         """Test handling of invalid IDs."""
         memory_storage.initialize()
-
+ 
         # Test with empty ID
-        with pytest.raises(StorageError):
-            memory_storage.store_vector("", sample_vectors[0])
+        success = memory_storage.store_vector("", sample_vectors[0])
+        assert not success, "Storing a vector with an empty ID should fail."
 
     def test_nonexistent_vector_retrieval(self, memory_storage):
         """Test retrieving non-existent vector."""

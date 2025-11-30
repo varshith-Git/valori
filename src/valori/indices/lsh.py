@@ -116,6 +116,16 @@ class LSHIndex(Index):
 
         return assigned_ids
 
+    # --- Implement abstract Index interface methods ---
+    def insert(
+        self, vectors: np.ndarray, metadata: Optional[List[Dict[str, Any]]] = None
+    ) -> List[str]:
+        """Insert vectors following the base Index interface."""
+        if metadata is None:
+            metadata = [{} for _ in range(len(vectors))]
+        ids = self.add(vectors, metadata)
+        return [str(i) for i in ids]
+
     def search(
         self, query_vector: np.ndarray, k: int = 10, threshold: Optional[float] = None
     ) -> List[Dict[str, Any]]:
@@ -205,6 +215,55 @@ class LSHIndex(Index):
                 # Mark as removed (keep indices consistent)
                 self.vectors[vector_id] = None
                 self.metadata[vector_id] = None
+
+    def delete(self, ids: List[str]) -> bool:
+        """Delete vectors by their string IDs (base Index API)."""
+        try:
+            int_ids = []
+            for s in ids:
+                try:
+                    int_ids.append(int(s))
+                except ValueError:
+                    continue
+            self.remove(int_ids)
+            return True
+        except Exception:
+            return False
+
+    def update(
+        self, id: str, vector: np.ndarray, metadata: Optional[Dict[str, Any]] = None
+    ) -> bool:
+        """Update an existing vector and its metadata."""
+        if not self._initialized:
+            raise ValoriIndexError("Index not initialized")
+        try:
+            vector_id = int(id)
+            if vector_id >= len(self.vectors) or self.vectors[vector_id] is None:
+                return False
+
+            # Remove old hashes
+            old_vector = self.vectors[vector_id]
+            old_hashes = self._hash_vector(old_vector)
+            for table_idx, hash_code in enumerate(old_hashes):
+                if hash_code in self.hash_tables[table_idx]:
+                    try:
+                        self.hash_tables[table_idx][hash_code].remove(vector_id)
+                    except ValueError:
+                        pass
+
+            # Store new vector and metadata
+            self.vectors[vector_id] = vector.copy()
+            if metadata is not None:
+                self.metadata[vector_id] = metadata.copy()
+
+            # Add new hashes
+            new_hashes = self._hash_vector(self.vectors[vector_id])
+            for table_idx, hash_code in enumerate(new_hashes):
+                self.hash_tables[table_idx][hash_code].append(vector_id)
+
+            return True
+        except Exception:
+            return False
 
     def clear(self) -> None:
         """Clear all vectors from the index."""

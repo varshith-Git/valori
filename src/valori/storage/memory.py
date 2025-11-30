@@ -39,7 +39,9 @@ class MemoryStorage(StorageBackend):
     def store_vector(
         self, id: str, vector: np.ndarray, metadata: Optional[Dict] = None
     ) -> bool:
-        """Store a vector in memory."""
+        if not id:
+            return False
+
         if not self._initialized:
             raise StorageError("Storage backend not initialized")
 

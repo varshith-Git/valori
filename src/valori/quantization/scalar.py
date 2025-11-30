@@ -54,14 +54,14 @@ class ScalarQuantizer(Quantizer):
             max_vals = np.max(vectors, axis=0)
 
             # Compute scale and zero point for quantization using local vars
-            denom = float((1 << int(self.bits)) - 1)
-            scales = (max_vals - min_vals) / denom
+            # Use a capped denom to avoid floating-point overflow for very large bit counts
+            raw_denom = (1 << int(self.bits)) - 1
+            denom_cap = float(min(raw_denom, np.iinfo(np.int64).max))
+            scales = (max_vals - min_vals) / denom_cap
             # Avoid zero scale values per-dimension
             scales = np.where(scales == 0, 1.0, scales)
-            zero_pt = np.round(-min_vals / scales).astype(np.int32)
-
-            # Clamp zero point to valid range
-            zero_pt = np.clip(zero_pt, 0, int(self.max_val))
+            # For range-based uniform quantization we use zero_point = 0
+            zero_pt = np.zeros_like(min_vals, dtype=np.int32)
 
             # Assign back to attributes (now narrowed)
             self.min_values = min_vals
@@ -83,6 +83,9 @@ class ScalarQuantizer(Quantizer):
             raise QuantizationError("Quantizer not trained")
 
         try:
+            # Expect 2D input (n_vectors, dim)
+            if vectors.ndim != 2:
+                raise QuantizationError("Vectors must be 2D array")
             # Apply quantization formula: q = round((x - min) / scale + zero_point)
             assert (
                 self.dim is not None
@@ -91,15 +94,29 @@ class ScalarQuantizer(Quantizer):
                 and self.zero_point is not None
             )
             n_vectors = int(vectors.shape[0])
-            quantized = np.zeros((n_vectors, int(self.dim)), dtype=np.int32)
+            # Choose integer dtype based on required range to avoid overflow
+            if self.max_val <= np.iinfo(np.int32).max:
+                itype = np.int32
+            else:
+                itype = np.int64
 
-            for i in range(int(self.dim)):
-                val = np.round(
-                    (vectors[:, i] - self.min_values[i]) / self.scale[i]
-                    + self.zero_point[i]
-                )
-                clipped = np.clip(val, 0, int(self.max_val))
-                quantized[:, i] = clipped.astype(np.int32)
+            quantized = np.zeros((n_vectors, int(self.dim)), dtype=itype)
+
+            # Compute per-dimension quantized values in a vectorized manner
+            # normalized = (vectors - min) / scale
+            with np.errstate(invalid='ignore', divide='ignore'):
+                normalized_all = (vectors - self.min_values) / self.scale
+
+            # Round and clip to valid range
+            rounded = np.rint(normalized_all)
+            # Clip to the maximum representable for the chosen integer type
+            max_for_type = np.iinfo(itype).max
+            upper_bound = int(self.max_val if self.max_val <= max_for_type else max_for_type)
+            clipped = np.clip(rounded, 0, upper_bound)
+            clipped = np.nan_to_num(clipped, nan=0.0, posinf=upper_bound, neginf=0.0)
+
+            # Safe cast to integer type
+            quantized[:, :] = clipped.astype(itype)
 
             return quantized
 
@@ -122,13 +139,19 @@ class ScalarQuantizer(Quantizer):
                 and self.min_values is not None
                 and self.zero_point is not None
             )
-            n_vectors = int(quantized_vectors.shape[0])
-            dequantized = np.zeros((n_vectors, int(self.dim)), dtype=float)
+            # Accept 1D or 2D quantized input; convert to 2D for processing
+            if quantized_vectors.ndim == 1:
+                quantized_vectors = quantized_vectors.reshape(1, -1)
 
-            for i in range(int(self.dim)):
-                dequantized[:, i] = (
-                    quantized_vectors[:, i].astype(np.float32) - self.zero_point[i]
-                ) * self.scale[i] + self.min_values[i]
+            if quantized_vectors.ndim != 2:
+                raise QuantizationError("Quantized vectors must be 2D array")
+
+            n_vectors = int(quantized_vectors.shape[0])
+            dequantized = np.zeros((n_vectors, int(self.dim)), dtype=np.float32)
+
+            # Vectorized dequantization
+            q_float = quantized_vectors.astype(np.float32)
+            dequantized = q_float * self.scale + self.min_values
 
             return dequantized
 
@@ -146,12 +169,24 @@ class ScalarQuantizer(Quantizer):
             raise QuantizationError("Quantizer not trained")
 
         try:
+            # Align query and codes dimensions if needed
+            assert self.dim is not None
+            q = query.astype(np.float32)
+            if q.ndim != 1:
+                q = q.reshape(-1)
+            # Truncate or pad query to match trained dimension
+            if q.shape[0] > int(self.dim):
+                q = q[: int(self.dim)]
+            elif q.shape[0] < int(self.dim):
+                pad_len = int(self.dim) - q.shape[0]
+                q = np.pad(q, (0, pad_len), mode="constant")
+
             # Dequantize the vector
             dequantized = self.dequantize(quantized_vector.reshape(1, -1))[0]
 
             # Compute cosine distance (assuming cosine similarity)
-            dot_product = np.dot(query, dequantized)
-            norm_query = np.linalg.norm(query)
+            dot_product = np.dot(q, dequantized)
+            norm_query = np.linalg.norm(q)
             norm_dequantized = np.linalg.norm(dequantized)
 
             if norm_query == 0 or norm_dequantized == 0:
@@ -190,8 +225,8 @@ class ScalarQuantizer(Quantizer):
                         if self.max_values is not None
                         else None
                     ),
-                    "compression_ratio": float(self.bits)
-                    / 32.0,  # Assuming original vectors are 32-bit floats
+                    # Compression ratio = original bits per value / quantized bits
+                    "compression_ratio": 32.0 / float(self.bits),
                 }
             )
 

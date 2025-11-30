@@ -25,7 +25,7 @@ class TestFlatIndex:
         assert all(isinstance(id, str) for id in inserted_ids)
 
     def test_search_vectors(
-        self, flat_index, memory_storage, small_vectors, query_vector
+        self, flat_index, memory_storage, small_vectors, small_query_vector
     ):
         """Test searching vectors."""
         flat_index.initialize(memory_storage)
@@ -34,7 +34,7 @@ class TestFlatIndex:
         flat_index.insert(small_vectors)
 
         # Search with query vector
-        results = flat_index.search(query_vector, k=5)
+        results = flat_index.search(small_query_vector, k=5)
         assert len(results) <= 5
         assert all("id" in result for result in results)
         assert all("distance" in result for result in results)
@@ -132,7 +132,7 @@ class TestHNSWIndex:
         assert all(isinstance(id, str) for id in inserted_ids)
 
     def test_search_vectors(
-        self, hnsw_index, memory_storage, small_vectors, query_vector
+        self, hnsw_index, memory_storage, small_vectors, small_query_vector
     ):
         """Test searching vectors."""
         hnsw_index.initialize(memory_storage)
@@ -141,7 +141,7 @@ class TestHNSWIndex:
         hnsw_index.insert(small_vectors)
 
         # Search with query vector
-        results = hnsw_index.search(query_vector, k=5)
+        results = hnsw_index.search(small_query_vector, k=5)
         assert len(results) <= 5
         assert all("id" in result for result in results)
         assert all("distance" in result for result in results)
@@ -179,7 +179,7 @@ class TestIVFIndex:
         assert all(isinstance(id, str) for id in inserted_ids)
 
     def test_search_vectors(
-        self, ivf_index, memory_storage, small_vectors, query_vector
+        self, ivf_index, memory_storage, small_vectors, small_query_vector
     ):
         """Test searching vectors."""
         ivf_index.initialize(memory_storage)
@@ -188,7 +188,7 @@ class TestIVFIndex:
         ivf_index.insert(small_vectors)
 
         # Search with query vector
-        results = ivf_index.search(query_vector, k=5)
+        results = ivf_index.search(small_query_vector, k=5)
         assert len(results) <= 5
         assert all("id" in result for result in results)
         assert all("distance" in result for result in results)
@@ -231,7 +231,7 @@ class TestValoriIndexErrorHandling:
             flat_index.insert(sample_vectors[0])
 
     def test_invalid_query_vector(
-        self, flat_index, memory_storage, small_vectors, query_vector
+        self, flat_index, memory_storage, small_vectors, small_query_vector
     ):
         """Test handling of invalid query vectors."""
         flat_index.initialize(memory_storage)
@@ -254,7 +254,7 @@ class TestIndexMetrics:
 
     @pytest.mark.parametrize("metric", ["cosine", "euclidean"])
     def test_different_metrics(
-        self, metric, memory_storage, small_vectors, query_vector
+        self, metric, memory_storage, small_vectors, small_query_vector
     ):
         """Test indices with different similarity metrics."""
         index = FlatIndex({"metric": metric})
@@ -264,7 +264,7 @@ class TestIndexMetrics:
         index.insert(small_vectors)
 
         # Search
-        results = index.search(query_vector, k=3)
+        results = index.search(small_query_vector, k=3)
         assert len(results) <= 3
 
         # Check that distances are reasonable

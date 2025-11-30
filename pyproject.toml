@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+requires = ["setuptools>=45", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "valori"
-dynamic = ["version"]
+version = "0.1.3"
 description = "A high-performance vector database library for Python"
 readme = "README.md"
 license = {text = "MIT"}
@@ -18,7 +18,6 @@ keywords = ["vector", "database", "similarity", "search", "machine-learning", "e
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
@@ -32,53 +31,43 @@ classifiers = [
 ]
 requires-python = ">=3.8"
 dependencies = [
-    "numpy>=1.19.0",
-    "scikit-learn>=0.24.0",
-    "sentence-transformers>=2.2.0",
+    "numpy>=1.21.0",
+    "scikit-learn>=1.0.0",
+    "scipy>=1.7.0",
+    "psutil>=5.8.0",
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-xdist>=3.0.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+    "pre-commit>=3.0.0",
+    "safety>=2.0.0",
+    "bandit>=1.7.0",
+]
+docs = [
+    "sphinx>=7.0.0",
+    "sphinx-rtd-theme>=1.0.0",
+]
+benchmark = [
+    "matplotlib>=3.7.0",
+    "seaborn>=0.12.0",
+    "pandas>=2.0.0",
+]
+parsing = [
     "PyPDF2>=3.0.0",
     "python-docx>=0.8.11",
     "openpyxl>=3.1.0",
     "python-pptx>=0.6.21",
     "chardet>=5.0.0",
-    "nltk>=3.8",
-    "beautifulsoup4>=4.11.0",
-    "pathlib2>=2.3.0; python_version<'3.4'",
-]
-
-[project.optional-dependencies]
-dev = [
-    "pytest>=6.0",
-    "pytest-cov>=2.0",
-    "pytest-xdist>=2.0",
-    "black>=21.0",
-    "flake8>=3.8",
-    "mypy>=0.910",
-    "pre-commit>=2.0",
-    "sphinx>=4.0",
-    "sphinx-rtd-theme>=0.5",
-    "safety>=1.10",
-    "bandit>=1.7",
-]
-docs = [
-    "sphinx>=4.0",
-    "sphinx-rtd-theme>=0.5",
-    "sphinx-autodoc-typehints>=1.12",
-]
-benchmark = [
-    "matplotlib>=3.3",
-    "seaborn>=0.11",
-    "pandas>=1.3",
-]
-parsing = [
-    "docling>=1.0.0",
-    # Llama-parse removed; advanced parsing is provided via Docling in this distribution
-    "transformers>=4.21.0",
-    "torch>=1.12.0",
-    "pytesseract>=0.3.10",
-    "easyocr>=1.7.0",
-]
-indexing = [
-    "annoy>=1.17.0",
+    "nltk>=3.8.0",
+    "beautifulsoup4>=4.12.0",
+    "sentence-transformers>=2.2.0",
 ]
 
 [project.urls]
@@ -99,9 +88,6 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 valori = ["py.typed"]
-
-[tool.setuptools_scm]
-write_to = "src/valori/_version.py"
 
 [tool.black]
 line-length = 88
@@ -140,13 +126,14 @@ strict_equality = true
 module = [
     "sklearn.*",
     "numpy.*",
-    "pathlib2.*",
+    "scipy.*",
+    "psutil.*",
 ]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "-ra -q --strict-markers"
+addopts = "-ra -q --strict-markers --cov=valori --cov-report=term-missing --cov-report=xml"
 testpaths = ["tests"]
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
@@ -155,7 +142,7 @@ markers = [
 ]
 
 [tool.coverage.run]
-source = ["src/valori"]
+source = ["valori"]
 omit = [
     "*/tests/*",
     "*/test_*",

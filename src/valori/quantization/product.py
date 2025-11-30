@@ -56,8 +56,13 @@ class ProductQuantizer(Quantizer):
 
             self.subvector_dim = int(self.dim // self.m)
 
-            # Initialize centroids array
-            self.centroids = np.zeros((self.m, self.k, self.subvector_dim), dtype=float)
+            # Determine effective number of clusters (can't exceed n_vectors)
+            effective_k = int(min(self.k, max(1, n_vectors)))
+            self.effective_k = effective_k
+
+            # Initialize centroids array (use float32 to match input dtype)
+            # centroids shape may use effective_k which can be <= self.k
+            self.centroids = np.zeros((self.m, effective_k, self.subvector_dim), dtype=np.float32)
 
             # Train each subvector separately
             for i in range(self.m):
@@ -66,12 +71,20 @@ class ProductQuantizer(Quantizer):
                 end_idx = (i + 1) * self.subvector_dim
                 subvectors = vectors[:, start_idx:end_idx]
 
+                # If effective_k is 1, just take the mean as the single centroid
+                if effective_k <= 1:
+                    centroid = np.mean(subvectors, axis=0).astype(np.float32)
+                    self.centroids[i, 0] = centroid
+                    continue
+
                 # Perform K-means clustering on subvectors
-                kmeans = KMeans(n_clusters=self.k, random_state=42, n_init=10)
+                kmeans = KMeans(n_clusters=effective_k, random_state=42, n_init=10)
                 kmeans.fit(subvectors)
 
-                # Store centroids
-                self.centroids[i] = kmeans.cluster_centers_
+                # Store centroids as float32
+                self.centroids[i, : kmeans.cluster_centers_.shape[0]] = (
+                    kmeans.cluster_centers_.astype(np.float32)
+                )
 
             self._trained = True
 
@@ -88,10 +101,18 @@ class ProductQuantizer(Quantizer):
 
         try:
             n_vectors = int(vectors.shape[0])
-            quantized = np.zeros((n_vectors, int(self.m)), dtype=np.uint8)
+            assert self.subvector_dim is not None and self.centroids is not None
+
+            # Choose output dtype depending on number of centroids
+            effective_k = self.centroids.shape[1]
+            if effective_k - 1 <= np.iinfo(np.uint8).max:
+                qdtype = np.uint8
+            else:
+                qdtype = np.uint16
+
+            quantized = np.zeros((n_vectors, int(self.m)), dtype=qdtype)
 
             # Quantize each subvector
-            assert self.subvector_dim is not None and self.centroids is not None
             for i in range(int(self.m)):
                 start_idx = i * self.subvector_dim
                 end_idx = (i + 1) * self.subvector_dim
@@ -123,7 +144,8 @@ class ProductQuantizer(Quantizer):
         try:
             n_vectors = int(quantized_vectors.shape[0])
             assert self.dim is not None
-            dequantized = np.zeros((n_vectors, int(self.dim)), dtype=float)
+            # Return dequantized vectors as float32 (match training data dtype)
+            dequantized = np.zeros((n_vectors, int(self.dim)), dtype=np.float32)
 
             # Dequantize each subvector
             assert self.subvector_dim is not None and self.centroids is not None
@@ -160,10 +182,21 @@ class ProductQuantizer(Quantizer):
                 and self.centroids is not None
                 and self.dim is not None
             )
+            
+            # Ensure query is at least dim-sized (pad if needed)
+            q = query.astype(np.float32)
+            if q.ndim != 1:
+                q = q.reshape(-1)
+            if q.shape[0] < int(self.dim):
+                pad_len = int(self.dim) - q.shape[0]
+                q = np.pad(q, (0, pad_len), mode="constant", constant_values=0.0)
+            elif q.shape[0] > int(self.dim):
+                q = q[: int(self.dim)]
+                
             for i in range(int(self.m)):
                 start_idx = i * self.subvector_dim
                 end_idx = (i + 1) * self.subvector_dim
-                query_subvector = query[start_idx:end_idx]
+                query_subvector = q[start_idx:end_idx]
 
                 centroid_idx = int(quantized_vector[i])
                 centroid = self.centroids[i, centroid_idx]
@@ -194,7 +227,9 @@ class ProductQuantizer(Quantizer):
         }
 
         if self._trained:
-            bits_per_subvector = float(np.log2(self.k))
+            # Use effective_k if available (set during training), otherwise fall back to configured k
+            effective_k = getattr(self, "effective_k", self.k)
+            bits_per_subvector = float(np.log2(effective_k)) if effective_k > 1 else 1.0
             total_bits = float(self.m) * bits_per_subvector
 
             stats.update(
@@ -207,11 +242,12 @@ class ProductQuantizer(Quantizer):
                     ),
                     "bits_per_subvector": bits_per_subvector,
                     "total_bits": total_bits,
-                    "compression_ratio": (
-                        (total_bits / (32 * float(self.dim)))
-                        if self.dim is not None
-                        else None
-                    ),
+                    "effective_k": int(effective_k),
+                    # Define compression_ratio as original_bits_per_value / quantized_bits_per_value
+                    # For product quantizer, quantized bits per value = bits_per_subvector
+                    "compression_ratio": 32.0 / float(bits_per_subvector)
+                    if bits_per_subvector is not None and self.dim is not None
+                    else None,
                     "centroids_shape": (
                         self.centroids.shape if self.centroids is not None else None
                     ),

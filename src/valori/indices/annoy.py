@@ -65,14 +65,88 @@ class AnnoyIndex(Index):
                 "annoy library not installed. Install with: pip install annoy"
             )
 
-    def initialize(self) -> None:
+    def initialize(self, storage_backend=None) -> None:
         """Initialize the Annoy index."""
+        if storage_backend is not None:
+            self.storage_backend = storage_backend
+        
         if self.build_on_disk:
             # Create temporary file for on-disk building
             fd, self._temp_file = tempfile.mkstemp(suffix=".annoy")
             os.close(fd)
 
         self._initialized = True
+
+    def insert(
+        self, vectors: np.ndarray, metadata: Optional[List[Dict]] = None
+    ) -> List[str]:
+        """
+        Insert vectors into the index (alias for add).
+
+        Args:
+            vectors: Array of vectors to insert
+            metadata: Optional metadata for each vector
+
+        Returns:
+            List of IDs for the inserted vectors
+        """
+        if metadata is None:
+            metadata = [{} for _ in range(len(vectors))]
+        
+        assigned_ids = self.add(vectors, metadata)
+        return [str(id) for id in assigned_ids]
+
+    def delete(self, ids: List[str]) -> bool:
+        """
+        Delete vectors by their IDs (alias for remove).
+
+        Args:
+            ids: List of vector IDs to delete
+
+        Returns:
+            True if successful
+        """
+        try:
+            int_ids = [int(id) for id in ids]
+            self.remove(int_ids)
+            return True
+        except Exception as e:
+            raise ValoriIndexError(f"Failed to delete vectors: {str(e)}")
+
+    def update(
+        self, id: str, vector: np.ndarray, metadata: Optional[Dict] = None
+    ) -> bool:
+        """
+        Update a vector by its ID.
+
+        Args:
+            id: Vector ID to update
+            vector: New vector data
+            metadata: Optional new metadata
+
+        Returns:
+            True if successful
+        """
+        try:
+            int_id = int(id)
+            if int_id >= len(self.vectors):
+                raise ValoriIndexError(f"Vector ID not found: {id}")
+            
+            if metadata is None:
+                metadata = self.metadata[int_id]
+            
+            # Remove old vector
+            self.remove([int_id])
+            
+            # Add new vector (but reuse the same ID by temporarily modifying _next_id)
+            old_next_id = self._next_id
+            self._next_id = int_id
+            self.add(vector.reshape(1, -1), [metadata])
+            self._next_id = old_next_id
+            
+            return True
+        except Exception as e:
+            raise ValoriIndexError(f"Failed to update vector: {str(e)}")
 
     def add(self, vectors: np.ndarray, metadata: List[Dict[str, Any]]) -> List[int]:
         """
@@ -129,20 +203,23 @@ class AnnoyIndex(Index):
         if not self._initialized:
             raise ValoriIndexError("Index not initialized")
 
-        if self._annoy_index is None:
-            raise ValoriIndexError("No vectors added to index")
+        # Allow building empty index, but need dimension if there are vectors
+        if self.dimension is None and len(self.vectors) > 0:
+            raise ValoriIndexError("No dimension set for vectors")
 
-        if self.build_on_disk:
-            # Build on disk
-            self._annoy_index.build(self.num_trees)
-            self._annoy_index.save(self._temp_file)
+        # Only build if there's an annoy index instance
+        if self._annoy_index is not None:
+            if self.build_on_disk:
+                # Build on disk
+                self._annoy_index.build(self.num_trees)
+                self._annoy_index.save(self._temp_file)
 
-            # Reload from disk
-            self._annoy_index.unload()
-            self._annoy_index.load(self._temp_file)
-        else:
-            # Build in memory
-            self._annoy_index.build(self.num_trees)
+                # Reload from disk
+                self._annoy_index.unload()
+                self._annoy_index.load(self._temp_file)
+            else:
+                # Build in memory
+                self._annoy_index.build(self.num_trees)
 
         self._built = True
 
@@ -252,12 +329,8 @@ class AnnoyIndex(Index):
 
     def _create_annoy_index(self) -> None:
         """Create the Annoy index instance."""
-        if self.build_on_disk and self._temp_file:
-            self._annoy_index = self.annoy.AnnoyIndex(
-                self.dimension, self.metric, on_disk_build=True, prefault=False
-            )
-        else:
-            self._annoy_index = self.annoy.AnnoyIndex(self.dimension, self.metric)
+        # Annoy library AnnoyIndex constructor only accepts dimension and metric
+        self._annoy_index = self.annoy.AnnoyIndex(self.dimension, self.metric)
 
     def _distance_to_similarity(self, distance: float) -> float:
         """Convert Annoy distance to similarity score."""
@@ -290,7 +363,19 @@ class AnnoyIndex(Index):
             raise ValoriIndexError("Index not built. Call build() before saving.")
 
         if self._annoy_index is not None:
+            # Save the Annoy index
             self._annoy_index.save(filepath)
+            
+            # Also save metadata alongside the index
+            import json
+            metadata_path = filepath + ".meta"
+            metadata = {
+                "dimension": self.dimension,
+                "metric": self.metric,
+                "num_trees": self.num_trees,
+            }
+            with open(metadata_path, "w") as f:
+                json.dump(metadata, f)
 
     def load(self, filepath: str) -> None:
         """Load the index from disk."""
@@ -299,6 +384,24 @@ class AnnoyIndex(Index):
 
         if not os.path.exists(filepath):
             raise ValoriIndexError(f"Index file not found: {filepath}")
+
+        # Load metadata first
+        import json
+        metadata_path = filepath + ".meta"
+        if os.path.exists(metadata_path):
+            with open(metadata_path, "r") as f:
+                metadata = json.load(f)
+                self.dimension = metadata.get("dimension")
+                self.metric = metadata.get("metric", self.metric)
+                # num_trees already set from config during init
+        else:
+            # Fallback: if no metadata file, try to infer from index properties
+            # This is a limitation - we need the dimension to create AnnoyIndex
+            if self.dimension is None:
+                raise ValoriIndexError(
+                    f"Cannot load index without dimension info. "
+                    f"Metadata file not found: {metadata_path}"
+                )
 
         self._create_annoy_index()
         self._annoy_index.load(filepath)

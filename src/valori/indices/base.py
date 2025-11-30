@@ -23,6 +23,10 @@ class Index(ABC):
         self.storage_backend: Optional[StorageBackend] = None
         self._initialized = False
 
+    def is_initialized(self) -> bool:
+        """Check if the index is initialized."""
+        return self._initialized
+
     @abstractmethod
     def initialize(self, storage_backend: StorageBackend) -> None:
         """
