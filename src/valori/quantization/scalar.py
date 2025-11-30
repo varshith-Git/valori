@@ -104,14 +104,16 @@ class ScalarQuantizer(Quantizer):
 
             # Compute per-dimension quantized values in a vectorized manner
             # normalized = (vectors - min) / scale
-            with np.errstate(invalid='ignore', divide='ignore'):
+            with np.errstate(invalid="ignore", divide="ignore"):
                 normalized_all = (vectors - self.min_values) / self.scale
 
             # Round and clip to valid range
             rounded = np.rint(normalized_all)
             # Clip to the maximum representable for the chosen integer type
             max_for_type = np.iinfo(itype).max
-            upper_bound = int(self.max_val if self.max_val <= max_for_type else max_for_type)
+            upper_bound = int(
+                self.max_val if self.max_val <= max_for_type else max_for_type
+            )
             clipped = np.clip(rounded, 0, upper_bound)
             clipped = np.nan_to_num(clipped, nan=0.0, posinf=upper_bound, neginf=0.0)
 

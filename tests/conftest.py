@@ -100,7 +100,7 @@ def scalar_quantizer():
 @pytest.fixture
 def product_quantizer():
     """Create a product quantizer."""
-    return ProductQuantizer({"m": 8, "k":256})
+    return ProductQuantizer({"m": 8, "k": 256})
 
 
 @pytest.fixture

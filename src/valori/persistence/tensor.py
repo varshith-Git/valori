@@ -64,11 +64,10 @@ class TensorPersistence(PersistenceManager):
             file_path = self.data_dir / path
 
             if not file_path.exists():
-                    return None
+                return None
 
             with open(file_path, "rb") as f:
                 state = pickle.load(f)
-
             self._load_count += 1
             return state
 

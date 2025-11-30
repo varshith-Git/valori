@@ -119,6 +119,7 @@ class SAQQuantizer(Quantizer):
             except Exception as e:
                 # If quantization fails during training, log but continue
                 import traceback
+
                 print(f"Warning: Quantization during training failed: {e}")
                 traceback.print_exc()
 
@@ -218,7 +219,7 @@ class SAQQuantizer(Quantizer):
         except Exception:
             # In case pca object doesn't accept assignment, ignore
             pass
-    
+
     def _train_segment_quantizers(self, vectors_pca: np.ndarray) -> None:
         """Train individual quantizers for each segment."""
         # Build a KMeans-based codebook for each segment so each segment maps
@@ -272,8 +273,10 @@ class SAQQuantizer(Quantizer):
                     # Compute distances more memory-efficiently using a loop when needed
                     # ||X - C||^2 = ||X||^2 + ||C||^2 - 2*X*C^T
                     n_vectors = X.shape[0]
-                    X_norms = np.sum(X ** 2, axis=1, keepdims=True)  # (n_vectors, 1)
-                    C_norms = np.sum(self.centroids ** 2, axis=1, keepdims=True).T  # (1, k)
+                    X_norms = np.sum(X**2, axis=1, keepdims=True)  # (n_vectors, 1)
+                    C_norms = np.sum(
+                        self.centroids**2, axis=1, keepdims=True
+                    ).T  # (1, k)
                     XC = X @ self.centroids.T  # (n_vectors, k)
                     dists = X_norms + C_norms - 2 * XC
                     return np.argmin(dists, axis=1).astype(np.int32)
@@ -358,7 +361,9 @@ class SAQQuantizer(Quantizer):
             for seg_idx in range(len(self.segment_quantizers)):
                 # Calculate residual for current segment (in projection/normalized space)
                 start, end = self.segment_boundaries[seg_idx]
-                segment_residual = vectors_pca[:, start:end] - reconstructed[:, start:end]
+                segment_residual = (
+                    vectors_pca[:, start:end] - reconstructed[:, start:end]
+                )
 
                 quantizer = self.segment_quantizers[seg_idx]
 
@@ -376,14 +381,18 @@ class SAQQuantizer(Quantizer):
                 # Evaluate improvement by constructing a candidate reconstruction
                 # Only dequantize the specific updated segment to save memory
                 old_error = np.mean((vectors_pca - reconstructed) ** 2)
-                
+
                 # Efficiently compute new error by only updating the changed segment
                 segment_dequantized = quantizer.dequantize(new_codes)
                 new_reconstructed_segment = segment_dequantized
-                
+
                 # Compute error only for the changed segment
-                new_error = np.mean((vectors_pca[:, start:end] - new_reconstructed_segment) ** 2)
-                old_segment_error = np.mean((vectors_pca[:, start:end] - reconstructed[:, start:end]) ** 2)
+                new_error = np.mean(
+                    (vectors_pca[:, start:end] - new_reconstructed_segment) ** 2
+                )
+                old_segment_error = np.mean(
+                    (vectors_pca[:, start:end] - reconstructed[:, start:end]) ** 2
+                )
 
                 if new_error < old_segment_error:
                     best_codes[seg_idx] = new_codes
@@ -418,7 +427,9 @@ class SAQQuantizer(Quantizer):
                 codes_list = [codes[:, i].reshape(-1) for i in range(n_segments)]
             else:
                 # Fallback: split by segment widths if codes are per-dimension
-                codes_list = [codes[:, start:end] for (start, end) in self.segment_boundaries]
+                codes_list = [
+                    codes[:, start:end] for (start, end) in self.segment_boundaries
+                ]
         else:
             # Assume list-like
             codes_list = list(codes)
@@ -481,10 +492,10 @@ class SAQQuantizer(Quantizer):
         """
         if not self._initialized or not self._trained:
             raise QuantizationError("Quantizer not ready")
-            
+
         if self.dim is None:
             raise QuantizationError("Quantizer dimension not set")
-            
+
         # Align query to expected dimension
         q = query.astype(np.float32)
         if q.ndim != 1:

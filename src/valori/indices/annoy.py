@@ -69,7 +69,7 @@ class AnnoyIndex(Index):
         """Initialize the Annoy index."""
         if storage_backend is not None:
             self.storage_backend = storage_backend
-        
+
         if self.build_on_disk:
             # Create temporary file for on-disk building
             fd, self._temp_file = tempfile.mkstemp(suffix=".annoy")
@@ -92,7 +92,7 @@ class AnnoyIndex(Index):
         """
         if metadata is None:
             metadata = [{} for _ in range(len(vectors))]
-        
+
         assigned_ids = self.add(vectors, metadata)
         return [str(id) for id in assigned_ids]
 
@@ -131,19 +131,19 @@ class AnnoyIndex(Index):
             int_id = int(id)
             if int_id >= len(self.vectors):
                 raise ValoriIndexError(f"Vector ID not found: {id}")
-            
+
             if metadata is None:
                 metadata = self.metadata[int_id]
-            
+
             # Remove old vector
             self.remove([int_id])
-            
+
             # Add new vector (but reuse the same ID by temporarily modifying _next_id)
             old_next_id = self._next_id
             self._next_id = int_id
             self.add(vector.reshape(1, -1), [metadata])
             self._next_id = old_next_id
-            
+
             return True
         except Exception as e:
             raise ValoriIndexError(f"Failed to update vector: {str(e)}")
@@ -365,9 +365,10 @@ class AnnoyIndex(Index):
         if self._annoy_index is not None:
             # Save the Annoy index
             self._annoy_index.save(filepath)
-            
+
             # Also save metadata alongside the index
             import json
+
             metadata_path = filepath + ".meta"
             metadata = {
                 "dimension": self.dimension,
@@ -387,6 +388,7 @@ class AnnoyIndex(Index):
 
         # Load metadata first
         import json
+
         metadata_path = filepath + ".meta"
         if os.path.exists(metadata_path):
             with open(metadata_path, "r") as f:

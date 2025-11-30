@@ -62,7 +62,9 @@ class ProductQuantizer(Quantizer):
 
             # Initialize centroids array (use float32 to match input dtype)
             # centroids shape may use effective_k which can be <= self.k
-            self.centroids = np.zeros((self.m, effective_k, self.subvector_dim), dtype=np.float32)
+            self.centroids = np.zeros(
+                (self.m, effective_k, self.subvector_dim), dtype=np.float32
+            )
 
             # Train each subvector separately
             for i in range(self.m):
@@ -182,7 +184,7 @@ class ProductQuantizer(Quantizer):
                 and self.centroids is not None
                 and self.dim is not None
             )
-            
+
             # Ensure query is at least dim-sized (pad if needed)
             q = query.astype(np.float32)
             if q.ndim != 1:
@@ -192,7 +194,7 @@ class ProductQuantizer(Quantizer):
                 q = np.pad(q, (0, pad_len), mode="constant", constant_values=0.0)
             elif q.shape[0] > int(self.dim):
                 q = q[: int(self.dim)]
-                
+
             for i in range(int(self.m)):
                 start_idx = i * self.subvector_dim
                 end_idx = (i + 1) * self.subvector_dim
@@ -245,9 +247,11 @@ class ProductQuantizer(Quantizer):
                     "effective_k": int(effective_k),
                     # Define compression_ratio as original_bits_per_value / quantized_bits_per_value
                     # For product quantizer, quantized bits per value = bits_per_subvector
-                    "compression_ratio": 32.0 / float(bits_per_subvector)
-                    if bits_per_subvector is not None and self.dim is not None
-                    else None,
+                    "compression_ratio": (
+                        32.0 / float(bits_per_subvector)
+                        if bits_per_subvector is not None and self.dim is not None
+                        else None
+                    ),
                     "centroids_shape": (
                         self.centroids.shape if self.centroids is not None else None
                     ),
