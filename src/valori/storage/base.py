@@ -3,7 +3,7 @@ Base storage backend interface for the valori vector database.
 """
 
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 import numpy as np
 
 
@@ -43,7 +43,7 @@ class StorageBackend(ABC):
         pass
 
     @abstractmethod
-    def retrieve_vector(self, id: str) -> Optional[tuple[np.ndarray, Optional[Dict]]]:
+    def retrieve_vector(self, id: str) -> Optional[Tuple[np.ndarray, Optional[Dict]]]:
         """
         Retrieve a vector by its ID.
 

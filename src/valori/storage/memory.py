@@ -2,7 +2,7 @@
 In-memory storage backend for the valori vector database.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 import numpy as np
 from threading import RLock
 
@@ -68,7 +68,7 @@ class MemoryStorage(StorageBackend):
         except Exception as e:
             raise StorageError(f"Failed to store vector {id}: {str(e)}")
 
-    def retrieve_vector(self, id: str) -> Optional[tuple[np.ndarray, Optional[Dict]]]:
+    def retrieve_vector(self, id: str) -> Optional[Tuple[np.ndarray, Optional[Dict]]]:
         """Retrieve a vector from memory."""
         if not self._initialized:
             raise StorageError("Storage backend not initialized")

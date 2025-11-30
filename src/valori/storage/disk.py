@@ -4,7 +4,7 @@ Disk-based storage backend for the valori vector database.
 
 import os
 import pickle
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 import numpy as np
 from pathlib import Path
 
@@ -77,7 +77,7 @@ class DiskStorage(StorageBackend):
         except Exception as e:
             raise StorageError(f"Failed to store vector {id}: {str(e)}")
 
-    def retrieve_vector(self, id: str) -> Optional[tuple[np.ndarray, Optional[Dict]]]:
+    def retrieve_vector(self, id: str) -> Optional[Tuple[np.ndarray, Optional[Dict]]]:
         """Retrieve a vector from disk."""
         if not self._initialized:
             raise StorageError("Storage backend not initialized")

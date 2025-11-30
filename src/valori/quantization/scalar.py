@@ -195,7 +195,7 @@ class ScalarQuantizer(Quantizer):
                 return 1.0
 
             similarity = dot_product / (norm_query * norm_dequantized)
-            return 1 - similarity
+            return float(1.0 - similarity)
 
         except Exception as e:
             raise QuantizationError(f"Failed to compute distance: {str(e)}")
