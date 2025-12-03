@@ -13,6 +13,11 @@ Contact: varshith.gudur17@gmail.com
 
 A high-performance vector database library for Python that provides efficient storage, indexing, and search capabilities for high-dimensional vectors.
 
+> [!IMPORTANT]
+> Valori is in early development, so bugs and breaking changes are expected.
+> Please use the [issues page](https://github.com/varshith-Git/valori/issues) to report bugs or request features.
+
+
 ## Features
 
 - **🚀 High Performance**: Optimized for speed with multiple indexing algorithms
