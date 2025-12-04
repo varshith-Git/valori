@@ -67,7 +67,8 @@ downloads:
 	fi
 
 test:
-	@$(PY) -m pytest
+	@$(PY) -m pytest tests/ --cov=valori --cov-report=term-missing --cov-report=xml
+
 
 coverage:
 	@$(PY) -m pytest --cov=valori --cov-report=term-missing --cov-report=xml
