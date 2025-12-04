@@ -51,7 +51,7 @@ dev = [
     "pre-commit>=3.0.0",
     "safety>=2.0.0",
     "bandit>=1.7.0",
-    "annoy>=1.17.0",
+    "annoy==1.17.0",
 ]
 docs = [
     "sphinx>=7.0.0",

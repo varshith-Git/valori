@@ -58,6 +58,13 @@ jobs:
     - name: Test with pytest
       run: |
         pytest tests/ --cov=valori --cov-report=xml --cov-report=term-missing
+        
+    - name: Run tests (macOS) — skip annoy
+      if: matrix.os == 'macos-latest'
+      run: |
+        # skip tests that use Annoy because compiled extension is unstable on macOS runners
+        python -m pytest -k "not annoy" --cov=valori --cov-report=xml --cov-report=term-missing
+
     
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v4
