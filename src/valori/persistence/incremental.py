@@ -4,7 +4,7 @@ Incremental persistence implementation for the valori vector database.
 
 import json
 import pickle
-from typing import Any, Dict, Optional,Tuple
+from typing import Any, Dict, Optional, Tuple
 import numpy as np
 from pathlib import Path
 from datetime import datetime
