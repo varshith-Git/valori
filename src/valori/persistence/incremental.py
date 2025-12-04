@@ -4,7 +4,7 @@ Incremental persistence implementation for the valori vector database.
 
 import json
 import pickle
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional,Tuple
 import numpy as np
 from pathlib import Path
 from datetime import datetime
@@ -130,7 +130,7 @@ class IncrementalPersistence(PersistenceManager):
         except Exception as e:
             raise PersistenceError(f"Failed to save vectors to {path}: {str(e)}")
 
-    def load_vectors(self, path: str) -> Optional[tuple[np.ndarray, list]]:
+    def load_vectors(self, path: str) -> Optional[Tuple[np.ndarray, list]]:
         """Load vectors from file."""
         if not self._initialized:
             raise PersistenceError("Persistence manager not initialized")

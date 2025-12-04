@@ -209,8 +209,8 @@ class ProductQuantizer(Quantizer):
                 )
                 distance += subvector_distance
 
-            # Return Euclidean distance
-            return np.sqrt(distance)
+            # Return Euclidean distance as native Python float
+            return float(np.sqrt(distance))
 
         except Exception as e:
             raise QuantizationError(f"Failed to compute distance: {str(e)}")

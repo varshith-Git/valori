@@ -3,7 +3,7 @@ Base persistence interface for the valori vector database.
 """
 
 from abc import ABC, abstractmethod
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional,Tuple
 import numpy as np
 
 
@@ -68,7 +68,7 @@ class PersistenceManager(ABC):
         pass
 
     @abstractmethod
-    def load_vectors(self, path: str) -> Optional[tuple[np.ndarray, list]]:
+    def load_vectors(self, path: str) -> Optional[Tuple[np.ndarray, list]]:
         """
         Load vectors from a file.
 
