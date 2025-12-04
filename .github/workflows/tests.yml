@@ -45,38 +45,43 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           # Install editable package with dev extras (ensure .[dev] is defined in pyproject.toml)
           pip install -e ".[dev]" || pip install -e .
+        shell: bash
 
       - name: Verify package installation
         run: |
           python -c "import importlib, sys; importlib.import_module('valori'); print('Valori imported OK')"
+        shell: bash
 
       - name: Lint with flake8
         run: |
           pip install flake8 || true
           flake8 src/ tests/ --count --select=E9,F63,F7,F82 --show-source --statistics || true
           flake8 src/ tests/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics || true
+        shell: bash
 
       - name: Format check with black
         run: |
           pip install black || true
           black --check src/ tests/ || true
+        shell: bash
 
       - name: Type check with mypy
         run: |
           pip install mypy || true
           mypy src/ --ignore-missing-imports || true
+        shell: bash
 
       - name: Run tests (skip Annoy on macOS to avoid segfaults)
         # Use a shell snippet so we can pick the right pytest invocation per runner
         run: |
           echo "Running tests on $RUNNER_OS / Python ${{ matrix.python-version }}"
-          # If this is macOS, skip tests that are known to cause segfaults (Annoy compiled extension)
-          if [ "${{ matrix.os }}" = "macos-latest" ]; then
+          if : "${{ matrix.os }}" = "macos-latest"; then
             echo "macOS runner detected — skipping tests that require Annoy (use marker 'annoy')"
             pytest tests/ -k "not annoy" --cov=valori --cov-report=xml --cov-report=term-missing
           else
             pytest tests/ --cov=valori --cov-report=xml --cov-report=term-missing
           fi
+        shell: bash
 
       - name: Upload coverage artifact (unique per matrix)
         if: always()
