@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "valori"
-version = "0.1.4"
+version = "0.1.5"
 description = "A high-performance vector database library for Python"
 readme = "README.md"
 license = {text = "MIT"}
