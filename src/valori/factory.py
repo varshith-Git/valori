@@ -5,7 +5,7 @@ This module provides convenient factory functions to create pre-configured
 vector database instances for common use cases.
 """
 
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union,Tuple
 from pathlib import Path
 import numpy as np
 
@@ -68,7 +68,7 @@ def create_document_db(
     chunk_overlap: int = 100,
     index_type: str = "annoy",
     **kwargs,
-) -> tuple[VectorDBClient, ProcessingPipeline]:
+) -> Tuple[VectorDBClient, ProcessingPipeline]:
     """
     Create a vector database optimized for document processing.
 
@@ -297,7 +297,7 @@ def _create_storage(storage_type: str, config: Dict[str, Any]):
 
 def _extract_image_features(
     image_paths: List[Union[str, Path]], extractor: str
-) -> tuple:
+) -> Tuple:
     """Extract features from images."""
     try:
         if extractor == "clip":
