@@ -5,7 +5,7 @@ This module provides convenient factory functions to create pre-configured
 vector database instances for common use cases.
 """
 
-from typing import Any, Dict, List, Optional, Union,Tuple
+from typing import Any, Dict, List, Optional, Union, Tuple
 from pathlib import Path
 import numpy as np
 
