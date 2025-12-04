@@ -6,8 +6,8 @@ vector database state, including tensor-based and incremental persistence.
 """
 
 from .base import PersistenceManager
-from .tensor import TensorPersistence
 from .incremental import IncrementalPersistence
+from .tensor import TensorPersistence
 
 __all__ = [
     "PersistenceManager",

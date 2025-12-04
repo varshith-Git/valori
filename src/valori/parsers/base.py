@@ -3,8 +3,8 @@ Base document parser interface for the valori vector database.
 """
 
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Optional, Union
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Union
 
 
 class DocumentParser(ABC):

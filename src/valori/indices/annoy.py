@@ -5,14 +5,15 @@ Implements Annoy (Approximate Nearest Neighbors Oh Yeah) for fast
 approximate nearest neighbor search using random projection trees.
 """
 
-import numpy as np
-from typing import Any, Dict, List, Optional, Union
-import tempfile
 import os
+import tempfile
+from typing import Any, Dict, List, Optional, Union
 
-from .base import Index
+import numpy as np
+
 from ..exceptions import ValoriIndexError
 from ..utils.validation import validate_vector
+from .base import Index
 
 
 class AnnoyIndex(Index):

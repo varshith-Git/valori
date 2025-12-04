@@ -6,12 +6,13 @@ production-ready quantization for large-scale vector databases.
 """
 
 from typing import Any, Dict, List, Optional, Tuple
+
 import numpy as np
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
-from .base import Quantizer
 from ..exceptions import QuantizationError
+from .base import Quantizer
 
 
 class SAQQuantizer(Quantizer):

@@ -2,8 +2,10 @@
 Validation utilities for the valori vector database.
 """
 
-import numpy as np
 from typing import Any, Dict, List, Optional, Union
+
+import numpy as np
+
 from ..exceptions import ValidationError
 
 

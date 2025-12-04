@@ -4,11 +4,12 @@ HNSW (Hierarchical Navigable Small World) index implementation for the Vectara v
 
 import uuid
 from typing import Any, Dict, List, Optional
+
 import numpy as np
 
-from .base import Index
 from ..exceptions import ValoriIndexError
 from ..storage.base import StorageBackend
+from .base import Index
 
 
 class HNSWIndex(Index):

@@ -9,9 +9,10 @@ This example demonstrates the fundamental operations of the vector database:
 """
 
 import numpy as np
+
 from valori import VectorDBClient
-from valori.storage import MemoryStorage
 from valori.indices import FlatIndex
+from valori.storage import MemoryStorage
 
 
 def main():

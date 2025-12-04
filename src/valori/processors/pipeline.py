@@ -2,15 +2,15 @@
 Document processing pipeline for the valori vector database.
 """
 
-from typing import Any, Dict, List, Optional, Union
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Union
 
+from ..exceptions import ProcessingError
+from ..parsers.registry import ParserRegistry
 from .base import DocumentProcessor
 from .chunking import ChunkingProcessor
 from .cleaning import CleaningProcessor
 from .embedding import EmbeddingProcessor
-from ..parsers.registry import ParserRegistry
-from ..exceptions import ProcessingError
 
 
 class ProcessingPipeline:

@@ -5,16 +5,17 @@ This module provides convenient helper functions for common operations,
 making the vector database easier to use.
 """
 
-import numpy as np
-from typing import Any, Dict, List, Optional, Union, Tuple
-from pathlib import Path
 import json
 import pickle
 import time
 from functools import wraps
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple, Union
 
-from .validation import validate_vector
+import numpy as np
+
 from ..exceptions import ValidationError
+from .validation import validate_vector
 
 
 def create_vectors_from_text(
@@ -76,8 +77,8 @@ def create_vectors_from_files(
     Returns:
         Tuple of (vectors, metadata)
     """
-    from ..processors import ProcessingPipeline
     from ..parsers import ParserRegistry
+    from ..processors import ProcessingPipeline
 
     # Setup processing pipeline
     pipeline_config = {

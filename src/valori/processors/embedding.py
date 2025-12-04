@@ -2,12 +2,13 @@
 Embedding processor for the valori vector database.
 """
 
-import numpy as np
-from typing import Any, Dict, List, Optional, Union
 import hashlib
+from typing import Any, Dict, List, Optional, Union
 
-from .base import DocumentProcessor
+import numpy as np
+
 from ..exceptions import ProcessingError
+from .base import DocumentProcessor
 
 
 class EmbeddingProcessor(DocumentProcessor):
@@ -89,8 +90,8 @@ class EmbeddingProcessor(DocumentProcessor):
     def _initialize_huggingface(self) -> None:
         """Initialize HuggingFace transformers model."""
         try:
-            from transformers import AutoTokenizer, AutoModel
             import torch
+            from transformers import AutoModel, AutoTokenizer
 
             self._tokenizer = AutoTokenizer.from_pretrained(self.model_name)
             self._model = AutoModel.from_pretrained(self.model_name)

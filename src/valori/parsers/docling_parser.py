@@ -4,11 +4,11 @@ Docling parser for the valori vector database.
 Uses Microsoft's Docling library for advanced document parsing.
 """
 
-from typing import Any, Dict, List, Union
 from pathlib import Path
+from typing import Any, Dict, List, Union
 
-from .base import DocumentParser
 from ..exceptions import ParsingError
+from .base import DocumentParser
 
 
 class DoclingParser(DocumentParser):
@@ -34,8 +34,8 @@ class DoclingParser(DocumentParser):
         try:
             # Try to import docling
             import docling
-            from docling.document_converter import DocumentConverter
             from docling.datamodel.base_models import InputFormat
+            from docling.document_converter import DocumentConverter
 
             self.docling = docling
             self.converter = DocumentConverter()

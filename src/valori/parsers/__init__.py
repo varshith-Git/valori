@@ -6,11 +6,11 @@ text and structured data from different document formats.
 """
 
 from .base import DocumentParser
-from .text_parser import TextParser
-from .pdf_parser import PDFParser
-from .office_parser import OfficeParser
 from .docling_parser import DoclingParser
+from .office_parser import OfficeParser
+from .pdf_parser import PDFParser
 from .registry import ParserRegistry
+from .text_parser import TextParser
 
 __all__ = [
     "DocumentParser",

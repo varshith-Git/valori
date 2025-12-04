@@ -6,13 +6,15 @@ pipeline to extract, clean, chunk, and embed documents for vector database stora
 """
 
 import os
-import numpy as np
 from pathlib import Path
+
+import numpy as np
+
 from valori import VectorDBClient
-from valori.storage import MemoryStorage
 from valori.indices import FlatIndex
-from valori.processors import ProcessingPipeline
 from valori.parsers import ParserRegistry
+from valori.processors import ProcessingPipeline
+from valori.storage import MemoryStorage
 
 
 def create_sample_documents():

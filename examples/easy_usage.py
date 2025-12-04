@@ -5,29 +5,31 @@ This example demonstrates the various supporting functions and utilities
 that make the vector database easy to use for common tasks.
 """
 
-import numpy as np
 from pathlib import Path
+
+import numpy as np
+
 from valori import VectorDBClient
+from valori.configs import get_config, get_recommended_config, list_configs
+from valori.factory import (
+    create_document_db,
+    create_from_template,
+    create_semantic_search_db,
+    create_vector_db,
+)
 from valori.utils import (
-    create_vectors_from_text,
-    normalize_vectors,
-    find_duplicates,
-    save_vectors_to_file,
-    load_vectors_from_file,
-    timing_decorator,
     BatchManager,
+    IndexInspector,
+    PerformanceProfiler,
     ProgressTracker,
     VectorAnalyzer,
-    PerformanceProfiler,
-    IndexInspector,
+    create_vectors_from_text,
+    find_duplicates,
+    load_vectors_from_file,
+    normalize_vectors,
+    save_vectors_to_file,
+    timing_decorator,
 )
-from valori.factory import (
-    create_vector_db,
-    create_document_db,
-    create_semantic_search_db,
-    create_from_template,
-)
-from valori.configs import get_config, get_recommended_config, list_configs
 
 
 def demo_helper_functions():

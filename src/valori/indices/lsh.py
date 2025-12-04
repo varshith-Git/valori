@@ -5,15 +5,16 @@ Implements Locality Sensitive Hashing for approximate nearest neighbor search
 with configurable hash functions and parameters.
 """
 
-import numpy as np
 import hashlib
-from typing import Any, Dict, List, Optional, Tuple, Union
 from collections import defaultdict
+from typing import Any, Dict, List, Optional, Tuple, Union
 
-from .base import Index
-from ..storage.base import StorageBackend
+import numpy as np
+
 from ..exceptions import ValoriIndexError
+from ..storage.base import StorageBackend
 from ..utils.validation import validate_vector
+from .base import Index
 
 
 class LSHIndex(Index):

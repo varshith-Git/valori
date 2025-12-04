@@ -4,12 +4,13 @@ IVF (Inverted File) index implementation for the Vectara vector database.
 
 import uuid
 from typing import Any, Dict, List, Optional
+
 import numpy as np
 from sklearn.cluster import KMeans
 
-from .base import Index
 from ..exceptions import ValoriIndexError
 from ..storage.base import StorageBackend
+from .base import Index
 
 
 class IVFIndex(Index):

@@ -2,10 +2,11 @@
 Tests for Annoy index implementation.
 """
 
-import pytest
 import numpy as np
-from valori.indices import AnnoyIndex
+import pytest
+
 from valori.exceptions import ValoriIndexError
+from valori.indices import AnnoyIndex
 
 
 class TestAnnoyIndex:

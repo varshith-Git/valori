@@ -5,8 +5,7 @@ This module provides ready-to-use configurations for common use cases,
 making it easy to get started with the vector database.
 """
 
-from typing import Dict, Any, List, Optional
-
+from typing import Any, Dict, List, Optional
 
 # Index configurations for different scenarios
 INDEX_CONFIGS: Dict[str, Any] = {

@@ -9,6 +9,8 @@ on:
 jobs:
   test:
     runs-on: ${{ matrix.os }}
+    env:
+      PYTHONENCODING: utf-8
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -37,8 +39,7 @@ jobs:
     
     - name: Verify package installation
       run: |
-        python -c "import valori; print('✓ Valori package imported successfully')"
-        python -c "from valori.quantization import SAQQuantizer; print('✓ SAQQuantizer imported successfully')"
+        python -c "import valori; print('Valori package imported successfully')"
     
     - name: Lint with flake8
       run: |

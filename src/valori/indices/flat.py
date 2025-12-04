@@ -4,12 +4,13 @@ Flat (brute force) index implementation for the Vectara vector database.
 
 import uuid
 from typing import Any, Dict, List, Optional
+
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity, euclidean_distances
 
-from .base import Index
-from ..storage.base import StorageBackend
 from ..exceptions import ValoriIndexError
+from ..storage.base import StorageBackend
+from .base import Index
 
 
 class FlatIndex(Index):

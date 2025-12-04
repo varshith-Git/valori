@@ -4,14 +4,15 @@ Hybrid storage backend for the valori vector database.
 Combines memory and disk storage for optimal performance and persistence.
 """
 
-from typing import Any, Dict, List, Optional, Tuple
-import numpy as np
 from threading import RLock
+from typing import Any, Dict, List, Optional, Tuple
 
-from .base import StorageBackend
-from .memory import MemoryStorage
-from .disk import DiskStorage
+import numpy as np
+
 from ..exceptions import StorageError
+from .base import StorageBackend
+from .disk import DiskStorage
+from .memory import MemoryStorage
 
 
 class HybridStorage(StorageBackend):

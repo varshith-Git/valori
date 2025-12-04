@@ -4,12 +4,13 @@ Disk-based storage backend for the valori vector database.
 
 import os
 import pickle
-from typing import Any, Dict, List, Optional, Tuple
-import numpy as np
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
 
-from .base import StorageBackend
+import numpy as np
+
 from ..exceptions import StorageError
+from .base import StorageBackend
 
 
 class DiskStorage(StorageBackend):

@@ -4,13 +4,14 @@ Incremental persistence implementation for the valori vector database.
 
 import json
 import pickle
-from typing import Any, Dict, Optional, Tuple
-import numpy as np
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict, Optional, Tuple
 
-from .base import PersistenceManager
+import numpy as np
+
 from ..exceptions import PersistenceError
+from .base import PersistenceManager
 
 
 class IncrementalPersistence(PersistenceManager):

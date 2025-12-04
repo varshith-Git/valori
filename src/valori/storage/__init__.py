@@ -6,9 +6,9 @@ including in-memory, disk-based, and hybrid storage options.
 """
 
 from .base import StorageBackend
-from .memory import MemoryStorage
 from .disk import DiskStorage
 from .hybrid import HybridStorage
+from .memory import MemoryStorage
 
 __all__ = [
     "StorageBackend",

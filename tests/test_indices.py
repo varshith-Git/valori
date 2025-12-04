@@ -2,10 +2,11 @@
 Tests for index implementations.
 """
 
-import pytest
 import numpy as np
-from valori.indices import FlatIndex, HNSWIndex, IVFIndex
+import pytest
+
 from valori.exceptions import ValoriIndexError
+from valori.indices import FlatIndex, HNSWIndex, IVFIndex
 
 
 class TestFlatIndex:

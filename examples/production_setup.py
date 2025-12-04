@@ -5,16 +5,18 @@ This example demonstrates how to set up the vector database for production use
 with proper configuration, persistence, monitoring, and error handling.
 """
 
-import numpy as np
 import json
 import time
 from pathlib import Path
+
+import numpy as np
+
 from valori import VectorDBClient
-from valori.storage import HybridStorage
 from valori.indices import HNSWIndex
-from valori.quantization import ProductQuantizer
 from valori.persistence import TensorPersistence
-from valori.utils.logging import setup_logging, get_logger
+from valori.quantization import ProductQuantizer
+from valori.storage import HybridStorage
+from valori.utils.logging import get_logger, setup_logging
 
 
 class ProductionVectorDB:

@@ -2,10 +2,11 @@
 Tests for persistence implementations.
 """
 
-import pytest
 import numpy as np
-from valori.persistence import TensorPersistence, IncrementalPersistence
+import pytest
+
 from valori.exceptions import PersistenceError
+from valori.persistence import IncrementalPersistence, TensorPersistence
 
 
 class TestTensorPersistence:

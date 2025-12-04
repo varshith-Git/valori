@@ -2,10 +2,11 @@
 Tests for quantization implementations.
 """
 
-import pytest
 import numpy as np
-from valori.quantization import ScalarQuantizer, ProductQuantizer, SAQQuantizer
+import pytest
+
 from valori.exceptions import QuantizationError
+from valori.quantization import ProductQuantizer, SAQQuantizer, ScalarQuantizer
 
 
 class TestScalarQuantizer:
@@ -530,8 +531,9 @@ class TestQuantizationPerformance:
 
     def test_saq_memory_efficiency(self, saq_quantizer, high_dim_vectors):
         """Test SAQ memory usage characteristics."""
-        import psutil
         import os
+
+        import psutil
 
         process = psutil.Process(os.getpid())
         initial_memory = process.memory_info().rss

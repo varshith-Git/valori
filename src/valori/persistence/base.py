@@ -4,6 +4,7 @@ Base persistence interface for the valori vector database.
 
 from abc import ABC, abstractmethod
 from typing import Any, Dict, Optional, Tuple
+
 import numpy as np
 
 

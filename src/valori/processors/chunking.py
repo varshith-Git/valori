@@ -4,10 +4,11 @@ Text chunking processor for the valori vector database.
 
 import re
 from typing import Any, Dict, List, Optional
+
 import numpy as np
 
-from .base import DocumentProcessor
 from ..exceptions import ProcessingError
+from .base import DocumentProcessor
 
 
 class ChunkingProcessor(DocumentProcessor):

@@ -6,7 +6,7 @@ This file is provided for compatibility with older build tools.
 For new projects, use pyproject.toml instead.
 """
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 # Read README file
 with open("README.md", "r", encoding="utf-8") as fh:

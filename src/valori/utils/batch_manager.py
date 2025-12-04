@@ -5,17 +5,18 @@ This module provides utilities for efficient batch operations,
 progress tracking, and resource management.
 """
 
-import time
-import numpy as np
-from typing import Any, Dict, List, Optional, Union, Callable, Iterator
-from pathlib import Path
-import threading
-from queue import Queue, Empty
-from concurrent.futures import ThreadPoolExecutor, as_completed
 import json
+import threading
+import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
+from queue import Empty, Queue
+from typing import Any, Callable, Dict, Iterator, List, Optional, Union
 
-from .helpers import timing_decorator
+import numpy as np
+
 from ..exceptions import ValidationError
+from .helpers import timing_decorator
 
 
 class BatchManager:

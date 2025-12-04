@@ -3,14 +3,15 @@ High-level client for the Valori vector database.
 """
 
 from typing import Any, Dict, List, Optional, Union
+
 import numpy as np
 
 from .base import VectorDB
-from .storage.base import StorageBackend
-from .indices.base import Index
-from .quantization.base import Quantizer
-from .persistence.base import PersistenceManager
 from .exceptions import ValoriError
+from .indices.base import Index
+from .persistence.base import PersistenceManager
+from .quantization.base import Quantizer
+from .storage.base import StorageBackend
 
 
 class VectorDBClient:

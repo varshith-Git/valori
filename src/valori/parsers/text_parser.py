@@ -2,12 +2,13 @@
 Text file parser for the valori vector database.
 """
 
-import chardet
-from typing import Any, Dict, List, Union
 from pathlib import Path
+from typing import Any, Dict, List, Union
 
-from .base import DocumentParser
+import chardet
+
 from ..exceptions import ParsingError
+from .base import DocumentParser
 
 
 class TextParser(DocumentParser):

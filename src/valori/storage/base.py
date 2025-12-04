@@ -4,6 +4,7 @@ Base storage backend interface for the valori vector database.
 
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional, Tuple
+
 import numpy as np
 
 

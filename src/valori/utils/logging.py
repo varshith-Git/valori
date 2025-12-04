@@ -4,8 +4,8 @@ Logging utilities for the valori vector database.
 
 import logging
 import sys
-from typing import Dict, Any, Optional
 from pathlib import Path
+from typing import Any, Dict, Optional
 
 
 def get_logger(name: str, level: str = "INFO") -> logging.Logger:

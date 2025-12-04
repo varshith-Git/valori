@@ -5,15 +5,16 @@ This module provides convenient factory functions to create pre-configured
 vector database instances for common use cases.
 """
 
-from typing import Any, Dict, List, Optional, Union, Tuple
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple, Union
+
 import numpy as np
 
 from .client import VectorDBClient
-from .storage import MemoryStorage, DiskStorage, HybridStorage
-from .indices import FlatIndex, HNSWIndex, IVFIndex, LSHIndex, AnnoyIndex
-from .processors import ProcessingPipeline
+from .indices import AnnoyIndex, FlatIndex, HNSWIndex, IVFIndex, LSHIndex
 from .parsers import ParserRegistry
+from .processors import ProcessingPipeline
+from .storage import DiskStorage, HybridStorage, MemoryStorage
 from .utils.helpers import get_recommended_index_config
 
 

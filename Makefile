@@ -21,6 +21,7 @@ help:
 	@echo "  flake         - run flake8 only"
 	@echo "  format        - run black and isort to format code (alias for 'make black && make isort')"
 	@echo "  black         - run black formatter on the repo (uses venv)"
+	@echo "  isort         - run isort to sort imports (uses venv)"
 	@echo "  black-check   - run black --check to verify formatting"
 	@echo "  typecheck     - run mypy"
 	@echo "  safety        - run safety check (requires safety in the venv)"
@@ -81,6 +82,9 @@ black-check:
 
 black:
 	@$(VENV)/bin/black .
+
+isort:
+	@$(VENV)/bin/isort .
 
 format-check: black-check
 	@$(VENV)/bin/isort --check-only . || true

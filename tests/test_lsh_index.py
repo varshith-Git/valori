@@ -2,10 +2,11 @@
 Tests for LSH (Locality Sensitive Hashing) index implementation.
 """
 
-import pytest
 import numpy as np
-from valori.indices import LSHIndex
+import pytest
+
 from valori.exceptions import ValoriIndexError
+from valori.indices import LSHIndex
 
 
 class TestLSHIndex:

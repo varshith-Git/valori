@@ -4,6 +4,7 @@ Base classes and interfaces for the Valori vector database.
 
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional, Union
+
 import numpy as np
 
 

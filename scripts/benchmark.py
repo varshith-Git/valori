@@ -7,17 +7,18 @@ of different configurations and components.
 """
 
 import argparse
-import time
-import numpy as np
 import json
+import time
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Any, Dict, List
+
+import numpy as np
 
 from valori import VectorDBClient
-from valori.storage import MemoryStorage, DiskStorage, HybridStorage
 from valori.indices import FlatIndex, HNSWIndex, IVFIndex
-from valori.quantization import ScalarQuantizer, ProductQuantizer
 from valori.persistence import TensorPersistence
+from valori.quantization import ProductQuantizer, ScalarQuantizer
+from valori.storage import DiskStorage, HybridStorage, MemoryStorage
 
 
 class BenchmarkSuite:

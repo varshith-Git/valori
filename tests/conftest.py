@@ -2,16 +2,17 @@
 Pytest configuration and fixtures for Valori tests.
 """
 
-import pytest
-import numpy as np
-from pathlib import Path
-import tempfile
 import shutil
+import tempfile
+from pathlib import Path
 
-from valori.storage import MemoryStorage, DiskStorage, HybridStorage
+import numpy as np
+import pytest
+
 from valori.indices import FlatIndex, HNSWIndex, IVFIndex
-from valori.quantization import ScalarQuantizer, ProductQuantizer, SAQQuantizer
-from valori.persistence import TensorPersistence, IncrementalPersistence
+from valori.persistence import IncrementalPersistence, TensorPersistence
+from valori.quantization import ProductQuantizer, SAQQuantizer, ScalarQuantizer
+from valori.storage import DiskStorage, HybridStorage, MemoryStorage
 
 
 @pytest.fixture

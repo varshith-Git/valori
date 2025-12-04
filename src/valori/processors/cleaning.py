@@ -2,13 +2,13 @@
 Text cleaning processor for the valori vector database.
 """
 
-import re
 import html
-from typing import Any, Dict, List, Optional
+import re
 import unicodedata
+from typing import Any, Dict, List, Optional
 
-from .base import DocumentProcessor
 from ..exceptions import ProcessingError
+from .base import DocumentProcessor
 
 
 class CleaningProcessor(DocumentProcessor):

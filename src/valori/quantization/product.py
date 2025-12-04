@@ -3,11 +3,12 @@ Product quantization implementation for the valori vector database.
 """
 
 from typing import Any, Dict, Optional
+
 import numpy as np
 from sklearn.cluster import KMeans
 
-from .base import Quantizer
 from ..exceptions import QuantizationError
+from .base import Quantizer
 
 
 class ProductQuantizer(Quantizer):

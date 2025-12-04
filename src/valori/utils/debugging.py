@@ -5,15 +5,16 @@ This module provides tools for debugging, monitoring, and analyzing
 vector database performance and behavior.
 """
 
-import time
-import numpy as np
-from typing import Any, Dict, List, Optional, Union, Callable
-from pathlib import Path
-import json
-import logging
-from contextlib import contextmanager
 import functools
 import inspect
+import json
+import logging
+import time
+from contextlib import contextmanager
+from pathlib import Path
+from typing import Any, Callable, Dict, List, Optional, Union
+
+import numpy as np
 
 from ..exceptions import ValidationError
 

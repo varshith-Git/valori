@@ -3,10 +3,11 @@ Scalar quantization implementation for the valori vector database.
 """
 
 from typing import Any, Dict, Optional
+
 import numpy as np
 
-from .base import Quantizer
 from ..exceptions import QuantizationError
+from .base import Quantizer
 
 
 class ScalarQuantizer(Quantizer):

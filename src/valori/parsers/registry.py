@@ -4,15 +4,15 @@ Parser registry for the valori vector database.
 Manages available document parsers and provides automatic parser selection.
 """
 
-from typing import Any, Dict, List, Optional, Union, Type
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Type, Union
 
-from .base import DocumentParser
-from .text_parser import TextParser
-from .pdf_parser import PDFParser
-from .office_parser import OfficeParser
-from .docling_parser import DoclingParser
 from ..exceptions import ParsingError
+from .base import DocumentParser
+from .docling_parser import DoclingParser
+from .office_parser import OfficeParser
+from .pdf_parser import PDFParser
+from .text_parser import TextParser
 
 
 class ParserRegistry:

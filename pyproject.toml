@@ -45,6 +45,7 @@ dev = [
     "pytest-cov>=4.0.0",
     "pytest-xdist>=3.0.0",
     "black>=23.0.0",
+    "isort>=5.0.0",
     "flake8>=6.0.0",
     "mypy>=1.0.0",
     "pre-commit>=3.0.0",
@@ -106,6 +107,17 @@ extend-exclude = '''
   | dist
 )/
 '''
+
+[tool.isort]
+profile = "black"
+line_length = 88
+include_trailing_comma = true
+multi_line_output = 3
+combine_as_imports = true
+known_first_party = ["valori"]
+default_section = "THIRDPARTY"
+force_alphabetical_sort_within_sections = false
+
 
 [tool.mypy]
 python_version = "3.8"

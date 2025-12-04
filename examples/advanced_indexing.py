@@ -7,12 +7,14 @@ performance characteristics.
 """
 
 import time
-import numpy as np
 from pathlib import Path
+
+import numpy as np
+
 from valori import VectorDBClient
-from valori.storage import MemoryStorage
-from valori.indices import FlatIndex, HNSWIndex, IVFIndex, LSHIndex, AnnoyIndex
+from valori.indices import AnnoyIndex, FlatIndex, HNSWIndex, IVFIndex, LSHIndex
 from valori.processors import ProcessingPipeline
+from valori.storage import MemoryStorage
 
 
 def generate_test_data(num_vectors=10000, dimension=128, num_queries=100):

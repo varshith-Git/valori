@@ -2,11 +2,11 @@
 PDF parser for the valori vector database.
 """
 
-from typing import Any, Dict, List, Union
 from pathlib import Path
+from typing import Any, Dict, List, Union
 
-from .base import DocumentParser
 from ..exceptions import ParsingError
+from .base import DocumentParser
 
 
 class PDFParser(DocumentParser):

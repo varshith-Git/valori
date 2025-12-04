@@ -2,10 +2,11 @@
 Tests for storage backends.
 """
 
-import pytest
 import numpy as np
-from valori.storage import MemoryStorage, DiskStorage, HybridStorage
+import pytest
+
 from valori.exceptions import StorageError
+from valori.storage import DiskStorage, HybridStorage, MemoryStorage
 
 
 class TestMemoryStorage:

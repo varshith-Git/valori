@@ -10,9 +10,9 @@ Safe defaults: the script prints what it will remove and only deletes files
 that look like package distributions for the same package name but different
 version. It will exit with 0 on success.
 """
-from pathlib import Path
 import re
 import sys
+from pathlib import Path
 
 
 def parse_pyproject(pyproject_path: Path):

@@ -25,7 +25,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
-from typing import Tuple, Optional
+from typing import Optional, Tuple
 
 
 def parse_pyproject(pyproject_path: Path) -> Tuple[Optional[str], Optional[str]]:
