@@ -518,7 +518,8 @@ class SAQQuantizer(Quantizer):
             return 1.0
 
         similarity = dot_product / (norm_query * norm_dequantized)
-        return 1.0 - similarity
+        # Ensure we return a native Python float (tests expect `float`, not numpy scalar)
+        return float(1.0 - similarity)
 
     def search_with_rescoring(
         self, query: np.ndarray, quantized_vectors: np.ndarray, top_k: int = 10

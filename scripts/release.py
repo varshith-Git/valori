@@ -58,11 +58,15 @@ def get_name_version(root: Path) -> Tuple[str, str]:
     if (not name or not version) and setup_cfg.exists():
         name, version = parse_setup_cfg(setup_cfg)
     if not name or not version:
-        raise SystemExit("ERROR: unable to determine package name/version from pyproject.toml or setup.cfg")
+        raise SystemExit(
+            "ERROR: unable to determine package name/version from pyproject.toml or setup.cfg"
+        )
     return name, version
 
 
-def clean_old_dists(root: Path, name: str, version: str, dry_run: bool = False) -> list[Path]:
+def clean_old_dists(
+    root: Path, name: str, version: str, dry_run: bool = False
+) -> list[Path]:
     dist = root / "dist"
     removed = []
     if not dist.exists():
@@ -105,18 +109,37 @@ def run_build(root: Path) -> None:
         subprocess.check_call(cmd, cwd=root)
     except subprocess.CalledProcessError as e:
         # Try to install build and retry once
-        print("'build' module not available or failed — attempting to install/upgrade 'build' and retrying...")
+        print(
+            "'build' module not available or failed — attempting to install/upgrade 'build' and retrying..."
+        )
         try:
-            subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "build", "wheel", "setuptools"], cwd=root)
+            subprocess.check_call(
+                [
+                    sys.executable,
+                    "-m",
+                    "pip",
+                    "install",
+                    "--upgrade",
+                    "build",
+                    "wheel",
+                    "setuptools",
+                ],
+                cwd=root,
+            )
         except subprocess.CalledProcessError:
-            print("Failed to install build/wheel via pip. Please install 'build' (pip install --upgrade build) and retry.", file=sys.stderr)
+            print(
+                "Failed to install build/wheel via pip. Please install 'build' (pip install --upgrade build) and retry.",
+                file=sys.stderr,
+            )
             raise
 
         # retry build
         subprocess.check_call(cmd, cwd=root)
 
 
-def upload_dist(root: Path, repository: Optional[str], use_token: bool, token_env_name: str) -> None:
+def upload_dist(
+    root: Path, repository: Optional[str], use_token: bool, token_env_name: str
+) -> None:
     print("Uploading distributions with twine...")
 
     env = os.environ.copy()
@@ -137,11 +160,26 @@ def upload_dist(root: Path, repository: Optional[str], use_token: bool, token_en
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="Clean old dists, build wheel, and upload to PyPI.")
-    parser.add_argument("--yes", "-y", action="store_true", help="auto-confirm deletions and upload (non-interactive)")
-    parser.add_argument("--dry-run", action="store_true", help="show what would be done without deleting or uploading")
-    parser.add_argument("--test", action="store_true", help="upload to TestPyPI instead of PyPI")
-    parser.add_argument("--skip-clean", action="store_true", help="skip cleaning old dist files")
+    parser = argparse.ArgumentParser(
+        description="Clean old dists, build wheel, and upload to PyPI."
+    )
+    parser.add_argument(
+        "--yes",
+        "-y",
+        action="store_true",
+        help="auto-confirm deletions and upload (non-interactive)",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="show what would be done without deleting or uploading",
+    )
+    parser.add_argument(
+        "--test", action="store_true", help="upload to TestPyPI instead of PyPI"
+    )
+    parser.add_argument(
+        "--skip-clean", action="store_true", help="skip cleaning old dist files"
+    )
     args = parser.parse_args(argv)
 
     root = Path.cwd()
@@ -154,7 +192,9 @@ def main(argv=None):
     print(f"Package: {name}, version: {version}")
 
     if not args.skip_clean:
-        removed = clean_old_dists(root, name, version, dry_run=args.dry_run or not args.yes)
+        removed = clean_old_dists(
+            root, name, version, dry_run=args.dry_run or not args.yes
+        )
         if removed and not args.dry_run and not args.yes:
             resp = input("Delete the above files? [y/N]: ").strip().lower()
             if resp not in ("y", "yes"):
@@ -178,11 +218,15 @@ def main(argv=None):
     pypirc_present = (Path.home() / ".pypirc").exists() or (root / ".pypirc").exists()
 
     if not token_provided and not pypirc_present:
-        print("No PyPI token found in environment and no ~/.pypirc or .pypirc in project.\nPlease set PYPI_API_TOKEN or create ~/.pypirc, or run with --test and TEST_PYPI_API_TOKEN.")
+        print(
+            "No PyPI token found in environment and no ~/.pypirc or .pypirc in project.\nPlease set PYPI_API_TOKEN or create ~/.pypirc, or run with --test and TEST_PYPI_API_TOKEN."
+        )
         return 1
 
     try:
-        upload_dist(root, repository, use_token=token_provided, token_env_name=token_env_name)
+        upload_dist(
+            root, repository, use_token=token_provided, token_env_name=token_env_name
+        )
     except subprocess.CalledProcessError as e:
         print(f"Upload failed: {e}", file=sys.stderr)
         return e.returncode

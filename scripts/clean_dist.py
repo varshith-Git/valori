@@ -52,7 +52,10 @@ def main():
             name, version = parse_setup_cfg(setup_cfg)
 
     if not name or not version:
-        print("Unable to determine package name/version from pyproject.toml or setup.cfg", file=sys.stderr)
+        print(
+            "Unable to determine package name/version from pyproject.toml or setup.cfg",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     dist = root / "dist"
@@ -66,7 +69,7 @@ def main():
         if not p.is_file():
             continue
         # Only target common distribution file extensions
-        if not p.name.endswith(('.whl', '.tar.gz', '.zip', '.tar.bz2')):
+        if not p.name.endswith((".whl", ".tar.gz", ".zip", ".tar.bz2")):
             continue
         if p.name.startswith(f"{name}-") and keep_token not in p.name:
             removed.append(p)
