@@ -7,7 +7,7 @@ Contact: varshith.gudur17@gmail.com
 [PyPI page for Valori](https://pypi.org/project/valori/)
 
 [![PyPI version](https://badge.fury.io/py/valori.svg)](https://badge.fury.io/py/valori)
-[![PyPI Total Downloads](https://img.shields.io/pypi/dt/valori.svg?label=PyPI%20total%20downloads)](https://pypi.org/project/valori/)
+[![PyPI Downloads](https://img.shields.io/pypi/dm/valori?label=PyPI%20monthly%20downloads)](https://pypi.org/project/valori/)
 [![Python versions](https://img.shields.io/pypi/pyversions/valori.svg)](https://pypi.org/project/valori/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Build Status](https://github.com/varshith-Git/valori/workflows/Tests/badge.svg)](https://github.com/varshith-Git/valori/actions)
