@@ -161,6 +161,10 @@ Client lifecycle
 
 .. code-block:: python
 
+    from valori import VectorDBClient
+    from valori.storage import MemoryStorage
+    from valori.indices import HNSWIndex
+
     storage = MemoryStorage({})
     index = HNSWIndex({"metric": "cosine"})
     client = VectorDBClient(storage, index)
@@ -214,9 +218,16 @@ Production Recommendations
   carefully.
 - Monitor ef_search or n_probes to balance recall/latency; expose these as
   runtime knobs in configuration.
-- Use persistence (TensorPersistence or IncrementalPersistence) to safely
+- Use persistence (`TensorPersistence` or `IncrementalPersistence`) to safely
   checkpoint index and metadata. Keep checkpointing frequency in line with
   expected RPO.
+
+.. code-block:: python
+
+    from valori.persistence import TensorPersistence
+    persistence = TensorPersistence({"data_dir": "./data/persistence"})
+    client = VectorDBClient(storage, index, persistence_manager=persistence)
+    client.initialize()
 
 Operational checklist
 
@@ -233,6 +244,10 @@ Examples and Recipes
 1) Low-latency production serving (small-medium dataset)
 
 .. code-block:: python
+
+    from valori import VectorDBClient
+    from valori.storage import HybridStorage
+    from valori.indices import HNSWIndex
 
     storage = HybridStorage({"memory": {}, "disk": {"data_dir": "./data"}, "memory_limit": 20000})
     index = HNSWIndex({"metric": "cosine", "m": 32, "ef_construction": 400})

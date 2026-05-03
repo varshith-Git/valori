@@ -6,7 +6,7 @@ various storage backends, indexing algorithms, quantization methods, persistence
 strategies, and document parsing capabilities.
 """
 
-__version__ = "0.1.1"
+__version__ = "0.1.8"
 __author__ = "Varshith"
 __email__ = "varshith.gudur17@gmail.com"
 
@@ -24,6 +24,9 @@ from .exceptions import (
     ValoriError,
     ValoriIndexError,
 )
+
+# Import subpackages for easy access
+from . import indices, persistence, storage
 
 # Import factory functions for easy usage
 from .factory import (
@@ -44,6 +47,11 @@ __all__ = [
     "QuantizationError",
     "ParsingError",
     "ProcessingError",
+    "PersistenceError",
+    # Subpackages
+    "indices",
+    "persistence",
+    "storage",
     # Factory functions
     "create_vector_db",
     "create_document_db",

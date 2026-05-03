@@ -1,7 +1,7 @@
 # Valori
 
-Author: Varshith  
-Team: Valori  
+Author: Varshith
+Team: Valori
 Contact: varshith.gudur17@gmail.com
 
 [PyPI page for Valori](https://pypi.org/project/valori/)
@@ -112,7 +112,7 @@ storage = MemoryStorage({})
 **Disk Storage**: Persistent but slower
 ```python
 from valori.storage import DiskStorage
-storage = DiskStorage({"data_dir": "./my_vectordb"})
+storage = DiskStorage({"data_dir": "./my_valori"})
 ```
 
 **Hybrid Storage**: Combines memory and disk for optimal performance
@@ -120,7 +120,7 @@ storage = DiskStorage({"data_dir": "./my_vectordb"})
 from valori.storage import HybridStorage
 storage = HybridStorage({
     "memory": {},
-    "disk": {"data_dir": "./my_vectordb"},
+    "disk": {"data_dir": "./my_valori"},
     "memory_limit": 10000
 })
 ```
@@ -269,7 +269,7 @@ from valori.persistence import TensorPersistence
 # Create all components
 storage = HybridStorage({
     "memory": {},
-    "disk": {"data_dir": "./vectordb_data"},
+    "disk": {"data_dir": "./valori_data"},
     "memory_limit": 10000
 })
 
@@ -293,7 +293,7 @@ quantizer = SAQQuantizer({
 })
 
 persistence = TensorPersistence({
-    "data_dir": "./vectordb_persistence",
+    "data_dir": "./valori_persistence",
     "compression": True
 })
 

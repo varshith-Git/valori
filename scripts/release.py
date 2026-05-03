@@ -49,14 +49,77 @@ def parse_setup_cfg(setup_cfg_path: Path) -> Tuple[Optional[str], Optional[str]]
     return None, None
 
 
+def get_version_from_init(root: Path) -> Optional[str]:
+    """Try to read version from src/valori/__init__.py."""
+    init_path = root / "src" / "valori" / "__init__.py"
+    if not init_path.exists():
+        return None
+    text = init_path.read_text(encoding="utf-8")
+    version_m = re.search(r"^\s*__version__\s*=\s*\"(?P<version>[^\"]+)\"", text, re.M)
+    if version_m:
+        return version_m.group("version")
+    return None
+
+
+def bump_version(root: Path, part: str = "patch") -> str:
+    """Increment the version number in src/valori/__init__.py."""
+    init_path = root / "src" / "valori" / "__init__.py"
+    if not init_path.exists():
+        raise FileNotFoundError(f"Could not find {init_path}")
+
+    current_version = get_version_from_init(root)
+    if not current_version:
+        raise ValueError("Could not determine current version")
+
+    # Split version into parts
+    parts = current_version.split(".")
+    if len(parts) != 3:
+        raise ValueError(f"Invalid version format: {current_version}")
+
+    major, minor, patch = map(int, parts)
+
+    if part == "major":
+        major += 1
+        minor = 0
+        patch = 0
+    elif part == "minor":
+        minor += 1
+        patch = 0
+    else:  # patch
+        patch += 1
+
+    new_version = f"{major}.{minor}.{patch}"
+
+    # Update the file
+    text = init_path.read_text(encoding="utf-8")
+    new_text = re.sub(
+        r"^(__version__\s*=\s*\")[^\"]+(\")$",
+        rf"\g<1>{new_version}\g<2>",
+        text,
+        flags=re.M,
+    )
+    init_path.write_text(new_text, encoding="utf-8")
+
+    print(f"Bumped version from {current_version} to {new_version}")
+    return new_version
+
+
 def get_name_version(root: Path) -> Tuple[str, str]:
     pyproj = root / "pyproject.toml"
     setup_cfg = root / "setup.cfg"
     name = version = None
     if pyproj.exists():
         name, version = parse_pyproject(pyproj)
+
+    # Fallback for dynamic versioning
+    if not version:
+        version = get_version_from_init(root)
+
     if (not name or not version) and setup_cfg.exists():
-        name, version = parse_setup_cfg(setup_cfg)
+        n, v = parse_setup_cfg(setup_cfg)
+        name = name or n
+        version = version or v
+
     if not name or not version:
         raise SystemExit(
             "ERROR: unable to determine package name/version from pyproject.toml or setup.cfg"
@@ -159,6 +222,25 @@ def upload_dist(
     subprocess.check_call(full_cmd, cwd=root, env=env, shell=True)
 
 
+def ensure_venv(root: Path) -> None:
+    """Ensure the script is running inside the project's virtual environment."""
+    venv_path = root / "venv"
+    if not venv_path.exists():
+        return
+
+    venv_python = venv_path / "bin" / "python3"
+    if not venv_python.exists():
+        venv_python = venv_path / "bin" / "python"
+
+    if venv_python.exists() and os.path.abspath(sys.executable) != os.path.abspath(
+        str(venv_python)
+    ):
+        # We are not in the venv, so re-execute the script using the venv's python
+        print(f"Auto-activating virtual environment: {venv_path}")
+        os.environ["VIRTUAL_ENV"] = str(venv_path.absolute())
+        os.execv(str(venv_python), [str(venv_python)] + sys.argv)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(
         description="Clean old dists, build wheel, and upload to PyPI."
@@ -167,7 +249,8 @@ def main(argv=None):
         "--yes",
         "-y",
         action="store_true",
-        help="auto-confirm deletions and upload (non-interactive)",
+        default=True,
+        help="auto-confirm deletions and upload (default: True)",
     )
     parser.add_argument(
         "--dry-run",
@@ -180,9 +263,21 @@ def main(argv=None):
     parser.add_argument(
         "--skip-clean", action="store_true", help="skip cleaning old dist files"
     )
+    parser.add_argument(
+        "--bump",
+        choices=["major", "minor", "patch"],
+        nargs="?",
+        const="patch",
+        help="automatically bump the version (default: patch)",
+    )
     args = parser.parse_args(argv)
 
     root = Path.cwd()
+    ensure_venv(root)
+
+    if args.bump:
+        bump_version(root, args.bump)
+
     try:
         name, version = get_name_version(root)
     except SystemExit as e:
@@ -193,13 +288,8 @@ def main(argv=None):
 
     if not args.skip_clean:
         removed = clean_old_dists(
-            root, name, version, dry_run=args.dry_run or not args.yes
+            root, name, version, dry_run=args.dry_run
         )
-        if removed and not args.dry_run and not args.yes:
-            resp = input("Delete the above files? [y/N]: ").strip().lower()
-            if resp not in ("y", "yes"):
-                print("Aborting per user request.")
-                return 1
 
     if args.dry_run:
         print("Dry-run complete. Exiting.")

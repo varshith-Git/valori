@@ -97,7 +97,7 @@ python -m pytest $TEST_ARGS
 if [ $? -eq 0 ]; then
     echo ""
     echo "All tests passed! ✓"
-    
+
     if [ "$COVERAGE" = true ]; then
         echo ""
         echo "Coverage report generated in htmlcov/index.html"

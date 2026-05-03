@@ -6,164 +6,164 @@ This page provides detailed API documentation for Valori.
 Core Classes
 ------------
 
-.. automodule:: vectordb
+.. automodule:: valori
    :members:
 
 VectorDBClient
 ~~~~~~~~~~~~~~
 
-.. autoclass:: vectordb.VectorDBClient
+.. autoclass:: valori.VectorDBClient
    :members:
    :special-members: __init__
 
 Storage Backends
 ----------------
 
-.. automodule:: vectordb.storage
+.. automodule:: valori.storage
    :members:
 
 StorageBackend
 ~~~~~~~~~~~~~~
 
-.. autoclass:: vectordb.storage.StorageBackend
+.. autoclass:: valori.storage.StorageBackend
    :members:
    :special-members: __init__
 
 MemoryStorage
 ~~~~~~~~~~~~~
 
-.. autoclass:: vectordb.storage.MemoryStorage
+.. autoclass:: valori.storage.MemoryStorage
    :members:
    :special-members: __init__
 
 DiskStorage
 ~~~~~~~~~~~
 
-.. autoclass:: vectordb.storage.DiskStorage
+.. autoclass:: valori.storage.DiskStorage
    :members:
    :special-members: __init__
 
 HybridStorage
 ~~~~~~~~~~~~~
 
-.. autoclass:: vectordb.storage.HybridStorage
+.. autoclass:: valori.storage.HybridStorage
    :members:
    :special-members: __init__
 
 Index Implementations
 ---------------------
 
-.. automodule:: vectordb.indices
+.. automodule:: valori.indices
    :members:
 
 Index
 ~~~~~
 
-.. autoclass:: vectordb.indices.Index
+.. autoclass:: valori.indices.Index
    :members:
    :special-members: __init__
 
 FlatIndex
 ~~~~~~~~~
 
-.. autoclass:: vectordb.indices.FlatIndex
+.. autoclass:: valori.indices.FlatIndex
    :members:
    :special-members: __init__
 
 HNSWIndex
 ~~~~~~~~~
 
-.. autoclass:: vectordb.indices.HNSWIndex
+.. autoclass:: valori.indices.HNSWIndex
    :members:
    :special-members: __init__
 
 IVFIndex
 ~~~~~~~~
 
-.. autoclass:: vectordb.indices.IVFIndex
+.. autoclass:: valori.indices.IVFIndex
    :members:
    :special-members: __init__
 
 Quantization
 ------------
 
-.. automodule:: vectordb.quantization
+.. automodule:: valori.quantization
    :members:
 
 Quantizer
 ~~~~~~~~~
 
-.. autoclass:: vectordb.quantization.Quantizer
+.. autoclass:: valori.quantization.Quantizer
    :members:
    :special-members: __init__
 
 ScalarQuantizer
 ~~~~~~~~~~~~~~~
 
-.. autoclass:: vectordb.quantization.ScalarQuantizer
+.. autoclass:: valori.quantization.ScalarQuantizer
    :members:
    :special-members: __init__
 
 ProductQuantizer
 ~~~~~~~~~~~~~~~~
 
-.. autoclass:: vectordb.quantization.ProductQuantizer
+.. autoclass:: valori.quantization.ProductQuantizer
    :members:
    :special-members: __init__
 
 Persistence
 -----------
 
-.. automodule:: vectordb.persistence
+.. automodule:: valori.persistence
    :members:
 
 PersistenceManager
 ~~~~~~~~~~~~~~~~~~
 
-.. autoclass:: vectordb.persistence.PersistenceManager
+.. autoclass:: valori.persistence.PersistenceManager
    :members:
    :special-members: __init__
 
 TensorPersistence
 ~~~~~~~~~~~~~~~~~
 
-.. autoclass:: vectordb.persistence.TensorPersistence
+.. autoclass:: valori.persistence.TensorPersistence
    :members:
    :special-members: __init__
 
 IncrementalPersistence
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. autoclass:: vectordb.persistence.IncrementalPersistence
+.. autoclass:: valori.persistence.IncrementalPersistence
    :members:
    :special-members: __init__
 
 Utilities
 ---------
 
-.. automodule:: vectordb.utils
+.. automodule:: valori.utils
    :members:
 
 Similarity Functions
 ~~~~~~~~~~~~~~~~~~~~
 
-.. automodule:: vectordb.utils.similarity
+.. automodule:: valori.utils.similarity
    :members:
 
 Validation Functions
 ~~~~~~~~~~~~~~~~~~~~
 
-.. automodule:: vectordb.utils.validation
+.. automodule:: valori.utils.validation
    :members:
 
 Logging Utilities
 ~~~~~~~~~~~~~~~~~
 
-.. automodule:: vectordb.utils.logging
+.. automodule:: valori.utils.logging
    :members:
 
 Exceptions
 ----------
 
-.. automodule:: vectordb.exceptions
+.. automodule:: valori.exceptions
    :members:

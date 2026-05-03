@@ -144,7 +144,7 @@ bandit -r src/
 python -m pytest tests/
 
 # Run with coverage
-python -m pytest tests/ --cov=src/vectordb --cov-report=html
+python -m pytest tests/ --cov=src/valori --cov-report=html
 
 # Run specific test file
 python -m pytest tests/test_storage.py
@@ -171,14 +171,14 @@ def test_memory_storage_store_vector():
     """Test storing a vector in memory storage."""
     storage = MemoryStorage({})
     storage.initialize()
-    
+
     vector = np.array([1.0, 2.0, 3.0])
     vector_id = "test_vector"
     metadata = {"category": "test"}
-    
+
     success = storage.store_vector(vector_id, vector, metadata)
     assert success
-    
+
     retrieved_vector, retrieved_metadata = storage.retrieve_vector(vector_id)
     assert np.array_equal(retrieved_vector, vector)
     assert retrieved_metadata == metadata
@@ -247,7 +247,7 @@ When submitting a PR, include:
 
 When reporting bugs, include:
 
-- **Valori version**: `python -c "import vectordb; print(vectordb.__version__)"`
+- **Valori version**: `python -c "import valori; print(valori.__version__)"`
 - **Python version**: `python --version`
 - **Operating system**: OS and version
 - **Steps to reproduce**: Minimal code example
@@ -455,7 +455,7 @@ bandit -r src/
 python -m pytest tests/
 
 # Run with coverage
-python -m pytest tests/ --cov=src/vectordb --cov-report=html
+python -m pytest tests/ --cov=src/valori --cov-report=html
 
 # Run specific test file
 python -m pytest tests/test_storage.py
@@ -482,14 +482,14 @@ def test_memory_storage_store_vector():
     """Test storing a vector in memory storage."""
     storage = MemoryStorage({})
     storage.initialize()
-    
+
     vector = np.array([1.0, 2.0, 3.0])
     vector_id = "test_vector"
     metadata = {"category": "test"}
-    
+
     success = storage.store_vector(vector_id, vector, metadata)
     assert success
-    
+
     retrieved_vector, retrieved_metadata = storage.retrieve_vector(vector_id)
     assert np.array_equal(retrieved_vector, vector)
     assert retrieved_metadata == metadata
@@ -558,7 +558,7 @@ When submitting a PR, include:
 
 When reporting bugs, include:
 
-- **Valori version**: `python -c "import vectordb; print(vectordb.__version__)"`
+- **Valori version**: `python -c "import valori; print(valori.__version__)"`
 - **Python version**: `python --version`
 - **Operating system**: OS and version
 - **Steps to reproduce**: Minimal code example

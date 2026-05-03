@@ -18,27 +18,27 @@ Quick Start
 
 .. code-block:: python
 
-    from vectordb import VectorDBClient
-    from vectordb.storage import MemoryStorage
-    from vectordb.indices import FlatIndex
-    
+    from valori import VectorDBClient
+    from valori.storage import MemoryStorage
+    from valori.indices import FlatIndex
+
     # Create components
     storage = MemoryStorage({})
     index = FlatIndex({"metric": "cosine"})
-    
+
     # Create client
     client = VectorDBClient(storage, index)
     client.initialize()
-    
+
     # Insert vectors
     import numpy as np
     vectors = np.random.randn(100, 128).astype(np.float32)
     inserted_ids = client.insert(vectors)
-    
+
     # Search
     query_vector = vectors[0]
     results = client.search(query_vector, k=5)
-    
+
     # Clean up
     client.close()
 

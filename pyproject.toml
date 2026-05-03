@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "valori"
-version = "0.1.5"
+dynamic = ["version"]
 description = "A high-performance vector database library for Python"
 readme = "README.md"
-license = {text = "MIT"}
+license = {file = "LICENSE"}
 authors = [
     {name = "Varshith", email = "varshith.gudur17@gmail.com"},
 ]
@@ -25,6 +25,8 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Topic :: Database",
     "Topic :: Software Development :: Libraries :: Python Modules",
@@ -84,6 +86,9 @@ valori-benchmark = "scripts.benchmark:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
+
+[tool.setuptools.dynamic]
+version = {attr = "valori.__version__"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
