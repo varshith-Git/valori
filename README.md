@@ -1,6 +1,6 @@
 # Valori
 
-Author: Varshith  
+Author: Varshith 
 Team: Valori  
 Contact: varshith.gudur17@gmail.com
 
@@ -19,7 +19,7 @@ A high-performance vector database library for Python that provides efficient st
 > Please use the [issues page](https://github.com/varshith-Git/valori/issues) to report bugs or request features.
 
 
-## Features
+## Valori Features
 
 - **🚀 High Performance**: Optimized for speed with multiple indexing algorithms
 - **📄 Document Parsing**: Support for PDF, Office, text, and advanced parsing with Docling
